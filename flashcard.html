@@ -1,0 +1,2482 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bé Vui Học Đọc Trơn Lớp 1 - Nuôi Thú Cưng Hoạt Hình</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Google Fonts: Baloo 2 & Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800;900&family=Nunito:wght@700;800;900;1000&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
+    }
+    .font-baloo {
+      font-family: 'Baloo 2', cursive;
+    }
+
+    /* Hiệu ứng viền cầu vồng neon đổi màu mượt mà */
+    @keyframes rainbow-border {
+      0% { border-color: #f43f5e; box-shadow: 0 10px 30px rgba(244, 63, 94, 0.3); }
+      20% { border-color: #fb923c; box-shadow: 0 10px 30px rgba(251, 146, 60, 0.3); }
+      40% { border-color: #eab308; box-shadow: 0 10px 30px rgba(234, 179, 8, 0.3); }
+      60% { border-color: #10b981; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3); }
+      80% { border-color: #0ea5e9; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3); }
+      100% { border-color: #a855f7; box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3); }
+    }
+    .rainbow-card {
+      animation: rainbow-border 8s linear infinite;
+    }
+
+    /* Chữ nổi 3D có viền trắng tương phản cao cho bé dễ nhìn */
+    .pop-text {
+      text-shadow: 
+        -3px -3px 0 #ffffff,
+         3px -3px 0 #ffffff,
+        -3px  3px 0 #ffffff,
+         3px  3px 0 #ffffff,
+         0 6px 16px rgba(0, 0, 0, 0.22);
+    }
+
+    /* Emoji nhảy múa bồng bềnh thu hút trẻ */
+    @keyframes float-emoji {
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+      50% { transform: translateY(-10px) rotate(4deg) scale(1.08); }
+    }
+    .floating-icon {
+      animation: float-emoji 3.2s ease-in-out infinite;
+    }
+
+    /* Hiệu ứng chuyển động lướt trơn mượt */
+    .card-transition {
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.22s ease-out;
+    }
+    .slide-left-out {
+      transform: translateX(-60px) scale(0.92) rotate(-3deg);
+      opacity: 0;
+    }
+    .slide-right-out {
+      transform: translateX(60px) scale(0.92) rotate(3deg);
+      opacity: 0;
+    }
+    .slide-in {
+      transform: translateX(0) scale(1) rotate(0deg);
+      opacity: 1;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Hiệu ứng hạt sao & huy hiệu sao mượt mà bằng GPU */
+    .gpu-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      will-change: transform, opacity;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      contain: layout style;
+    }
+
+    .gpu-flying-badge {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10000;
+      will-change: transform, opacity;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      contain: layout style;
+      transform-origin: center center;
+    }
+
+    /* Lắc nảy mạnh hộp sao khổng lồ khi sao bay về */
+    @keyframes starBoxEarned {
+      0%, 100% { transform: scale(1); }
+      30% { transform: scale(1.22) rotate(-5deg); background-color: #fef08a; box-shadow: 0 0 25px rgba(250, 204, 21, 0.95); }
+      65% { transform: scale(1.12) rotate(4deg); }
+    }
+    .star-box-bump {
+      animation: starBoxEarned 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Bong bóng lời thoại của Thú cưng */
+    .pet-bubble {
+      animation: bubbleFloat 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: bottom center;
+    }
+    @keyframes bubbleFloat {
+      0% { opacity: 0; transform: translateY(10px) scale(0.6); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-rose-100 via-amber-100 via-emerald-50 to-sky-100 text-slate-800 flex flex-col justify-between overflow-x-hidden p-2 sm:p-4">
+
+  <!-- Hình trang trí nền nhẹ nhàng -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute top-6 left-6 text-2xl opacity-40 animate-pulse">⭐</div>
+    <div class="absolute top-24 right-10 text-3xl opacity-35 animate-bounce">🎈</div>
+    <div class="absolute bottom-16 left-10 text-3xl opacity-35 animate-pulse">🌸</div>
+    <div class="absolute bottom-20 right-8 text-2xl opacity-40 animate-bounce">✨</div>
+  </div>
+
+  <!-- Header: HỘP SAO CỠ LỚN & CÁC NÚT ĐIỀU HƯỚNG CHÍNH -->
+  <header class="w-full max-w-4xl mx-auto z-10 bg-white/90 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-md border-2 border-amber-300 p-2.5 sm:p-3.5 flex flex-col gap-2.5">
+    
+    <div class="flex items-center justify-between flex-wrap gap-2 sm:gap-4">
+      <!-- Logo & Tên ứng dụng -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-yellow-400 flex items-center justify-center text-white text-2xl shadow">
+          ⭐
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-2xl font-black font-baloo text-rose-600 tracking-wide flex items-center gap-1.5 leading-none">
+            BÉ ĐỌC TRƠN <span class="text-xs sm:text-sm bg-rose-500 text-white font-sans font-black px-2 py-0.5 rounded-full">LỚP 1</span>
+          </h1>
+          <p class="text-[11px] sm:text-xs font-bold text-amber-800 mt-0.5">250 Câu Luyện Đọc • Tích Sao Nuôi Thú Cưng</p>
+        </div>
+      </div>
+
+      <!-- Hàng nút: Âm thanh, Hộp Sao Lớn, Kết Thúc, Lượt Mới -->
+      <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+        <!-- Bật/Tắt âm thanh -->
+        <button id="btn-sound-toggle" onclick="toggleSoundFx()" title="Bật/Tắt âm thanh" class="w-10 h-10 sm:w-11 sm:h-11 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded-2xl border-2 border-pink-300 transition active:scale-95 flex items-center justify-center shadow-sm">
+          <span id="sound-icon" class="text-lg sm:text-xl">🔊</span>
+        </button>
+
+        <!-- HỘP ĐẾM SAO SIÊU TO NỔI BẬT DÀNH CHO BÉ -->
+        <div id="star-badge-box" class="flex items-center bg-gradient-to-b from-amber-50 to-yellow-100 border-3 border-amber-400 px-3.5 sm:px-5 py-1 sm:py-1.5 rounded-2xl font-black shadow-md transition-transform border-[3px]">
+          <span class="text-2xl sm:text-3xl mr-1.5 filter drop-shadow-sm animate-pulse">⭐</span>
+          <span id="star-count-display" class="text-2xl sm:text-3xl font-black text-amber-900 font-baloo tracking-tight">0</span>
+          <span id="star-total-display" class="text-sm sm:text-base text-amber-700 font-bold ml-1 font-baloo">/15</span>
+        </div>
+
+        <!-- Nút Kết Thúc & Lưu Bảng Sao -->
+        <button id="btn-finish-round" onclick="finishRoundAndShowBoard()" title="Kết thúc lượt học và xem bảng sao" class="px-3 sm:px-3.5 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white rounded-2xl shadow-md border-2 border-amber-600 text-xs sm:text-sm font-black flex items-center gap-1.5 active:scale-95 transition">
+          <span class="text-base sm:text-lg">🏁</span>
+          <span>Kết Thúc</span>
+        </button>
+
+        <!-- Nút Lượt Mới (Random bộ câu mới) -->
+        <button id="btn-restart-round" onclick="startNewRandomRound()" title="Bốc ngẫu nhiên bộ câu mới" class="px-3 sm:px-4 py-2 bg-gradient-to-r from-rose-500 to-amber-500 hover:opacity-95 text-white rounded-2xl shadow-md border-2 border-rose-600 text-xs sm:text-sm font-black flex items-center gap-1.5 active:scale-95 transition">
+          <span class="text-base sm:text-lg">🎲</span>
+          <span>Lượt Mới</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- WIDGET THÚ CƯNG ĐỒNG HÀNH HOẠT HÌNH 2D (CANVAS PET ANIMATION) -->
+    <div class="w-full bg-gradient-to-r from-amber-100/90 via-pink-100/90 to-purple-100/90 border-2 border-amber-300 rounded-2xl p-2 sm:p-2.5 flex items-center justify-between gap-2 shadow-inner relative">
+      <!-- Thú cưng Avatar & Bong bóng lời thoại khi bấm -->
+      <div class="flex items-center gap-2.5 cursor-pointer relative" onclick="interactWithPet()" title="Chạm vào thú cưng để chơi đùa!">
+        <div id="pet-avatar-wrapper" class="relative">
+          <!-- Canvas hoạt hình thú cưng động 60FPS -->
+          <canvas id="pet-canvas-mini" width="128" height="128" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl shadow-md border-2 border-amber-400 bg-gradient-to-b from-amber-50 to-pink-50 select-none transition-transform hover:scale-105 active:scale-95"></canvas>
+          <!-- Huy hiệu cấp độ -->
+          <span id="pet-lvl-badge" class="absolute -bottom-1 -right-1 bg-rose-500 text-white text-[9px] sm:text-[10px] font-black px-1.5 py-0.2 rounded-full border border-white shadow">
+            Lv.1
+          </span>
+        </div>
+
+        <!-- Tên thú cưng & Thanh EXP sao ấp nở -->
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span id="pet-name-display" class="font-black text-xs sm:text-sm text-amber-950 truncate font-baloo">Bé Rồng Lửa</span>
+            <span id="pet-title-display" class="text-[10px] sm:text-xs text-rose-600 font-extrabold bg-white/80 px-2 py-0.5 rounded-lg border border-rose-200">Đang ấp 🐣</span>
+          </div>
+
+          <!-- Thanh tiến độ sao để thú cưng tiến hóa -->
+          <div class="flex items-center gap-2 mt-1">
+            <div class="w-28 sm:w-44 bg-white/90 rounded-full h-2.5 border border-amber-300 overflow-hidden relative shadow-inner">
+              <div id="pet-exp-bar" class="h-full bg-gradient-to-r from-amber-400 via-rose-400 to-emerald-400 rounded-full transition-all duration-500" style="width: 0%;"></div>
+            </div>
+            <span id="pet-exp-text" class="text-[10px] sm:text-[11px] font-black text-amber-900 whitespace-nowrap">0/5 ⭐</span>
+          </div>
+        </div>
+
+        <!-- Bong bóng lời thoại thú cưng nổi lên khi chạm -->
+        <div id="pet-speech-bubble" class="pet-bubble hidden absolute left-14 -top-8 sm:-top-9 bg-white text-slate-800 text-[11px] sm:text-xs font-black px-3 py-1.5 rounded-2xl shadow-xl border-2 border-amber-400 whitespace-nowrap z-30 pointer-events-none">
+          <span id="pet-speech-text">Bé đọc to tớ nghe nhé! 💕</span>
+        </div>
+      </div>
+
+      <!-- Nút mở Vườn Thú Cưng & Chọn Bạn Đồng Hành -->
+      <button onclick="openPetModal()" class="px-2.5 sm:px-3 py-1.5 sm:py-2 bg-white/90 hover:bg-white text-purple-700 hover:text-purple-900 border-2 border-purple-300 rounded-xl font-black text-[11px] sm:text-xs shadow-sm flex items-center gap-1 active:scale-95 transition whitespace-nowrap">
+        <span>🐾</span>
+        <span>Vườn Thú</span>
+      </button>
+    </div>
+
+    <!-- Thanh tiến độ học của vòng hiện tại kèm chọn số câu -->
+    <div class="w-full flex items-center gap-2 pt-0.5">
+      <div class="flex-1 bg-slate-100 rounded-full h-3 border border-slate-200 overflow-hidden relative shadow-inner">
+        <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-500 rounded-full transition-all duration-300" style="width: 6.6%;"></div>
+      </div>
+      <span id="progress-text-small" class="text-xs font-black text-slate-600 whitespace-nowrap">1/15 câu</span>
+      
+      <!-- Lựa chọn số câu thu nhỏ cạnh tiến độ -->
+      <select id="select-round-size" onchange="changeRoundSize()" class="bg-amber-100 hover:bg-amber-200 text-amber-900 text-[11px] sm:text-xs font-black px-2 py-1 rounded-xl border border-amber-300 outline-none cursor-pointer">
+        <option value="10">10 câu</option>
+        <option value="15" selected>15 câu</option>
+        <option value="25">25 câu</option>
+        <option value="50">50 câu</option>
+      </select>
+    </div>
+
+    <!-- Tab chọn 5 Cấp Độ có 50 câu mỗi cấp -->
+    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 text-[11px] sm:text-xs">
+      <button onclick="selectLevel(1)" id="tab-lvl-1" class="lvl-btn active-level px-2.5 py-1.5 rounded-xl font-black bg-rose-500 text-white whitespace-nowrap shadow border border-rose-600 flex items-center gap-1">
+        <span>🌱</span> Cấp 1: Khởi động (50 câu)
+      </button>
+      <button onclick="selectLevel(2)" id="tab-lvl-2" class="lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1">
+        <span>🏡</span> Cấp 2: Ngôi nhà bé (50 câu)
+      </button>
+      <button onclick="selectLevel(3)" id="tab-lvl-3" class="lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1">
+        <span>🎯</span> Cấp 3: Vần tròn môi (50 câu)
+      </button>
+      <button onclick="selectLevel(4)" id="tab-lvl-4" class="lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1">
+        <span>🧙‍♂️</span> Cấp 4: Trị đọc sai (50 câu)
+      </button>
+      <button onclick="selectLevel(5)" id="tab-lvl-5" class="lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1">
+        <span>🏆</span> Cấp 5: Diễn cảm (50 câu)
+      </button>
+    </div>
+
+  </header>
+
+  <!-- Khung Flashcard Tương Tác Chính -->
+  <main class="w-full max-w-2xl mx-auto my-auto flex-1 flex flex-col items-center justify-center relative z-10 px-2 py-3">
+    
+    <div id="flashcard-container" class="w-full h-[380px] sm:h-[450px] relative flex items-center justify-center">
+      
+      <div id="active-card" class="card-transition slide-in w-full h-full rounded-3xl sm:rounded-[36px] p-5 sm:p-8 flex flex-col justify-between items-center text-center shadow-2xl border-4 sm:border-8 rainbow-card relative overflow-hidden bg-gradient-to-br from-rose-200 via-amber-100 to-pink-200">
+        
+        <!-- Hiệu ứng phản quang nền -->
+        <div class="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-white/35 blur-xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-36 h-36 rounded-full bg-white/35 blur-xl pointer-events-none"></div>
+
+        <!-- Hàng trên: Thứ tự thẻ & Cấp độ -->
+        <div class="w-full flex items-center justify-between relative z-10">
+          <div class="flex items-center gap-2">
+            <span id="card-badge-num" class="px-3 py-1 rounded-xl font-black text-xs sm:text-sm shadow-md bg-rose-600 text-white">
+              CÂU 01 / 15
+            </span>
+            <span id="card-category-name" class="hidden sm:inline-block px-2.5 py-1 rounded-xl font-extrabold text-xs bg-white/85 text-slate-700 border border-slate-200 shadow-sm">
+              Cấp 1: Sao Nhí Khởi Động
+            </span>
+          </div>
+
+          <!-- Trạng thái hoàn thành thẻ -->
+          <div id="card-status-pill" class="px-3 py-1 rounded-xl text-xs font-black bg-white/85 text-slate-500 border border-slate-200 shadow-sm flex items-center gap-1">
+            <span>Chưa đọc ⚪</span>
+          </div>
+        </div>
+
+        <!-- Trung tâm: Emoji động + Câu đọc chữ to rõ -->
+        <div class="w-full my-auto flex flex-col items-center justify-center px-1 relative z-10">
+          <div id="card-emoji" class="text-6xl sm:text-7xl mb-3 sm:mb-4 floating-icon filter drop-shadow-md cursor-pointer">
+            🎒
+          </div>
+
+          <div id="card-sentence" class="text-3xl sm:text-4xl md:text-5xl font-black font-baloo leading-snug tracking-wide text-rose-800 pop-text px-2 py-1">
+            Bé đi học.
+          </div>
+        </div>
+
+        <!-- Đáy thẻ: Gợi ý ngắt nhịp và Cụm 2 nút đánh giá: Có cố gắng (+½ sao) & Đọc trơn thành công (+1 sao) -->
+        <div class="w-full flex flex-col gap-2.5 relative z-10">
+          <div class="w-full bg-white/85 backdrop-blur-sm border-2 border-dashed border-rose-300 rounded-2xl py-2 px-3 flex items-center justify-center gap-1.5 shadow-sm">
+            <span class="text-amber-600 text-sm">💡</span>
+            <p id="card-rhythm-guide" class="text-xs sm:text-sm font-extrabold text-slate-700">
+              Đọc liền mạch 3 tiếng rõ ràng
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 w-full">
+            <!-- Nút Cố Gắng Lắm (+½ Sao) -->
+            <button id="btn-mark-half" onclick="markCardHalfSuccess()" class="w-full py-2.5 sm:py-3 px-3 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all duration-200 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 hover:from-emerald-300 hover:to-green-300 text-emerald-950 border-2 border-emerald-200 active:scale-95">
+              <span class="text-base sm:text-lg">🌱</span>
+              <span id="btn-half-text">Cố Gắng Lắm! +½ Sao</span>
+            </button>
+
+            <!-- Nút Đọc Trơn Thành Công (+1 Sao) -->
+            <button id="btn-mark-success" onclick="markCurrentCardSuccess()" class="w-full py-2.5 sm:py-3 px-3 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-lg transition-all duration-200 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-yellow-950 border-2 border-yellow-200 active:scale-95">
+              <span class="text-base sm:text-lg">⭐</span>
+              <span id="btn-mark-text">Đọc Trơn Thành Công!</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Thanh điều hướng câu: Trước, Tự chạy, Tiếp theo -->
+    <div class="w-full max-w-md flex items-center justify-between mt-3 px-2 gap-2">
+      <button id="btn-prev" onclick="goPrev()" class="flex-1 py-3 px-3 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-800 rounded-2xl font-black text-sm sm:text-base shadow-md border-2 border-slate-200 flex items-center justify-center gap-1.5 transition active:scale-95">
+        <span class="text-lg">◀</span>
+        <span>Câu Trước</span>
+      </button>
+
+      <button id="btn-auto-play" onclick="toggleAutoPlay()" title="Tự động chuyển thẻ sau 4.5 giây" class="p-3 bg-white hover:bg-slate-50 text-slate-700 rounded-2xl border-2 border-slate-200 shadow-md font-extrabold text-xs flex flex-col items-center justify-center transition active:scale-95 whitespace-nowrap min-w-[65px]">
+        <span id="auto-icon" class="text-base">▶️</span>
+        <span id="auto-text" class="text-[10px]">Tự chạy</span>
+      </button>
+
+      <button id="btn-next" onclick="goNext()" class="flex-1 py-3 px-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-2xl font-black text-sm sm:text-base shadow-lg border-2 border-indigo-700 flex items-center justify-center gap-1.5 transition active:scale-95">
+        <span>Câu Sau</span>
+        <span class="text-lg">▶</span>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Footer chỉ dẫn phím tắt & cử chỉ -->
+  <footer class="w-full max-w-4xl mx-auto z-10 bg-white/75 backdrop-blur-sm rounded-2xl border border-white p-2 text-center text-[11px] sm:text-xs font-bold text-slate-600 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+    <span>👆 <b>Vuốt tay</b> trái/phải trên màn hình để chuyển thẻ</span>
+    <span>⌨️ Bấm phím <b>← / →</b></span>
+    <span>⭐ Bấm <b>Phím Cách (Space)</b> để nhận sao</span>
+  </footer>
+
+  <!-- Modal Bảng Kết Quả Sao & Lịch Sử Cố Gắng -->
+  <div id="result-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white rounded-[32px] max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl border-4 sm:border-6 border-amber-400 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Header Bảng Thành Tích -->
+      <div class="p-4 sm:p-5 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 border-b-2 border-amber-300 flex items-center justify-between relative overflow-hidden">
+        <div class="relative z-10 flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-white/90 shadow-md flex items-center justify-center text-3xl">
+            🏆
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-black font-baloo text-amber-950 leading-tight">BẢNG THÀNH TÍCH SAO</h2>
+            <p id="result-subtitle" class="text-xs font-bold text-amber-900 mt-0.5">Bé kiên trì luyện đọc mỗi ngày</p>
+          </div>
+        </div>
+        <button onclick="closeResultModal()" class="w-9 h-9 rounded-full bg-white/90 hover:bg-white text-slate-700 font-black flex items-center justify-center shadow text-base z-10 active:scale-95 transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Nội dung chính bảng sao -->
+      <div class="p-4 sm:p-5 overflow-y-auto flex flex-col gap-4 no-scrollbar">
+        
+        <!-- Khung tôn vinh điểm số lượt này -->
+        <div class="bg-gradient-to-b from-amber-50 to-orange-50 border-2 border-amber-300 rounded-3xl p-4 text-center shadow-inner relative overflow-hidden">
+          <div class="text-xs font-extrabold text-amber-800 uppercase tracking-wide">KẾT QUẢ LƯỢT VỪA HOÀN THÀNH</div>
+          
+          <div class="flex items-center justify-center gap-2 my-2">
+            <span class="text-4xl sm:text-5xl animate-bounce">⭐</span>
+            <span id="result-score-big" class="text-4xl sm:text-5xl font-black font-baloo text-amber-900">0</span>
+            <span id="result-score-max" class="text-xl sm:text-2xl font-bold font-baloo text-amber-700">/15</span>
+          </div>
+
+          <!-- Danh hiệu khen thưởng động viên -->
+          <div id="result-badge-title" class="inline-block px-4 py-1.5 rounded-full bg-amber-500 text-white font-black text-xs sm:text-sm shadow-md">
+            🌟 BÉ SIÊU NHÂN ĐỌC TRƠN!
+          </div>
+
+          <!-- 3 cột thống kê chi tiết -->
+          <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-amber-200/80 text-xs">
+            <div class="bg-white/90 rounded-2xl p-2 border border-emerald-200">
+              <div class="text-emerald-700 font-black text-base sm:text-lg" id="stat-full-count">0</div>
+              <div class="text-[10px] sm:text-xs font-bold text-slate-600">Đọc trơn (1⭐)</div>
+            </div>
+            <div class="bg-white/90 rounded-2xl p-2 border border-teal-200">
+              <div class="text-teal-700 font-black text-base sm:text-lg" id="stat-half-count">0</div>
+              <div class="text-[10px] sm:text-xs font-bold text-slate-600">Cố gắng (½⭐)</div>
+            </div>
+            <div class="bg-white/90 rounded-2xl p-2 border border-rose-200">
+              <div class="text-rose-600 font-black text-base sm:text-lg" id="stat-unread-count">0</div>
+              <div class="text-[10px] sm:text-xs font-bold text-slate-600">Chưa đọc (⚪)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Khung Lịch Sử Các Lượt Học Trước Đó -->
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-xs font-black text-slate-700 flex items-center gap-1.5">
+              <span>📜</span> LỊCH SỬ CÁC LƯỢT ĐÃ HỌC
+            </span>
+            <span id="history-total-label" class="text-[11px] font-bold text-slate-500">Đã lưu 0 lượt</span>
+          </div>
+
+          <div id="history-list-container" class="flex flex-col gap-1.5 max-h-44 overflow-y-auto no-scrollbar">
+            <!-- Nạp lịch sử tự động qua Javascript -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Hàng nút hành động dưới modal -->
+      <div class="p-3 sm:p-4 bg-slate-50 border-t border-slate-200 flex items-center gap-2">
+        <button onclick="retryCurrentDeck()" class="flex-1 py-2.5 px-3 rounded-2xl bg-white hover:bg-slate-100 border-2 border-slate-300 font-black text-slate-700 text-xs sm:text-sm shadow-sm active:scale-95 transition flex items-center justify-center gap-1">
+          <span>🔄</span>
+          <span>Luyện Lại Bộ Này</span>
+        </button>
+
+        <button onclick="startNewRandomRoundFromModal()" class="flex-1 py-2.5 px-3 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 hover:opacity-95 text-white font-black text-xs sm:text-sm shadow-md border-2 border-rose-600 active:scale-95 transition flex items-center justify-center gap-1">
+          <span>🎲</span>
+          <span>Lượt Mới Tiếp Theo</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: VƯỜN THÚ CƯNG & TIẾN HÓA CỦA BÉ -->
+  <div id="pet-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white rounded-[32px] max-w-lg w-full max-h-[90vh] flex flex-col shadow-2xl border-4 sm:border-6 border-purple-400 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Header Vườn Thú Cưng -->
+      <div class="p-4 bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300 border-b-2 border-purple-300 flex items-center justify-between text-white">
+        <div class="flex items-center gap-2.5">
+          <div class="w-11 h-11 rounded-2xl bg-white/90 shadow-md flex items-center justify-center text-2xl">
+            🐾
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-black font-baloo leading-tight">VƯỜN THÚ CƯNG CỦA BÉ</h2>
+            <p class="text-[11px] sm:text-xs font-bold text-purple-950 opacity-90">Tích sao đọc trơn để ấp nở &amp; tiến hóa thú cưng</p>
+          </div>
+        </div>
+        <button onclick="closePetModal()" class="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-700 font-black flex items-center justify-center shadow text-sm active:scale-95 transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Thân modal: Sân khấu Canvas & Chọn thú -->
+      <div class="p-4 sm:p-5 overflow-y-auto flex flex-col gap-4 no-scrollbar">
+        
+        <!-- Sân khấu tương tác thú cưng cỡ lớn trong Modal -->
+        <div class="w-full min-h-[250px] sm:min-h-[270px] flex-shrink-0 bg-gradient-to-b from-purple-100/80 via-pink-50 to-amber-50 rounded-3xl p-4 border-2 border-purple-300 flex flex-col items-center justify-between relative overflow-hidden shadow-inner cursor-pointer select-none" onclick="interactWithPet()" title="Chạm vào để thú cưng biểu diễn!">
+          <!-- Ánh hào quang sân khấu nền -->
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="w-48 h-48 rounded-full bg-white/70 blur-2xl"></div>
+          </div>
+
+          <div class="text-[11px] font-black text-purple-700 bg-white/90 px-3 py-1 rounded-full border border-purple-200 shadow-sm relative z-10 flex items-center gap-1.5">
+            <span>✨</span> Sân khấu thú cưng (Chạm vào bạn ấy nhé!)
+          </div>
+
+          <!-- Canvas cỡ lớn hiển thị trọn vẹn toàn thân thú cưng -->
+          <div class="relative z-10 my-1 flex items-center justify-center">
+            <canvas id="pet-canvas-modal" width="240" height="240" class="w-44 h-44 sm:w-52 sm:h-52 filter drop-shadow-xl transition-transform active:scale-95"></canvas>
+          </div>
+
+          <div id="pet-modal-stage-status" class="text-sm font-black font-baloo text-purple-950 px-3 py-0.5 bg-white/80 rounded-xl border border-purple-200 shadow-sm relative z-10">
+            Bé Rồng Lửa • Cấp 1
+          </div>
+        </div>
+
+        <!-- Tổng số sao tích lũy nuôi thú -->
+        <div class="bg-gradient-to-r from-amber-50 to-pink-50 border-2 border-amber-300 rounded-2xl p-3 flex items-center justify-between flex-shrink-0">
+        </div>
+
+        <!-- 4 Bạn Thú Cưng Bé Có Thể Chọn -->
+        <div>
+          <div class="text-xs font-black text-purple-900 uppercase tracking-wide mb-2 flex items-center gap-1">
+            <span>🥚</span> CHỌN BẠN THÚ CƯNG BÉ THÍCH NHẤT:
+          </div>
+          <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
+            <button onclick="choosePetSpecies('dragon')" id="pet-choice-dragon" class="p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-purple-50 border-purple-400 shadow-sm">
+              <span class="text-3xl">🦖</span>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-purple-950">Rồng Con Lửa</div>
+                <div class="text-[10px] text-purple-700 font-bold">Dũng cảm &amp; đáng yêu</div>
+              </div>
+            </button>
+
+            <button onclick="choosePetSpecies('cat')" id="pet-choice-cat" class="p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-white border-slate-200 hover:bg-pink-50">
+              <span class="text-3xl">🐱</span>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-slate-800">Mèo Bánh Bao</div>
+                <div class="text-[10px] text-slate-500 font-bold">Thông minh &amp; lanh lợi</div>
+              </div>
+            </button>
+
+            <button onclick="choosePetSpecies('penguin')" id="pet-choice-penguin" class="p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-white border-slate-200 hover:bg-sky-50">
+              <span class="text-3xl">🐧</span>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-slate-800">Cánh Cụt Pingu</div>
+                <div class="text-[10px] text-slate-500 font-bold">Vui nhộn &amp; chăm chỉ</div>
+              </div>
+            </button>
+
+            <button onclick="choosePetSpecies('unicorn')" id="pet-choice-unicorn" class="p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-white border-slate-200 hover:bg-amber-50">
+              <span class="text-3xl">🦄</span>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-slate-800">Kỳ Lân Cầu Vồng</div>
+                <div class="text-[10px] text-slate-500 font-bold">Phép thuật nhiệm màu</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bản đồ 5 Cấp Độ Tiến Hóa -->
+        <div>
+          <div class="text-xs font-black text-slate-700 uppercase tracking-wide mb-2 flex items-center gap-1">
+            <span>🗺️</span> 5 CẤP ĐỘ TIẾN HÓA:
+          </div>
+          <div id="pet-evolution-timeline" class="flex flex-col gap-2">
+            <!-- Nạp tự động qua JavaScript -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Nút đóng modal -->
+      <div class="p-3 bg-slate-50 border-t border-slate-200">
+        <button onclick="closePetModal()" class="w-full py-2.5 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-95 text-white font-black text-xs sm:text-sm shadow-md active:scale-95 transition">
+          Đồng Ý &amp; Tiếp Tục Học Đọc Trơn 🚀
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- POPUP CHÚC MỪNG TIẾN HÓA THÀNH CÔNG -->
+  <div id="pet-evolution-celebration" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-gradient-to-b from-amber-200 via-yellow-100 to-rose-200 rounded-[36px] max-w-sm w-full p-6 text-center shadow-2xl border-4 border-amber-400 flex flex-col items-center gap-3 relative overflow-hidden">
+      <div class="text-5xl animate-bounce">🎉</div>
+      <h3 class="text-2xl font-black font-baloo text-amber-950">THÚ CƯNG TIẾN HÓA!</h3>
+      <p class="text-xs font-bold text-amber-900">Bé đã tích đủ sao để giúp bạn ấy lớn lên!</p>
+
+      <!-- Sân khấu hoạt họa chúc mừng tiến hóa -->
+      <canvas id="pet-canvas-celebrate" width="240" height="240" class="w-44 h-44 my-1 filter drop-shadow-2xl"></canvas>
+
+      <div id="celebration-pet-title" class="text-xl font-black font-baloo text-rose-700">
+        Rồng Con Nứt Vỏ
+      </div>
+      <p id="celebration-pet-desc" class="text-xs font-extrabold text-slate-700 bg-white/80 p-3 rounded-2xl border border-amber-300">
+        Rồng con hé mắt chào bé! Cố gắng đọc thêm để rồng lớn nhanh nhé!
+      </p>
+
+      <button onclick="closeEvolutionCelebration()" class="w-full py-3 mt-2 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-sm shadow-lg active:scale-95 transition">
+        Tuyệt Vời Quá Bé Ơi! ⭐
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       NGÂN HÀNG 250 CÂU LUYỆN ĐỌC TRƠN LỚP 1 (5 CẤP ĐỘ x 50 CÂU TOÀN VẸN)
+       ========================================================================= */
+    const QUESTION_BANK = {
+      level1: [
+        { id: 101, text: "Bé đi học.", emoji: "🎒", guide: "Đọc liền mạch 3 tiếng rõ ràng", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
+        { id: 102, text: "Mẹ đi chợ.", emoji: "🧺", guide: "Đọc to, dứt khoát 3 tiếng", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 103, text: "Ba mua xe.", emoji: "🚲", guide: "Đọc vui vẻ, liền mạch", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 104, text: "Bà bế bé.", emoji: "👶", guide: "Giọng đọc ngọt ngào, ấm áp", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 105, text: "Cá bơi lội.", emoji: "🐟", guide: "Chú ý phân biệt vần: ơi - ôi", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 106, text: "Gà gáy te te.", emoji: "🐓", guide: "Âm g đọc vang, rõ tiếng", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 107, text: "Bé có cặp da.", emoji: "👜", guide: "Ngắt nhịp: Bé có / cặp da", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 108, text: "Vở bé sạch.", emoji: "📒", guide: "Âm s đọc chuẩn: sạch", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 109, text: "Chữ bé đẹp.", emoji: "✍️", guide: "Đọc tròn tiếng: chữ bé đẹp", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 110, text: "Bé rất ngoan.", emoji: "😇", guide: "Vần oan tròn môi: ngoan", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 111, text: "Mèo con ngủ.", emoji: "🐱", guide: "Đọc chậm rãi, liền mạch", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 112, text: "Chó giữ nhà.", emoji: "🐶", guide: "Âm gi trong từ: giữ nhà", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 113, text: "Nắng mai ấm.", emoji: "☀️", guide: "Âm n đọc chuẩn: nắng mai", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 114, text: "Gió mát quá.", emoji: "🍃", guide: "Vần at trong tiếng: mát", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 115, text: "Bé rửa tay.", emoji: "🧼", guide: "Đọc to rõ: bé rửa tay", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 116, text: "Bé ăn cơm.", emoji: "🍚", guide: "Đọc lưu loát 3 tiếng", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 117, text: "Lá xanh biếc.", emoji: "🌿", guide: "Âm l đọc chắc: lá xanh", theme: "from-emerald-200 via-green-100 to-lime-200", textColor: "text-emerald-900" },
+        { id: 118, text: "Bé đọc to.", emoji: "📖", guide: "Dứt khoát: bé đọc to", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 119, text: "Mẹ may áo.", emoji: "🧵", guide: "Vần ay trong tiếng: may áo", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
+        { id: 120, text: "Ba tưới cây.", emoji: "🪴", guide: "Vần ươi và ay: tưới cây", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 121, text: "Bé vẽ hoa.", emoji: "🌸", guide: "Vần oa tròn môi: vẽ hoa", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
+        { id: 122, text: "Quả cam ngọt.", emoji: "🍊", guide: "Âm qu và vần am: quả cam", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 123, text: "Bé quét nhà.", emoji: "🧹", guide: "Vần et trong tiếng: quét nhà", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 124, text: "Chim hót hay.", emoji: "🐦", guide: "Vần im và ay: chim hót hay", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 125, text: "Em cười tươi.", emoji: "😄", guide: "Vần ươi trong tiếng: cười tươi", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 126, text: "Vịt bơi nhanh.", emoji: "🦆", guide: "Âm v và vần anh: bơi nhanh", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 127, text: "Bé xếp hàng.", emoji: "👫", guide: "Vần ang trong tiếng: xếp hàng", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 128, text: "Trời mưa rồi.", emoji: "🌧️", guide: "Âm tr uốn cong nhẹ: trời mưa", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 129, text: "Bé nhảy dây.", emoji: "🪢", guide: "Dấu hỏi ở tiếng: nhảy dây", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 130, text: "Bàn học gỗ.", emoji: "🪑", guide: "Dấu ngã ở tiếng: gỗ", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 131, text: "Bé soi gương.", emoji: "🪞", guide: "Vần ương trong tiếng: soi gương", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 132, text: "Đèn bàn sáng.", emoji: "💡", guide: "Âm s trong tiếng: sáng", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 133, text: "Quả mít dai.", emoji: "🍈", guide: "Âm qu và vần it: quả mít", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 134, text: "Xe bò kéo.", emoji: "🐂", guide: "Đọc 3 tiếng dứt khoát", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 135, text: "Bé tập đếm.", emoji: "🔢", guide: "Vần âm và vần em: tập đếm", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 136, text: "Cá rô phi.", emoji: "🐟", guide: "Âm r rung nhẹ: cá rô phi", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 137, text: "Mẹ ru bé.", emoji: "🤱", guide: "Âm r trong tiếng: ru bé", theme: "from-emerald-200 via-green-100 to-lime-200", textColor: "text-emerald-900" },
+        { id: 138, text: "Bé đánh răng.", emoji: "🪥", guide: "Vần anh và vần ăng: đánh răng", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 139, text: "Bé đi ngủ.", emoji: "🛏️", guide: "Dấu hỏi ở tiếng: ngủ", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
+        { id: 140, text: "Bình hoa đẹp.", emoji: "🏺", guide: "Vần inh và vần oa: bình hoa", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 141, text: "Bé cài nơ.", emoji: "🎀", guide: "Âm n đọc chuẩn: cài nơ", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
+        { id: 142, text: "Trái na mở mắt.", emoji: "🍐", guide: "Âm tr uốn nhẹ: trái na", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 143, text: "Cún con sủa.", emoji: "🐕", guide: "Âm s và dấu hỏi: sủa", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 144, text: "Đồng hồ reo.", emoji: "⏰", guide: "Âm r trong tiếng: reo", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 145, text: "Bé vâng lời.", emoji: "🙏", guide: "Âm v và l: vâng lời", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 146, text: "Bé xách xô.", emoji: "🪣", guide: "Âm x đọc nhẹ: xách xô", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 147, text: "Bé nhai kĩ.", emoji: "🥣", guide: "Dấu ngã gằn nhẹ: nhai kĩ", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 148, text: "Ngựa phi nhanh.", emoji: "🐎", guide: "Vần anh trong tiếng: phi nhanh", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 149, text: "Bé tập vẽ.", emoji: "🖍️", guide: "Dấu ngã ở tiếng: vẽ", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 150, text: "Bé ngoan lắm.", emoji: "🥰", guide: "Tròn môi: ngoan lắm", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" }
+      ],
+      level2: [
+        { id: 201, text: "Bé giúp mẹ nhặt rau.", emoji: "🥬", guide: "Ngắt nhịp: Bé giúp mẹ / nhặt rau", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 202, text: "Bố sửa bàn học cho bé.", emoji: "🪑", guide: "Nhấn dấu ngã: sửa bàn", theme: "from-sky-200 via-teal-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 203, text: "Ông ngồi uống trà ấm.", emoji: "🍵", guide: "Âm tr uốn nhẹ: trà ấm", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 204, text: "Bà kể chuyện cổ tích.", emoji: "👵", guide: "Vần uyên trong tiếng: chuyện", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 205, text: "Em bé ngủ rất say.", emoji: "😴", guide: "Âm s nhẹ nhàng, chậm rãi", theme: "from-rose-200 via-pink-100 to-indigo-200", textColor: "text-rose-900" },
+        { id: 206, text: "Hộp bút có thước kẻ.", emoji: "📏", guide: "Vần ươc: thước kẻ", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 207, text: "Bút chì đã gọt nhọn.", emoji: "✏️", guide: "Đọc liền cụm: gọt nhọn", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 208, text: "Bé tô màu bông hoa.", emoji: "🎨", guide: "Tròn môi: bông hoa", theme: "from-indigo-200 via-sky-100 to-cyan-200", textColor: "text-indigo-900" },
+        { id: 209, text: "Mặt trời mọc đằng đông.", emoji: "🌅", guide: "Âm tr chắc tiếng: mặt trời", theme: "from-yellow-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 210, text: "Bầu trời xanh ngắt.", emoji: "☁️", guide: "Vần ăt trong tiếng: xanh ngắt", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
+        { id: 211, text: "Đàn chim bay về tổ.", emoji: "🕊️", guide: "Đọc liền 5 tiếng êm ái", theme: "from-purple-200 via-violet-100 to-sky-200", textColor: "text-purple-900" },
+        { id: 212, text: "Suối chảy róc rách.", emoji: "💧", guide: "Từ láy mô phỏng: róc rách", theme: "from-teal-200 via-cyan-100 to-blue-200", textColor: "text-teal-900" },
+        { id: 213, text: "Vườn nhà nở đầy hoa.", emoji: "🌺", guide: "Vần ươn trong tiếng: vườn", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 214, text: "Cây khế ngọt trĩu cành.", emoji: "⭐", guide: "Dấu ngã ở tiếng: trĩu", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
+        { id: 215, text: "Bé chào mẹ khi đi học.", emoji: "🙋‍♂️", guide: "Ngắt: Bé chào mẹ / khi đi học", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 216, text: "Trống trường giòn giã.", emoji: "🥁", guide: "Âm tr và dấu ngã: giòn giã", theme: "from-orange-200 via-red-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 217, text: "Các bạn cùng xếp hàng.", emoji: "👫", guide: "Vần ang trong tiếng: xếp hàng", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 218, text: "Lớp học thật ngăn nắp.", emoji: "🏫", guide: "Vần ắp trong từ: ngăn nắp", theme: "from-indigo-200 via-purple-100 to-teal-200", textColor: "text-indigo-900" },
+        { id: 219, text: "Bé lắng nghe cô giảng.", emoji: "👂", guide: "Phân biệt vần: ăng - ang", theme: "from-rose-200 via-amber-100 to-yellow-200", textColor: "text-rose-900" },
+        { id: 220, text: "Giờ ra chơi vui nhộn.", emoji: "⚽", guide: "Đọc tươi vui, dứt khoát", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
+        { id: 221, text: "Bé gấp chăn màn gọn.", emoji: "🛌", guide: "Vần ân và an: gấp chăn màn", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 222, text: "Bé dọn bát đĩa sau ăn.", emoji: "🥣", guide: "Dấu ngã: bát đĩa", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 223, text: "Chú mèo vồ bóng len.", emoji: "🧶", guide: "Âm v và l: bóng len", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 224, text: "Đàn cá tung tăng bơi.", emoji: "🐠", guide: "Từ láy: tung tăng bơi", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 225, text: "Mẹ pha sữa ấm cho em.", emoji: "🥛", guide: "Dấu ngã: pha sữa ấm", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 226, text: "Bố dạy bé đi xe đạp.", emoji: "🚲", guide: "Đọc liền mạch 6 tiếng", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 227, text: "Bà đan áo len cho bé.", emoji: "🧶", guide: "Âm đ và l: đan áo len", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 228, text: "Bé tưới luống hoa cúc.", emoji: "🌼", guide: "Vần uông: luống hoa cúc", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 229, text: "Góc học tập rất sáng.", emoji: "💡", guide: "Âm s: rất sáng", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 230, text: "Bé nắn nót từng chữ.", emoji: "📝", guide: "Dấu ngã: từng chữ", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 231, text: "Thầy giáo đọc bài thơ.", emoji: "📜", guide: "Âm th và gi: thầy giáo", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 232, text: "Bạn Nam đọc bài to.", emoji: "👦", guide: "Âm n đọc chuẩn: bạn Nam", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 233, text: "Cả lớp cùng vỗ tay.", emoji: "👏", guide: "Dấu ngã ở tiếng: vỗ tay", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 234, text: "Bé xếp sách vào cặp.", emoji: "🎒", guide: "Vần êp và ăp: xếp sách", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 235, text: "Cây bàng trút lá đỏ.", emoji: "🍂", guide: "Âm tr: trút lá đỏ", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 236, text: "Chim sâu bắt cào cào.", emoji: "🐛", guide: "Âm s và c: chim sâu", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 237, text: "Bé chơi ô ăn quan.", emoji: "🎲", guide: "Vần an và oan: ăn quan", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 238, text: "Bé chia kẹo cho bạn.", emoji: "🍬", guide: "Vần ia và eo: chia kẹo", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 239, text: "Mẹ khen bé chăm chỉ.", emoji: "⭐", guide: "Âm ch: chăm chỉ", theme: "from-pink-200 via-rose-100 to-amber-200", textColor: "text-pink-900" },
+        { id: 240, text: "Bé yêu cả gia đình.", emoji: "❤️", guide: "Vần in và inh: gia đình", theme: "from-rose-200 via-pink-100 to-purple-200", textColor: "text-rose-900" },
+        { id: 241, text: "Ông bà luôn vui tươi.", emoji: "🧓", guide: "Vần uôn và ươi: luôn vui tươi", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 242, text: "Bé tưới rau sau hè.", emoji: "🌱", guide: "Vần ươi: tưới rau", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 243, text: "Quả na chín mở mắt.", emoji: "🍈", guide: "Âm qu và n: quả na", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 244, text: "Bé khoe điểm mười đỏ.", emoji: "💯", guide: "Vần oe và ươi: khoe điểm mười", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 245, text: "Tiếng cười vui rộn rã.", emoji: "😆", guide: "Dấu ngã ở tiếng: rộn rã", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 246, text: "Bé gọt bút cẩn thận.", emoji: "✏️", guide: "Ngắt: Bé gọt bút / cẩn thận", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 247, text: "Hồ sen ngát hương thơm.", emoji: "🪷", guide: "Âm s và h: sen ngát hương", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 248, text: "Đàn lợn ăn cám no.", emoji: "🐖", guide: "Âm l đọc chuẩn: đàn lợn", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 249, text: "Bé chúc mẹ ngủ ngon.", emoji: "🌙", guide: "Âm ch và ng: ngủ ngon", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
+        { id: 250, text: "Bé thức giấc đúng giờ.", emoji: "⏰", guide: "Âm gi: đúng giờ", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" }
+      ],
+      level3: [
+        { id: 301, text: "Bé khoanh tay lễ phép.", emoji: "🙇‍♂️", guide: "Vần oanh tròn môi: khoanh tay", theme: "from-sky-200 via-cyan-100 to-teal-200", textColor: "text-sky-900" },
+        { id: 302, text: "Vườn xoài chín thơm lừng.", emoji: "🥭", guide: "Tròn môi ở vần oai: vườn xoài", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 303, text: "Bé xòe bàn tay nhỏ.", emoji: "🖐️", guide: "Vần oe mở rộng: bé xòe", theme: "from-rose-200 via-pink-100 to-purple-200", textColor: "text-rose-900" },
+        { id: 304, text: "Chiếc thuyền lướt trên sóng.", emoji: "⛵", guide: "Vần uyên: chiếc thuyền", theme: "from-teal-200 via-sky-100 to-indigo-200", textColor: "text-teal-900" },
+        { id: 305, text: "Cánh diều bay lượn trên cao.", emoji: "🪁", guide: "Vần iêu và ươn: bay lượn", theme: "from-purple-200 via-indigo-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 306, text: "Đoàn tàu bấm còi tu tu.", emoji: "🚂", guide: "Vần oan tròn môi: đoàn tàu", theme: "from-orange-200 via-amber-100 to-red-200", textColor: "text-orange-900" },
+        { id: 307, text: "Bé mặc áo len ấm áp.", emoji: "🧥", guide: "Vần ăc và vần ap rõ ràng", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 308, text: "Khuyên tai mẹ lấp lánh.", emoji: "✨", guide: "Vần uyên trong tiếng: khuyên", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
+        { id: 309, text: "Bé ngoan ngoãn vâng lời.", emoji: "😇", guide: "Phân biệt: ngoan - ngoãn", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 310, text: "Con suối lượn quanh co.", emoji: "🏞️", guide: "Âm s uốn lưỡi: suối lượn", theme: "from-sky-200 via-teal-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 311, text: "Đường lên dốc khúc khuỷu.", emoji: "🛤️", guide: "Vần uyu khó: khúc khuỷu", theme: "from-teal-200 via-green-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 312, text: "Bé giữ gìn sách cẩn thận.", emoji: "📚", guide: "Âm gi đọc nhẹ: giữ gìn", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 313, text: "Chim khuyên hót líu lo.", emoji: "🐦", guide: "Vần uyên và iu: chim khuyên", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 314, text: "Búp bê mặc váy hoa xoan.", emoji: "👗", guide: "Tròn môi: hoa xoan", theme: "from-purple-200 via-pink-100 to-indigo-200", textColor: "text-purple-900" },
+        { id: 315, text: "Bé uống nước quả ngọt mát.", emoji: "🍹", guide: "Vần uông và at: ngọt mát", theme: "from-green-200 via-teal-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 316, text: "Chú bộ đội duyệt binh.", emoji: "🎖️", guide: "Vần uyêt: duyệt binh", theme: "from-orange-200 via-red-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 317, text: "Bàn tay bé thoăn thoắt.", emoji: "👐", guide: "Vần oăn - oăt: thoăn thoắt", theme: "from-sky-200 via-cyan-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 318, text: "Cây chuối trổ buồng xanh.", emoji: "🍌", guide: "Âm tr và vần uông: trổ buồng", theme: "from-indigo-200 via-teal-100 to-sky-200", textColor: "text-indigo-900" },
+        { id: 319, text: "Gió heo may se se lạnh.", emoji: "🌾", guide: "Từ láy dịu nhẹ: se se lạnh", theme: "from-amber-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 320, text: "Bé chăm chỉ luyện chữ.", emoji: "📝", guide: "Vần uyên: luyện chữ", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
+        { id: 321, text: "Bé huơ tay đón bố về.", emoji: "👋", guide: "Vần uơ: huơ tay", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
+        { id: 322, text: "Hoa vạn thọ xum xuê.", emoji: "🌼", guide: "Vần uê: xum xuê", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 323, text: "Chú cún chạy quýnh quáng.", emoji: "🐕", guide: "Vần uynh - uang: quýnh quáng", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 324, text: "Trọng tài thổi còi huýt.", emoji: "📢", guide: "Vần uyt: còi huýt", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 325, text: "Vườn hoa huệ trắng ngần.", emoji: "🪻", guide: "Vần uê: hoa huệ", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 326, text: "Bé mở toang cánh cửa sổ.", emoji: "🪟", guide: "Vần oang: mở toang", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 327, text: "Bạn Nga mặc áo khoác đỏ.", emoji: "🧥", guide: "Vần oac: áo khoác", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 328, text: "Cây xoan đung đưa cành.", emoji: "🌳", guide: "Vần oan: cây xoan", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 329, text: "Bé khoe chiếc huy hiệu.", emoji: "🏅", guide: "Vần uy: huy hiệu", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 330, text: "Bầu trời đêm đầy sao khuya.", emoji: "🌌", guide: "Vần uya: sao khuya", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 331, text: "Bé nhảy lò cò thoăn thoắt.", emoji: "🤸", guide: "Vần oăt: thoăn thoắt", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 332, text: "Suối nước chảy róc rách.", emoji: "🏞️", guide: "Âm s và ch: róc rách", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 333, text: "Bé giải bài toán rất nhanh.", emoji: "🧮", guide: "Vần oan: bài toán", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 334, text: "Khóm tre nghiêng bóng mát.", emoji: "🎋", guide: "Vần iêng: nghiêng bóng mát", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 335, text: "Tiếng ve kêu râm ran.", emoji: "🦗", guide: "Từ láy: râm ran", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 336, text: "Bé ngoan được tặng phiếu.", emoji: "🎫", guide: "Vần iêu: phiếu bé ngoan", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 337, text: "Chim chuyền cành thoăn thoắt.", emoji: "🐦", guide: "Vần uyên và oăt", theme: "from-emerald-200 via-green-100 to-lime-200", textColor: "text-emerald-900" },
+        { id: 338, text: "Bố khuấy đều ly sữa nóng.", emoji: "☕", guide: "Vần uây: khuấy đều", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 339, text: "Bé chạy huỳnh huỵch ngoài sân.", emoji: "🏃", guide: "Vần uynh - uych khó", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
+        { id: 340, text: "Vườn đào hé nở hoa tươi.", emoji: "🌺", guide: "Vần oa và ươi: hoa tươi", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 341, text: "Bé khoác vai bạn thân.", emoji: "🫂", guide: "Vần oac: khoác vai", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
+        { id: 342, text: "Ngọn đuốc sáng rực rỡ.", emoji: "🔥", guide: "Vần uôc: ngọn đuốc", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 343, text: "Đoàn kết là sức mạnh.", emoji: "🤝", guide: "Vần oan: đoàn kết", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 344, text: "Bé huýt sáo vang rộn.", emoji: "😙", guide: "Vần uyt và s: huýt sáo", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 345, text: "Lá vàng xoay tít bay.", emoji: "🍂", guide: "Vần oay: xoay tít", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 346, text: "Bé múa dẻo như tiên.", emoji: "🧚", guide: "Vần ua và iên: múa dẻo", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 347, text: "Con đường làng quanh co.", emoji: "🛤️", guide: "Vần oanh: quanh co", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 348, text: "Vườn cam sai trĩu cành.", emoji: "🍊", guide: "Âm s và tr: sai trĩu", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 349, text: "Bé đọc thơ lưu loát.", emoji: "📖", guide: "Vần oat: lưu loát", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 350, text: "Mẹ mỉm cười xoa đầu bé.", emoji: "🤱", guide: "Vần oa tròn môi: xoa đầu", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" }
+      ],
+      level4: [
+        { id: 401, text: "Mẹ đi chợ mua cá trắm.", emoji: "🐟", guide: "Âm tr cong lưỡi chắc: cá trắm", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 402, text: "Bé không xả rác bừa bãi.", emoji: "🚯", guide: "Âm x nhẹ và dấu ngã: bừa bãi", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 403, text: "Cây sung có nhiều quả non.", emoji: "🌳", guide: "Âm s cong lưỡi: cây sung", theme: "from-green-200 via-lime-100 to-teal-200", textColor: "text-green-900" },
+        { id: 404, text: "Bé xâu kim giúp bà ngoại.", emoji: "🪡", guide: "Âm x nhẹ: xâu kim", theme: "from-purple-200 via-pink-100 to-indigo-200", textColor: "text-purple-900" },
+        { id: 405, text: "Bố lái xe cẩn thận qua cầu.", emoji: "🚗", guide: "Ngắt: Bố lái xe / qua cầu", theme: "from-orange-200 via-yellow-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 406, text: "Hoa sen thơm ngát đầm lầy.", emoji: "🪷", guide: "Âm s và l: sen - đầm lầy", theme: "from-sky-200 via-blue-100 to-teal-200", textColor: "text-sky-900" },
+        { id: 407, text: "Bé suy nghĩ tìm cách giải.", emoji: "💡", guide: "Dấu ngã gằn nhẹ: suy nghĩ", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 408, text: "Vườn rau cải nở hoa vàng.", emoji: "🌼", guide: "Dấu hỏi hạ giọng nhẹ: rau cải", theme: "from-indigo-200 via-sky-100 to-purple-200", textColor: "text-indigo-900" },
+        { id: 409, text: "Cánh đồng lúa chín vàng ươm.", emoji: "🌾", guide: "Âm l bật đầu lưỡi: đồng lúa", theme: "from-green-200 via-emerald-100 to-yellow-200", textColor: "text-green-900" },
+        { id: 410, text: "Bé luôn nhớ lời cô dặn.", emoji: "👂", guide: "Âm l chuẩn: luôn nhớ lời", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 411, text: "Bà nhóm bếp lửa củi hồng.", emoji: "🪵", guide: "Dấu hỏi nhẹ nhàng: lửa củi", theme: "from-sky-200 via-cyan-100 to-teal-200", textColor: "text-sky-900" },
+        { id: 412, text: "Trăng rằm tròn vành vạnh.", emoji: "🌕", guide: "Rung lưỡi ở âm tr và r: trăng rằm", theme: "from-amber-200 via-yellow-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 413, text: "Bé lau chùi bàn sạch sẽ.", emoji: "✨", guide: "Âm s và dấu ngã: sạch sẽ", theme: "from-teal-200 via-emerald-100 to-cyan-200", textColor: "text-teal-900" },
+        { id: 414, text: "Chú chim sẻ chuyền cành êm.", emoji: "🐤", guide: "Âm s nhẹ: chim sẻ", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 415, text: "Bé vui sướng đón nhận quà.", emoji: "🎁", guide: "Âm s cong lưỡi: vui sướng", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 416, text: "Cơn gió lùa qua ô cửa sổ.", emoji: "🪟", guide: "Âm l và s: lùa / cửa sổ", theme: "from-green-200 via-teal-100 to-lime-200", textColor: "text-green-900" },
+        { id: 417, text: "Mẹ ôm bé vào lòng vỗ về.", emoji: "🤗", guide: "Dấu ngã ngân nhẹ: vỗ về", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 418, text: "Đàn lợn con ủn ỉn đòi ăn.", emoji: "🐷", guide: "Dấu hỏi hạ giọng: ủn ỉn", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
+        { id: 419, text: "Bé rèn từng nét chữ thẳng.", emoji: "📏", guide: "Âm r và th: chữ thẳng", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 420, text: "Cả nhà luôn yêu thương nhau.", emoji: "❤️", guide: "Âm l chắc tiếng: luôn yêu thương", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 421, text: "Con trâu gặm cỏ bờ đê.", emoji: "🐃", guide: "Âm tr: con trâu gặm cỏ", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 422, text: "Bé chia sẻ đồ chơi cùng bạn.", emoji: "🧸", guide: "Âm ch và s: chia sẻ", theme: "from-sky-200 via-teal-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 423, text: "Mẹ nấu canh sườn chua ngọt.", emoji: "🍲", guide: "Âm s: canh sườn", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 424, text: "Bé xúc xích ăn bữa sáng.", emoji: "🌭", guide: "Âm x nhẹ: xúc xích", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 425, text: "Bé làm nũng đòi mẹ bế.", emoji: "🥺", guide: "Dấu ngã: làm nũng", theme: "from-rose-200 via-pink-100 to-indigo-200", textColor: "text-rose-900" },
+        { id: 426, text: "Chú rùa bò chầm chậm.", emoji: "🐢", guide: "Âm r và ch: rùa bò chậm", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 427, text: "Bé giữ gìn đồ chơi sạch.", emoji: "🧼", guide: "Âm gi và s: giữ gìn / sạch", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 428, text: "Nước giếng trong vắt mát rượi.", emoji: "🚰", guide: "Âm gi và r: giếng / mát rượi", theme: "from-indigo-200 via-sky-100 to-cyan-200", textColor: "text-indigo-900" },
+        { id: 429, text: "Bé dũng cảm tiêm phòng.", emoji: "💉", guide: "Dấu ngã: dũng cảm", theme: "from-yellow-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 430, text: "Mẹ dặn bé đi bên phải.", emoji: "🚶", guide: "Âm d và ph: dặn / bên phải", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
+        { id: 431, text: "Cây chuối trổ hoa rực rỡ.", emoji: "🌺", guide: "Âm tr và r: trổ / rực rỡ", theme: "from-purple-200 via-violet-100 to-sky-200", textColor: "text-purple-900" },
+        { id: 432, text: "Bé xách cặp đi bộ tới trường.", emoji: "🎒", guide: "Âm x và tr: xách cặp / trường", theme: "from-teal-200 via-cyan-100 to-blue-200", textColor: "text-teal-900" },
+        { id: 433, text: "Chim sáo hót ríu rít trên cây.", emoji: "🐦", guide: "Âm s và r: sáo / ríu rít", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 434, text: "Bé rửa sạch đôi bàn chân.", emoji: "🦶", guide: "Âm s và ch: sạch / chân", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
+        { id: 435, text: "Nắng lung linh trên ngọn tre.", emoji: "🎋", guide: "Âm l và tr: lung linh / tre", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 436, text: "Bé nỗ lực rèn chữ đẹp.", emoji: "✍️", guide: "Dấu ngã: nỗ lực / rèn chữ", theme: "from-orange-200 via-red-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 437, text: "Dòng sông uốn lượn quanh làng.", emoji: "🏞️", guide: "Âm s và l: sông / lượn / làng", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 438, text: "Bé xếp dép ngay ngắn lại.", emoji: "🩴", guide: "Âm x và ng: xếp dép", theme: "from-indigo-200 via-purple-100 to-teal-200", textColor: "text-indigo-900" },
+        { id: 439, text: "Cả nhà cười nói rôm rả.", emoji: "😄", guide: "Âm r và dấu hỏi: rôm rả", theme: "from-rose-200 via-amber-100 to-yellow-200", textColor: "text-rose-900" },
+        { id: 440, text: "Bé ngắm trăng sáng vằng vặc.", emoji: "🌕", guide: "Âm tr và s: trăng sáng", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
+        { id: 441, text: "Mẹ chải tóc mượt cho bé.", emoji: "💇", guide: "Âm ch: chải tóc mượt", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 442, text: "Bố đóng chiếc giá sách mới.", emoji: "🪚", guide: "Âm gi và s: giá sách", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 443, text: "Bé vẽ bức tranh mùa xuân.", emoji: "🖼️", guide: "Âm tr và x: tranh / mùa xuân", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 444, text: "Hoa sen tỏa ngát hương thơm.", emoji: "🪷", guide: "Âm s và dấu hỏi: sen tỏa", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 445, text: "Bé lo lắng khi bị điểm kém.", emoji: "😟", guide: "Âm l chuẩn: lo lắng", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 446, text: "Mẹ vỗ về khuyên nhủ bé.", emoji: "🤱", guide: "Dấu ngã và hỏi: vỗ về / nhủ", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 447, text: "Bé quyết tâm siêng năng học.", emoji: "💪", guide: "Âm s và n: siêng năng", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 448, text: "Cánh diều lượn giữa trời cao.", emoji: "🪁", guide: "Âm d và tr: giữa trời cao", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 449, text: "Bé xoa dịu vết đau cho em.", emoji: "🩹", guide: "Âm x và d: xoa dịu", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 450, text: "Trời thu trong xanh mát mẻ.", emoji: "🍂", guide: "Âm tr và x: trời trong xanh", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" }
+      ],
+      level5: [
+        { id: 501, text: "Mỗi ngày đến trường là một ngày vui.", emoji: "🎒", guide: "Ngắt: Mỗi ngày đến trường / là một ngày vui", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 502, text: "Bé thức dậy sớm tập thể dục buổi sáng.", emoji: "🤸", guide: "Ngắt: Bé thức dậy sớm / tập thể dục buổi sáng", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 503, text: "Mặt hồ lung linh ánh nắng ban mai rực rỡ.", emoji: "🌅", guide: "Ngắt: Mặt hồ lung linh / ánh nắng rực rỡ", theme: "from-sky-200 via-cyan-100 to-indigo-200", textColor: "text-sky-900" },
+        { id: 504, text: "Đàn bướm rập rờn bay lượn quanh khóm hoa.", emoji: "🦋", guide: "Từ láy: rập rờn bay lượn", theme: "from-rose-200 via-pink-100 to-purple-200", textColor: "text-rose-900" },
+        { id: 505, text: "Cây bàng xòe tán lá rộng che mát sân trường.", emoji: "🌳", guide: "Ngắt: Cây bàng xòe tán lá / che mát sân trường", theme: "from-teal-200 via-emerald-100 to-lime-200", textColor: "text-teal-900" },
+        { id: 506, text: "Bé nắm chặt tay mẹ khi đi qua đoạn đường đông.", emoji: "🤝", guide: "Ngắt: Bé nắm chặt tay mẹ / khi qua đường", theme: "from-purple-200 via-indigo-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 507, text: "Chim mẹ tha từng cọng rơm khô về xây tổ ấm.", emoji: "🪹", guide: "Ngắt: Chim mẹ tha rơm / về xây tổ ấm", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 508, text: "Bé xếp hàng ngay ngắn trước giờ vào lớp học.", emoji: "🚶", guide: "Ngắt: Bé xếp hàng ngay ngắn / vào lớp học", theme: "from-indigo-200 via-sky-100 to-teal-200", textColor: "text-indigo-900" },
+        { id: 509, text: "Sau cơn mưa to bầu trời lại trong veo sáng sủa.", emoji: "🌈", guide: "Ngắt: Sau cơn mưa to / bầu trời trong veo", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 510, text: "Cô giáo đọc thơ bằng giọng nói ấm áp dịu dàng.", emoji: "🎙️", guide: "Đọc dịu dàng: giọng nói ấm áp dịu dàng", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 511, text: "Bé cất dọn đồ chơi gọn gàng sau khi cùng bạn chơi.", emoji: "🧸", guide: "Ngắt: Bé dọn đồ chơi / sau khi chơi cùng bạn", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 512, text: "Tiếng cười giòn tan rộn rã khắp sân trường giờ chơi.", emoji: "😄", guide: "Đọc vui tươi, hào hứng cả câu", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 513, text: "Bà nhẹ nhàng quạt mát ru em bé ngủ tròn giấc say.", emoji: "🪭", guide: "Giọng đọc truyền cảm, êm ái", theme: "from-rose-200 via-pink-100 to-indigo-200", textColor: "text-rose-900" },
+        { id: 514, text: "Bé hăng hái giơ tay phát biểu xây dựng bài mới.", emoji: "🙋‍♀️", guide: "Đọc to, hào sảng và dứt khoát", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 515, text: "Vào dịp Tết đến hoa mai và hoa đào cùng nở rộ.", emoji: "🧧", guide: "Ngắt: Vào dịp Tết đến / hoa cùng đua nở", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 516, text: "Bé biết nói lời cảm ơn và xin lỗi khi cần thiết.", emoji: "💐", guide: "Đọc lễ phép: biết cảm ơn và xin lỗi", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 517, text: "Bố mẹ vui lòng khi thấy bé tự giác ngồi học bài.", emoji: "😊", guide: "Ngắt: Bố mẹ vui lòng / bé tự giác học", theme: "from-purple-200 via-pink-100 to-violet-200", textColor: "text-purple-900" },
+        { id: 518, text: "Dòng sông quê uốn lượn êm đềm bồi đắp bãi ngô xanh.", emoji: "🏞️", guide: "Vần uôn và êm: uốn lượn êm đềm", theme: "from-indigo-200 via-sky-100 to-teal-200", textColor: "text-indigo-900" },
+        { id: 519, text: "Bé phấn đấu trở thành con ngoan trò giỏi của lớp.", emoji: "🎖️", guide: "Đọc đầy tự hào và tự tin", theme: "from-teal-200 via-emerald-100 to-lime-200", textColor: "text-teal-900" },
+        { id: 520, text: "Bé đã đọc trơn thành thạo tất cả các câu khó rồi.", emoji: "🎉", guide: "CHÚC MỪNG BÉ! XUẤT SẮC ĐẠT ĐIỂM 10 🏆", theme: "from-rose-300 via-amber-200 to-pink-300", textColor: "text-rose-900" },
+        { id: 521, text: "Mỗi buổi sớm mai chim non ca hát chào đón ngày mới.", emoji: "🌄", guide: "Ngắt: Mỗi buổi sớm mai / chim non ca hát", theme: "from-sky-200 via-teal-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 522, text: "Bé kính cẩn đưa đồ bằng hai tay cho ông bà cha mẹ.", emoji: "🤲", guide: "Đọc tôn kính, lễ độ và rõ tiếng", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 523, text: "Đêm rằm Trung thu bé cùng bạn bè rước đèn ông sao.", emoji: "🏮", guide: "Ngắt: Đêm Trung thu / rước đèn ông sao", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 524, text: "Dưới bóng cây xanh mát các bạn nhỏ đọc truyện tranh.", emoji: "📚", guide: "Ngắt: Dưới bóng cây mát / bé đọc truyện", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
+        { id: 525, text: "Bé yêu quý từng trang vở trắng và giữ gìn cẩn thận.", emoji: "📖", guide: "Đọc lưu loát, liền mạch", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 526, text: "Gió heo may thổi nhẹ làm những chiếc lá vàng rơi rụng.", emoji: "🍂", guide: "Từ láy: heo may / rơi rụng", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 527, text: "Bé cẩn thận viết nắn nót từng nét chữ trên trang giấy.", emoji: "✍️", guide: "Ngắt: Bé viết nắn nót / từng nét chữ", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 528, text: "Bác nông dân chăm chỉ cày cấy trên đồng ruộng bao la.", emoji: "🌾", guide: "Ngắt: Bác nông dân / cày cấy chăm chỉ", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 529, text: "Bé luôn ghi nhớ lời cô giáo dạy bảo ở trường mến yêu.", emoji: "🏫", guide: "Đọc diễn cảm, tình cảm", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
+        { id: 530, text: "Cơn mưa rào mùa hạ tưới mát cho vạn vật tốt tươi.", emoji: "🌧️", guide: "Ngắt: Cơn mưa mùa hạ / tưới mát vạn vật", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 531, text: "Bé tự giác chuẩn bị sách vở đầy đủ trước khi ngủ.", emoji: "🎒", guide: "Ngắt: Bé chuẩn bị sách vở / trước khi ngủ", theme: "from-purple-200 via-pink-100 to-indigo-200", textColor: "text-purple-900" },
+        { id: 532, text: "Những hạt sương sớm đọng lấp lánh trên búp sen hồng.", emoji: "💧", guide: "Vần ương và ănh: sương / lấp lánh", theme: "from-teal-200 via-emerald-100 to-cyan-200", textColor: "text-teal-900" },
+        { id: 533, text: "Bé ngoan ngoãn vâng lời người lớn và yêu thương em nhỏ.", emoji: "👼", guide: "Ngắt: Bé vâng lời người lớn / yêu em nhỏ", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 534, text: "Ánh nắng vàng ban mai sưởi ấm cho đàn gà con mới nở.", emoji: "🐣", guide: "Ngắt: Ánh nắng ban mai / sưởi ấm đàn gà", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 535, text: "Bé thích nghe tiếng suối reo vui róc rách giữa núi rừng.", emoji: "🏞️", guide: "Từ láy mô phỏng: róc rách reo vui", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 536, text: "Cả nhà sum họp bên mâm cơm ấm cúng lúc chiều về.", emoji: "🍲", guide: "Ngắt: Cả nhà sum họp / bên mâm cơm ấm", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 537, text: "Bé tự tin đứng trước lớp đọc to bài thơ cô vừa dạy.", emoji: "🎙️", guide: "Đọc to, tự tin và lưu loát", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 538, text: "Đàn én chao liệng trên bầu trời báo hiệu mùa xuân sang.", emoji: "🕊️", guide: "Vần ao và iêng: chao liệng", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 539, text: "Bé hứa sẽ luôn chăm ngoan để bố mẹ và thầy cô vui lòng.", emoji: "💝", guide: "Đọc dứt khoát, quyết tâm", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 540, text: "Những tia nắng chiều buông dần sau rặng tre làng êm ả.", emoji: "🌇", guide: "Ngắt: Nắng chiều buông dần / sau rặng tre", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 541, text: "Bé giúp bà tưới nước cho khóm hoa nhài thơm ngào ngạt.", emoji: "🌼", guide: "Ngắt: Bé giúp bà tưới nước / cho hoa nhài", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 542, text: "Cây phượng vĩ thắp lửa đỏ rực rỡ báo hiệu mùa hè đến.", emoji: "🔥", guide: "Âm ph và r: phượng vĩ / rực rỡ", theme: "from-rose-200 via-red-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 543, text: "Bé biết giữ gìn vệ sinh thân thể luôn sạch sẽ gọn gàng.", emoji: "🧼", guide: "Âm gi và s: giữ gìn / sạch sẽ", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 544, text: "Tiếng trống trường vang lên rộn rã giục bé nhanh bước chân.", emoji: "🥁", guide: "Âm tr và r: trống trường / rộn rã", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 545, text: "Bé say sưa ngắm nhìn cầu vồng rực rỡ sau cơn mưa rào.", emoji: "🌈", guide: "Âm s và r: say sưa / rực rỡ", theme: "from-indigo-200 via-sky-100 to-teal-200", textColor: "text-indigo-900" },
+        { id: 546, text: "Mẹ mỉm cười dịu hiền khi nghe bé cất tiếng hát ngọt ngào.", emoji: "🎶", guide: "Giọng đọc ngọt ngào, ấm áp", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 547, text: "Bé chăm chỉ luyện tập mỗi ngày để đọc trơn thật lưu loát.", emoji: "⭐", guide: "Đọc liền mạch, dứt khoát", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
+        { id: 548, text: "Cánh đồng quê mùa gặt thơm nồng mùi rơm rạ thân thương.", emoji: "🌾", guide: "Vần ơm và âm r: rơm rạ", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 549, text: "Bé ôm cổ bố thì thầm nói những lời yêu thương chân thành.", emoji: "🤗", guide: "Đọc êm dịu, tình cảm gia đình", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 550, text: "Chúc mừng bé yêu đã chinh phục đỉnh cao đọc trơn lớp một!", emoji: "🏆", guide: "HOÀN THÀNH XUẤT SẮC CẢ 5 CẤP ĐỘ! BÉ LÀ SỐ 1 🥇", theme: "from-amber-300 via-rose-200 to-yellow-300", textColor: "text-red-900" }
+      ]
+    };
+
+    /* =========================================================================
+       TRẠNG THÁI ỨNG DỤNG & LOGIC CHÍNH
+       ========================================================================= */
+    let currentLevel = 1;
+    let roundSize = 15;
+    let currentSessionDeck = [];
+    let currentIndex = 0;
+    let completedCardIds = new Set();
+    let halfCardIds = new Set();
+    let autoPlayInterval = null;
+    let isSoundEnabled = true;
+    let roundHistory = [];
+    let roundCount = 0;
+
+    /* =========================================================================
+       HỆ THỐNG THÚ CƯNG & DỮ LIỆU TIẾN HÓA
+       ========================================================================= */
+    const PET_SPECIES_DATA = {
+      dragon: {
+        id: 'dragon',
+        name: 'Rồng Con Lửa',
+        stages: [
+          { level: 1, reqStars: 0, title: 'Quả Trứng Bí Ẩn', desc: 'Trứng rồng ấm áp, đang chờ bé đọc tích đủ 5 sao để nứt vỏ!' },
+          { level: 2, reqStars: 5, title: 'Rồng Con Nứt Vỏ', desc: 'Rồng con hé mắt chào bé và vẫy cánh tí hon mừng rỡ!' },
+          { level: 3, reqStars: 15, title: 'Khủng Long Tinh Nghịch', desc: 'Đã biết chạy nhảy tung tăng và hò reo cổ vũ bé đọc to!' },
+          { level: 4, reqStars: 30, title: 'Rồng Lửa Siêu Cấp', desc: 'Đeo kính râm ngầu lòi và phun ra tia lửa ngôi sao rực rỡ!' },
+          { level: 5, reqStars: 50, title: 'Thần Long Hoàng Gia 👑', desc: 'Đội vương miện vàng vô địch! Bé chính là bậc thầy đọc trơn!' }
+        ],
+        quotes: [
+          "Bé đọc to lên tớ nghe với nha! 🦖",
+          "Cố lên bé ơi, tớ sắp lớn thêm rồi nè! 💕",
+          "Oa, bé đọc trơn êm tai quá xá! ⭐",
+          "Cho tớ xin thêm sao để tớ phun lửa ngầu nha! 🔥",
+          "Bé là người bạn tuyệt vời nhất của tớ! 💖"
+        ]
+      },
+      cat: {
+        id: 'cat',
+        name: 'Mèo Bánh Bao',
+        stages: [
+          { level: 1, reqStars: 0, title: 'Quả Trứng Bạc Hà', desc: 'Trứng mèo con tròn xoe ấm cúng đang ngọ nguậy!' },
+          { level: 2, reqStars: 5, title: 'Mèo Con Mở Mắt', desc: 'Kêu meo meo ngọt ngào và cọ má vào bé!' },
+          { level: 3, reqStars: 15, title: 'Mèo Đeo Nơ Hồng', desc: 'Biết vỗ tay khen bé mỗi khi đọc đúng!' },
+          { level: 4, reqStars: 30, title: 'Mèo Phi Hành Gia', desc: 'Đội mũ vũ trụ cùng bé bay tới những vùng trời kiến thức!' },
+          { level: 5, reqStars: 50, title: 'Vua Mèo Đọc Trơn 👑', desc: 'Mèo thần tài mang may mắn và điểm 10 đến cho bé!' }
+        ],
+        quotes: [
+          "Meo meo! Bé đọc hay quá đi à! 🐱",
+          "Tớ tặng bé một trái tim nè! 💖",
+          "Đọc thêm 1 câu nữa để tớ lớn nha! 🐾",
+          "Bé thông minh số 1 luôn! 🌟"
+        ]
+      },
+      penguin: {
+        id: 'penguin',
+        name: 'Cánh Cụt Pingu',
+        stages: [
+          { level: 1, reqStars: 0, title: 'Quả Trứng Băng Giá', desc: 'Cần hơi ấm chăm chỉ đọc bài của bé để ấp nở!' },
+          { level: 2, reqStars: 5, title: 'Cánh Cụt Tí Hon', desc: 'Chập chững bước đi trên tuyết và vỗ cánh!' },
+          { level: 3, reqStars: 15, title: 'Cánh Cụt Trượt Băng', desc: 'Lướt bụng trơn tru như cách bé đọc câu dài!' },
+          { level: 4, reqStars: 30, title: 'Siêu Nhân Cánh Cụt', desc: 'Đeo khăn len đỏ siêu ấm áp và trượt tuyết điêu luyện!' },
+          { level: 5, reqStars: 50, title: 'Vua Băng Tuyết 👑', desc: 'Đạt danh hiệu đỉnh cao đọc trơn không sợ từ khó!' }
+        ],
+        quotes: [
+          "Pingu pingu! Bé đọc trơn như lướt băng vậy! 🐧",
+          "Cố lên bé yêu ơi, sắp đạt cấp mới rồi! ❄️",
+          "Tớ yêu giọng đọc trong trẻo của bé lắm! 💙"
+        ]
+      },
+      unicorn: {
+        id: 'unicorn',
+        name: 'Kỳ Lân Cầu Vồng',
+        stages: [
+          { level: 1, reqStars: 0, title: 'Quả Trứng Pha Lê', desc: 'Phát ra ánh sáng 7 màu lấp lánh kỳ diệu!' },
+          { level: 2, reqStars: 5, title: 'Kỳ Lân Nhí', desc: 'Chiếc sừng nhỏ xíu bắt đầu phát ra bụi sao lấp lánh!' },
+          { level: 3, reqStars: 15, title: 'Kỳ Lân Cầu Vồng', desc: 'Tung vó nhảy múa trên dải ngân hà rực rỡ!' },
+          { level: 4, reqStars: 30, title: 'Kỳ Lân Cánh Tiên', desc: 'Đôi cánh thiên thần chở ước mơ của bé bay cao!' },
+          { level: 5, reqStars: 50, title: 'Nữ Hoàng Phép Thuật 👑', desc: 'Thần hộ mệnh đọc trơn bảo vệ bé suốt năm lớp 1!' }
+        ],
+        quotes: [
+          "Ánh sao lấp lánh chúc mừng bé đọc đúng! ✨",
+          "Kỳ lân thả tim cho bé nè! 💖",
+          "Bé có giọng đọc phép thuật tuyệt vời quá! 🦄"
+        ]
+      }
+    };
+
+    let activePetSpeciesId = 'dragon';
+    let totalAccumulatedPetStars = 0;
+    let currentPetStageIndex = 0;
+    let petSpeechTimeout = null;
+
+    /* =========================================================================
+       STREAMING_CHUNK:Configuring Web Audio API sound synthesizer...
+       HỆ THỐNG ÂM THANH KHEN THƯỞNG VUI TAI (WEB AUDIO API)
+       ========================================================================= */
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    function playTone(freq, type, duration, startTime = 0, gainLevel = 0.25) {
+      if (!isSoundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + startTime);
+
+        gain.gain.setValueAtTime(gainLevel, ctx.currentTime + startTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + startTime + duration);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(ctx.currentTime + startTime);
+        osc.stop(ctx.currentTime + startTime + duration);
+      } catch (e) {
+        // Fallback an toàn nếu trình duyệt chặn Web Audio
+      }
+    }
+
+    function playSuccessRewardSound() {
+      const mode = Math.floor(Math.random() * 3);
+      if (mode === 0) {
+        // Hợp âm chuông sao lấp lánh (Magic Star Chime)
+        playTone(523.25, 'sine', 0.18, 0.00, 0.25);
+        playTone(659.25, 'sine', 0.22, 0.08, 0.25);
+        playTone(783.99, 'sine', 0.26, 0.16, 0.28);
+        playTone(1046.50, 'triangle', 0.45, 0.24, 0.30);
+      } else if (mode === 1) {
+        // Kèn vui game boy fanfare
+        playTone(440.00, 'square', 0.12, 0.00, 0.15);
+        playTone(554.37, 'square', 0.12, 0.09, 0.16);
+        playTone(659.25, 'square', 0.14, 0.18, 0.18);
+        playTone(880.00, 'square', 0.35, 0.27, 0.20);
+      } else {
+        // Ting Ting vui tai
+        playTone(987.77, 'sine', 0.15, 0.00, 0.22);
+        playTone(1318.51, 'triangle', 0.38, 0.10, 0.28);
+      }
+    }
+
+    function playEncouragingHarp() {
+      playTone(392.00, 'sine', 0.25, 0.00, 0.22); // G4
+      playTone(523.25, 'sine', 0.28, 0.09, 0.22); // C5
+      playTone(659.25, 'sine', 0.32, 0.18, 0.25); // E5
+      playTone(783.99, 'sine', 0.45, 0.27, 0.28); // G5
+    }
+
+    function playPetCuteSound() {
+      playTone(600, 'sine', 0.12, 0.00, 0.20);
+      playTone(850, 'sine', 0.20, 0.08, 0.22);
+    }
+
+    function playPetEvolutionFanfare() {
+      const notes = [440, 554, 659, 880, 1108, 1318];
+      notes.forEach((freq, idx) => {
+        playTone(freq, 'triangle', 0.28, idx * 0.12, 0.25);
+      });
+    }
+
+    function toggleSoundFx() {
+      isSoundEnabled = !isSoundEnabled;
+      const icon = document.getElementById("sound-icon");
+      if (icon) icon.textContent = isSoundEnabled ? "🔊" : "🔇";
+    }
+
+    /* =========================================================================
+       STREAMING_CHUNK:Building procedural cartoon pet animation engine...
+       BỘ MÁY VẼ HOẠT HÌNH THÚ CƯNG 2D TRÊN CANVAS (60 FPS)
+       ========================================================================= */
+    const PetAnimationEngine = {
+      time: 0,
+      blinkTimer: 0,
+      isBlinking: false,
+      happyTimer: 0,
+      activeParticles: [],
+
+      startLoop() {
+        const render = () => {
+          this.time += 0.04;
+          this.updateParticles();
+
+          this.blinkTimer += 0.04;
+          if (this.blinkTimer > 3.2) {
+            this.isBlinking = true;
+            if (this.blinkTimer > 3.4) {
+              this.isBlinking = false;
+              this.blinkTimer = Math.random() * 0.8;
+            }
+          }
+
+          if (this.happyTimer > 0) {
+            this.happyTimer -= 0.04;
+          }
+
+          this.drawToCanvas("pet-canvas-mini", 128, 128, 0.95);
+
+          const modalEl = document.getElementById("pet-modal");
+          if (modalEl && !modalEl.classList.contains("opacity-0")) {
+            this.drawToCanvas("pet-canvas-modal", 240, 240, 1.55);
+          }
+
+          const celeEl = document.getElementById("pet-evolution-celebration");
+          if (celeEl && !celeEl.classList.contains("opacity-0")) {
+            this.drawToCanvas("pet-canvas-celebrate", 240, 240, 1.7);
+          }
+
+          requestAnimationFrame(render);
+        };
+        requestAnimationFrame(render);
+      },
+
+      triggerHappy() {
+        this.happyTimer = 1.8;
+        for (let i = 0; i < 6; i++) {
+          this.activeParticles.push({
+            x: 64 + (Math.random() * 40 - 20),
+            y: 70,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: -1.2 - Math.random() * 1.5,
+            life: 1.0,
+            scale: 0.8 + Math.random() * 0.5,
+            type: Math.random() > 0.5 ? 'heart' : 'star'
+          });
+        }
+      },
+
+      updateParticles() {
+        for (let i = this.activeParticles.length - 1; i >= 0; i--) {
+          const p = this.activeParticles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= 0.025;
+          if (p.life <= 0) {
+            this.activeParticles.splice(i, 1);
+          }
+        }
+      },
+
+      drawToCanvas(canvasId, width, height, scale) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.save();
+        ctx.translate(width / 2, height / 2);
+        ctx.scale(scale, scale);
+
+        const stage = currentPetStageIndex + 1;
+        const isHappy = this.happyTimer > 0;
+
+        if (stage === 1) {
+          this.drawEggStage(ctx, isHappy);
+        } else if (stage === 2) {
+          this.drawBabyStage(ctx, isHappy);
+        } else if (stage === 3) {
+          this.drawJuvenileStage(ctx, isHappy);
+        } else if (stage === 4) {
+          this.drawSuperheroStage(ctx, isHappy);
+        } else {
+          this.drawChampionStage(ctx, isHappy);
+        }
+
+        this.drawFloatingEffects(ctx);
+        ctx.restore();
+      },
+
+      // CẤP 1: QUẢ TRỨNG LẮC LƯ & NỨT VỎ
+      drawEggStage(ctx, isHappy) {
+        const wobble = Math.sin(this.time * 4) * (isHappy ? 0.22 : 0.08);
+        const squash = Math.sin(this.time * 3) * 0.03;
+
+        ctx.save();
+        ctx.rotate(wobble);
+        ctx.scale(1 + squash, 1 - squash);
+
+        const auraGrad = ctx.createRadialGradient(0, 0, 10, 0, 0, 50);
+        auraGrad.addColorStop(0, 'rgba(251, 191, 36, 0.45)');
+        auraGrad.addColorStop(1, 'rgba(251, 191, 36, 0)');
+        ctx.fillStyle = auraGrad;
+        ctx.beginPath();
+        ctx.arc(0, 5, 48, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(0, 6, 26, 34, 0, 0, Math.PI * 2);
+        const eggGrad = ctx.createLinearGradient(-20, -25, 20, 35);
+        eggGrad.addColorStop(0, '#fef08a');
+        eggGrad.addColorStop(0.3, '#f472b6');
+        eggGrad.addColorStop(0.8, '#a855f7');
+        eggGrad.addColorStop(1, '#6366f1');
+        ctx.fillStyle = eggGrad;
+        ctx.fill();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#7e22ce';
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.beginPath();
+        ctx.arc(-8, -4, 4.5, 0, Math.PI * 2);
+        ctx.arc(10, 10, 3.5, 0, Math.PI * 2);
+        ctx.arc(-6, 18, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.ellipse(-11, -12, 6, 14, -0.4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+        ctx.fill();
+
+        const stars = totalAccumulatedPetStars;
+        if (stars > 0) {
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(-4, -6);
+          ctx.lineTo(2, 0);
+          ctx.lineTo(-2, 8);
+          if (stars >= 2.5) {
+            ctx.lineTo(8, 12);
+            ctx.lineTo(14, 8);
+          }
+          ctx.stroke();
+
+          ctx.fillStyle = '#fef08a';
+          ctx.beginPath();
+          ctx.arc(2, 0, 3 + Math.sin(this.time * 6) * 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      },
+
+      // CẤP 2: BÉ THÚ CƯNG MỚI NỞ (CHỚP MẮT & VẪY CÁNH)
+      drawBabyStage(ctx, isHappy) {
+        const floatY = Math.sin(this.time * 3.5) * 3.5;
+        const wingFlap = Math.sin(this.time * (isHappy ? 16 : 8)) * 0.4;
+        const jumpY = isHappy ? -Math.abs(Math.sin(this.time * 8)) * 9 : 0;
+
+        ctx.save();
+        ctx.translate(0, floatY + jumpY);
+
+        ctx.save();
+        ctx.fillStyle = '#ec4899';
+        ctx.save();
+        ctx.translate(-16, -2);
+        ctx.rotate(-0.3 + wingFlap);
+        ctx.beginPath();
+        ctx.ellipse(-8, -4, 9, 5, -0.3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+        ctx.save();
+        ctx.translate(16, -2);
+        ctx.rotate(0.3 - wingFlap);
+        ctx.beginPath();
+        ctx.ellipse(8, -4, 9, 5, 0.3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+        ctx.restore();
+
+        ctx.fillStyle = '#fb923c';
+        ctx.strokeStyle = '#c2410c';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.ellipse(0, 10, 18, 16, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath();
+        ctx.ellipse(0, 13, 11, 10, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#fb923c';
+        ctx.beginPath();
+        ctx.arc(0, -7, 19, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#facc15';
+        ctx.strokeStyle = '#ca8a04';
+        ctx.beginPath();
+        ctx.ellipse(-11, -22, 4.5, 7, -0.35, 0, Math.PI * 2);
+        ctx.ellipse(11, -22, 4.5, 7, 0.35, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        if (this.isBlinking) {
+          ctx.strokeStyle = '#431407';
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.arc(-7, -8, 5, 0.2, Math.PI - 0.2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(7, -8, 5, 0.2, Math.PI - 0.2);
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = '#292524';
+          ctx.beginPath();
+          ctx.ellipse(-7, -8, 5.5, 7.5, 0, 0, Math.PI * 2);
+          ctx.ellipse(7, -8, 5.5, 7.5, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(-8, -10, 2.4, 0, Math.PI * 2);
+          ctx.arc(6, -10, 2.4, 0, Math.PI * 2);
+          ctx.arc(-5, -6, 1.2, 0, Math.PI * 2);
+          ctx.arc(9, -6, 1.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = 'rgba(244, 63, 94, 0.55)';
+        ctx.beginPath();
+        ctx.arc(-12, -2, 4, 0, Math.PI * 2);
+        ctx.arc(12, -2, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#7c2d12';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        if (isHappy) {
+          ctx.arc(0, -2, 4.5, 0, Math.PI);
+          ctx.fillStyle = '#f43f5e';
+          ctx.fill();
+        } else {
+          ctx.arc(0, -3, 3, 0.1, Math.PI - 0.1);
+        }
+        ctx.stroke();
+
+        ctx.restore();
+      },
+
+      // CẤP 3: THIẾU NIÊN KHÁM PHÁ (ÁO CHOÀNG & LỬA ĐUÔI)
+      drawJuvenileStage(ctx, isHappy) {
+        const floatY = Math.sin(this.time * 3.8) * 4;
+        const wingFlap = Math.sin(this.time * 9) * 0.45;
+        const capeWave = Math.sin(this.time * 7) * 4;
+
+        ctx.save();
+        ctx.translate(0, floatY);
+
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.moveTo(-8, 3);
+        ctx.lineTo(-24, 25 + capeWave);
+        ctx.lineTo(-8, 22);
+        ctx.lineTo(8, 22);
+        ctx.lineTo(24, 25 - capeWave);
+        ctx.lineTo(8, 3);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#8b5cf6';
+        ctx.strokeStyle = '#5b21b6';
+        ctx.lineWidth = 2;
+        ctx.save();
+        ctx.translate(-18, -4);
+        ctx.rotate(-0.4 + wingFlap);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-18, -12);
+        ctx.lineTo(-14, 4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+        ctx.save();
+        ctx.translate(18, -4);
+        ctx.rotate(0.4 - wingFlap);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(18, -12);
+        ctx.lineTo(14, 4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.ellipse(0, 11, 19, 17, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#f0f9ff';
+        ctx.beginPath();
+        ctx.ellipse(0, 13, 12, 11, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.save();
+        const tailWag = Math.sin(this.time * 6) * 0.25;
+        ctx.translate(14, 18);
+        ctx.rotate(tailWag);
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(6, 4, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.arc(11, 4, 4 + Math.sin(this.time * 8) * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(0, -9, 21, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.strokeStyle = '#d97706';
+        ctx.beginPath();
+        ctx.ellipse(-12, -26, 5, 9, -0.4, 0, Math.PI * 2);
+        ctx.ellipse(12, -26, 5, 9, 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        if (this.isBlinking) {
+          ctx.strokeStyle = '#082f49';
+          ctx.lineWidth = 2.4;
+          ctx.beginPath();
+          ctx.arc(-8, -10, 6, 0.2, Math.PI - 0.2);
+          ctx.arc(8, -10, 6, 0.2, Math.PI - 0.2);
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = '#082f49';
+          ctx.beginPath();
+          ctx.ellipse(-8, -10, 6, 8, 0, 0, Math.PI * 2);
+          ctx.ellipse(8, -10, 6, 8, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(-9, -12, 2.5, 0, Math.PI * 2);
+          ctx.arc(7, -12, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = 'rgba(244, 63, 94, 0.5)';
+        ctx.beginPath();
+        ctx.arc(-14, -3, 4, 0, Math.PI * 2);
+        ctx.arc(14, -3, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#0c4a6e';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, -3, 4, 0, Math.PI);
+        ctx.stroke();
+
+        ctx.restore();
+      },
+
+      // CẤP 4: SIÊU NHÂN NGẦU LÒI (KÍNH RÂM & SẤM SÉT)
+      drawSuperheroStage(ctx, isHappy) {
+        const floatY = Math.sin(this.time * 4.2) * 4.5;
+        const wingFlap = Math.sin(this.time * 10) * 0.5;
+
+        ctx.save();
+        ctx.translate(0, floatY);
+
+        ctx.save();
+        ctx.rotate(this.time * 0.5);
+        ctx.strokeStyle = 'rgba(250, 204, 21, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 6]);
+        ctx.beginPath();
+        ctx.arc(0, 0, 36, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = '#a855f7';
+        ctx.strokeStyle = '#6b21a8';
+        ctx.lineWidth = 2.5;
+        ctx.save();
+        ctx.translate(-20, -5);
+        ctx.rotate(-0.5 + wingFlap);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-24, -16);
+        ctx.lineTo(-18, 6);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+        ctx.save();
+        ctx.translate(20, -5);
+        ctx.rotate(0.5 - wingFlap);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(24, -16);
+        ctx.lineTo(18, 6);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = '#c084fc';
+        ctx.strokeStyle = '#7e22ce';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.ellipse(0, 12, 21, 18, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.arc(0, 12, 6.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#c084fc';
+        ctx.beginPath();
+        ctx.arc(0, -9, 22, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#fde047';
+        ctx.strokeStyle = '#ca8a04';
+        ctx.beginPath();
+        ctx.ellipse(-14, -28, 5.5, 11, -0.4, 0, Math.PI * 2);
+        ctx.ellipse(14, -28, 5.5, 11, 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#18181b';
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(-18, -16, 16, 12, 4);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.roundRect(2, -16, 16, 12, 4);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(-2, -10);
+        ctx.lineTo(2, -10);
+        ctx.stroke();
+
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(-15, -14);
+        ctx.lineTo(-8, -6);
+        ctx.moveTo(5, -14);
+        ctx.lineTo(12, -6);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#581c87';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.arc(0, 0, 4.5, 0.2, Math.PI - 0.2);
+        ctx.stroke();
+
+        ctx.restore();
+      },
+
+      // CẤP 5: HOÀNG GIA VÔ ĐỊCH 👑 (VƯƠNG MIỆN & HÀO QUANG CẦU VỒNG)
+      drawChampionStage(ctx, isHappy) {
+        const floatY = Math.sin(this.time * 3.5) * 5;
+        const wingFlap = Math.sin(this.time * 12) * 0.55;
+
+        ctx.save();
+        ctx.translate(0, floatY);
+
+        ctx.save();
+        const auraRotate = this.time * 0.8;
+        for (let a = 0; a < 6; a++) {
+          const angle = auraRotate + (a * Math.PI) / 3;
+          const sx = Math.cos(angle) * 38;
+          const sy = Math.sin(angle) * 38;
+          ctx.fillStyle = a % 2 === 0 ? '#facc15' : '#f43f5e';
+          ctx.beginPath();
+          ctx.arc(sx, sy, 3 + Math.sin(this.time * 6 + a) * 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        ctx.fillStyle = '#f59e0b';
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 2.5;
+        ctx.save();
+        ctx.translate(-22, -6);
+        ctx.rotate(-0.5 + wingFlap);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-26, -18);
+        ctx.lineTo(-16, -6);
+        ctx.lineTo(-22, 6);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+        ctx.save();
+        ctx.translate(22, -6);
+        ctx.rotate(0.5 - wingFlap);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(26, -18);
+        ctx.lineTo(16, -6);
+        ctx.lineTo(22, 6);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 2.6;
+        ctx.beginPath();
+        ctx.ellipse(0, 13, 22, 19, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#e11d48';
+        ctx.beginPath();
+        ctx.moveTo(0, 6);
+        ctx.lineTo(6, 13);
+        ctx.lineTo(0, 20);
+        ctx.lineTo(-6, 13);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        ctx.arc(0, -9, 23, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.save();
+        ctx.translate(0, -32 + Math.sin(this.time * 5) * 1.5);
+        ctx.fillStyle = '#eab308';
+        ctx.strokeStyle = '#713f12';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-14, 6);
+        ctx.lineTo(-16, -6);
+        ctx.lineTo(-7, -1);
+        ctx.lineTo(0, -10);
+        ctx.lineTo(7, -1);
+        ctx.lineTo(16, -6);
+        ctx.lineTo(14, 6);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(0, -10, 2.5, 0, Math.PI * 2);
+        ctx.arc(-16, -6, 2, 0, Math.PI * 2);
+        ctx.arc(16, -6, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (this.isBlinking) {
+          ctx.strokeStyle = '#78350f';
+          ctx.lineWidth = 2.4;
+          ctx.beginPath();
+          ctx.arc(-8, -10, 6, 0.2, Math.PI - 0.2);
+          ctx.arc(8, -10, 6, 0.2, Math.PI - 0.2);
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = '#451a03';
+          ctx.beginPath();
+          ctx.ellipse(-8, -10, 6, 8.5, 0, 0, Math.PI * 2);
+          ctx.ellipse(8, -10, 6, 8.5, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(-9, -12, 2.8, 0, Math.PI * 2);
+          ctx.arc(7, -12, 2.8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = 'rgba(244, 63, 94, 0.6)';
+        ctx.beginPath();
+        ctx.arc(-14, -3, 4.5, 0, Math.PI * 2);
+        ctx.arc(14, -3, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#78350f';
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.arc(0, -2, 5.5, 0, Math.PI);
+        ctx.fillStyle = '#f43f5e';
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.restore();
+      },
+
+      drawFloatingEffects(ctx) {
+        this.activeParticles.forEach(p => {
+          ctx.save();
+          ctx.translate(p.x - 64, p.y - 64);
+          ctx.scale(p.scale * p.life, p.scale * p.life);
+          ctx.globalAlpha = p.life;
+
+          if (p.type === 'heart') {
+            ctx.fillStyle = '#f43f5e';
+            ctx.beginPath();
+            ctx.arc(-3, -3, 3, Math.PI, 0);
+            ctx.arc(3, -3, 3, Math.PI, 0);
+            ctx.lineTo(0, 5);
+            ctx.closePath();
+            ctx.fill();
+          } else {
+            ctx.fillStyle = '#facc15';
+            ctx.beginPath();
+            ctx.arc(0, 0, 3.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        });
+      }
+    };
+
+    /* =========================================================================
+       STREAMING_CHUNK:Implementing animated flying badges and star particle bursts...
+       HIỆU ỨNG BUNG HẠT SAO & HUY HIỆU BAY LƯỢN GPU (WAAPI)
+       ========================================================================= */
+    function triggerStarBurstEffect(sourceElement) {
+      if (!sourceElement) return;
+
+      const sourceRect = sourceElement.getBoundingClientRect();
+      const originX = sourceRect.left + sourceRect.width / 2;
+      const originY = sourceRect.top + sourceRect.height / 2;
+
+      const starBadgeBox = document.getElementById("star-badge-box");
+      let targetX = window.innerWidth - 60;
+      let targetY = 30;
+
+      if (starBadgeBox) {
+        const targetRect = starBadgeBox.getBoundingClientRect();
+        targetX = targetRect.left + targetRect.width / 2;
+        targetY = targetRect.top + targetRect.height / 2;
+      }
+
+      const deltaX = targetX - originX;
+      const deltaY = targetY - originY;
+
+      // 1. Bung hạt sao lấp lánh xung quanh nút bấm
+      const particles = ['⭐', '🌟', '✨', '💛', '🎉', '⭐'];
+      const fragment = document.createDocumentFragment();
+      const particleElements = [];
+
+      for (let i = 0; i < 18; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'gpu-particle text-xl sm:text-2xl select-none';
+        particle.textContent = particles[i % particles.length];
+        particle.style.left = `${originX}px`;
+        particle.style.top = `${originY}px`;
+
+        const angle = (i / 18) * (Math.PI * 2) + (Math.random() * 0.3 - 0.15);
+        const distance = 75 + Math.random() * 95;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        const rot = (Math.random() - 0.5) * 540;
+
+        fragment.appendChild(particle);
+        particleElements.push({ element: particle, tx, ty, rot });
+      }
+
+      document.body.appendChild(fragment);
+
+      particleElements.forEach(({ element, tx, ty, rot }, idx) => {
+        const anim = element.animate([
+          { transform: 'translate3d(-50%, -50%, 0) scale(0.2) rotate(0deg)', opacity: 0 },
+          { transform: `translate3d(calc(-50% + ${tx * 0.4}px), calc(-50% + ${ty * 0.4}px), 0) scale(1.25) rotate(${rot * 0.3}deg)`, opacity: 1, offset: 0.2 },
+          { transform: `translate3d(calc(-50% + ${tx * 0.85}px), calc(-50% + ${ty * 0.85}px), 0) scale(1) rotate(${rot * 0.7}deg)`, opacity: 0.9, offset: 0.6 },
+          { transform: `translate3d(calc(-50% + ${tx * 1.1}px), calc(-50% + ${ty + 30}px), 0) scale(0.2) rotate(${rot}deg)`, opacity: 0 }
+        ], {
+          duration: 1800,
+          delay: idx * 10,
+          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          fill: 'forwards'
+        });
+
+        anim.onfinish = () => {
+          if (element.parentNode) element.parentNode.removeChild(element);
+        };
+      });
+
+      // 2. Huy hiệu sao vàng lớn bay theo đường cung mượt mà không khựng giật
+      const flyingBadge = document.createElement('div');
+      flyingBadge.className = 'gpu-flying-badge font-baloo px-4 py-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 border-2 border-yellow-100 rounded-full font-black text-amber-950 text-base sm:text-lg shadow-2xl flex items-center gap-2 select-none';
+      flyingBadge.innerHTML = `<span class="text-2xl inline-block">⭐</span><span>+1 SAO!</span>`;
+      flyingBadge.style.left = `${originX}px`;
+      flyingBadge.style.top = `${originY}px`;
+      flyingBadge.style.filter = 'drop-shadow(0 8px 18px rgba(217, 119, 6, 0.6))';
+
+      document.body.appendChild(flyingBadge);
+
+      const arcMidX = deltaX * 0.35 - 35;
+      const arcMidY = deltaY * 0.35 - 55;
+      const arcLateX = deltaX * 0.75 - 15;
+      const arcLateY = deltaY * 0.75 - 20;
+
+      const badgeAnim = flyingBadge.animate([
+        { transform: 'translate3d(-50%, -50%, 0) scale(0.2) rotate(-15deg)', opacity: 0 },
+        { transform: 'translate3d(-50%, -50%, 0) scale(1.35) rotate(4deg)', opacity: 1, offset: 0.16 },
+        { transform: 'translate3d(-50%, calc(-50% - 20px), 0) scale(1.15) rotate(-2deg)', opacity: 1, offset: 0.38 },
+        { transform: `translate3d(calc(-50% + ${arcMidX}px), calc(-50% + ${arcMidY}px), 0) scale(1.05) rotate(3deg)`, opacity: 1, offset: 0.62 },
+        { transform: `translate3d(calc(-50% + ${arcLateX}px), calc(-50% + ${arcLateY}px), 0) scale(0.85) rotate(-3deg)`, opacity: 0.95, offset: 0.85 },
+        { transform: `translate3d(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px), 0) scale(0.3) rotate(0deg)`, opacity: 0 }
+      ], {
+        duration: 1950,
+        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+        fill: 'forwards'
+      });
+
+      badgeAnim.onfinish = () => {
+        if (flyingBadge.parentNode) flyingBadge.parentNode.removeChild(flyingBadge);
+
+        if (starBadgeBox) {
+          starBadgeBox.classList.remove('star-box-bump');
+          void starBadgeBox.offsetWidth;
+          starBadgeBox.classList.add('star-box-bump');
+        }
+      };
+    }
+
+    function triggerHalfStarBurstEffect(sourceElement) {
+      if (!sourceElement) return;
+
+      const sourceRect = sourceElement.getBoundingClientRect();
+      const originX = sourceRect.left + sourceRect.width / 2;
+      const originY = sourceRect.top + sourceRect.height / 2;
+
+      const starBadgeBox = document.getElementById("star-badge-box");
+      let targetX = window.innerWidth - 60;
+      let targetY = 30;
+
+      if (starBadgeBox) {
+        const targetRect = starBadgeBox.getBoundingClientRect();
+        targetX = targetRect.left + targetRect.width / 2;
+        targetY = targetRect.top + targetRect.height / 2;
+      }
+
+      const deltaX = targetX - originX;
+      const deltaY = targetY - originY;
+
+      // 1. Bung hạt mầm & lá xanh
+      const particles = ['🌱', '🌿', '✨', '💚', '⭐'];
+      const fragment = document.createDocumentFragment();
+      const particleElements = [];
+
+      for (let i = 0; i < 14; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'gpu-particle text-xl sm:text-2xl select-none';
+        particle.textContent = particles[i % particles.length];
+        particle.style.left = `${originX}px`;
+        particle.style.top = `${originY}px`;
+
+        const angle = (i / 14) * (Math.PI * 2) + (Math.random() * 0.3 - 0.15);
+        const distance = 65 + Math.random() * 85;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        const rot = (Math.random() - 0.5) * 450;
+
+        fragment.appendChild(particle);
+        particleElements.push({ element: particle, tx, ty, rot });
+      }
+
+      document.body.appendChild(fragment);
+
+      particleElements.forEach(({ element, tx, ty, rot }, idx) => {
+        const anim = element.animate([
+          { transform: 'translate3d(-50%, -50%, 0) scale(0.2) rotate(0deg)', opacity: 0 },
+          { transform: `translate3d(calc(-50% + ${tx * 0.4}px), calc(-50% + ${ty * 0.4}px), 0) scale(1.2) rotate(${rot * 0.3}deg)`, opacity: 1, offset: 0.2 },
+          { transform: `translate3d(calc(-50% + ${tx * 0.85}px), calc(-50% + ${ty * 0.85}px), 0) scale(1) rotate(${rot * 0.7}deg)`, opacity: 0.9, offset: 0.6 },
+          { transform: `translate3d(calc(-50% + ${tx * 1.1}px), calc(-50% + ${ty + 25}px), 0) scale(0.2) rotate(${rot}deg)`, opacity: 0 }
+        ], {
+          duration: 1700,
+          delay: idx * 10,
+          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          fill: 'forwards'
+        });
+
+        anim.onfinish = () => {
+          if (element.parentNode) element.parentNode.removeChild(element);
+        };
+      });
+
+      // 2. Huy hiệu +½ SAO bay mượt mà
+      const flyingBadge = document.createElement('div');
+      flyingBadge.className = 'gpu-flying-badge font-baloo px-3.5 py-1.5 bg-gradient-to-r from-emerald-400 via-teal-300 to-green-400 border-2 border-emerald-100 rounded-full font-black text-emerald-950 text-sm sm:text-base shadow-2xl flex items-center gap-1.5 select-none';
+      flyingBadge.innerHTML = `<span class="text-xl inline-block">🌱</span><span>+½ SAO!</span>`;
+      flyingBadge.style.left = `${originX}px`;
+      flyingBadge.style.top = `${originY}px`;
+      flyingBadge.style.filter = 'drop-shadow(0 8px 18px rgba(5, 150, 105, 0.55))';
+
+      document.body.appendChild(flyingBadge);
+
+      const arcMidX = deltaX * 0.35 - 30;
+      const arcMidY = deltaY * 0.35 - 50;
+      const arcLateX = deltaX * 0.75 - 10;
+      const arcLateY = deltaY * 0.75 - 15;
+
+      const badgeAnim = flyingBadge.animate([
+        { transform: 'translate3d(-50%, -50%, 0) scale(0.2) rotate(-12deg)', opacity: 0 },
+        { transform: 'translate3d(-50%, -50%, 0) scale(1.3) rotate(3deg)', opacity: 1, offset: 0.18 },
+        { transform: 'translate3d(-50%, calc(-50% - 15px), 0) scale(1.1) rotate(-2deg)', opacity: 1, offset: 0.4 },
+        { transform: `translate3d(calc(-50% + ${arcMidX}px), calc(-50% + ${arcMidY}px), 0) scale(1) rotate(2deg)`, opacity: 1, offset: 0.65 },
+        { transform: `translate3d(calc(-50% + ${arcLateX}px), calc(-50% + ${arcLateY}px), 0) scale(0.8) rotate(-2deg)`, opacity: 0.95, offset: 0.85 },
+        { transform: `translate3d(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px), 0) scale(0.3) rotate(0deg)`, opacity: 0 }
+      ], {
+        duration: 1850,
+        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+        fill: 'forwards'
+      });
+
+      badgeAnim.onfinish = () => {
+        if (flyingBadge.parentNode) flyingBadge.parentNode.removeChild(flyingBadge);
+
+        if (starBadgeBox) {
+          starBadgeBox.classList.remove('star-box-bump');
+          void starBadgeBox.offsetWidth;
+          starBadgeBox.classList.add('star-box-bump');
+        }
+      };
+    }
+
+    /* =========================================================================
+       STREAMING_CHUNK:Managing UI pet state and evolution timeline updates...
+       QUẢN LÝ TIẾN TRÌNH THÚ CƯNG & MODAL TIẾN HÓA
+       ========================================================================= */
+    function updatePetUI() {
+      const pet = PET_SPECIES_DATA[activePetSpeciesId];
+      if (!pet) return;
+
+      let currentStage = pet.stages[0];
+      let stageIdx = 0;
+      for (let i = pet.stages.length - 1; i >= 0; i--) {
+        if (totalAccumulatedPetStars >= pet.stages[i].reqStars) {
+          currentStage = pet.stages[i];
+          stageIdx = i;
+          break;
+        }
+      }
+
+      currentPetStageIndex = stageIdx;
+
+      const nameDisplay = document.getElementById("pet-name-display");
+      const titleDisplay = document.getElementById("pet-title-display");
+      const lvlBadge = document.getElementById("pet-lvl-badge");
+      const expBar = document.getElementById("pet-exp-bar");
+      const expText = document.getElementById("pet-exp-text");
+      const totalStarsCount = document.getElementById("pet-total-stars-count");
+      const stageStatus = document.getElementById("pet-modal-stage-status");
+
+      if (nameDisplay) nameDisplay.textContent = pet.name;
+      if (titleDisplay) titleDisplay.textContent = currentStage.title;
+      if (lvlBadge) lvlBadge.textContent = `Lv.${currentStage.level}`;
+      if (totalStarsCount) totalStarsCount.textContent = `${totalAccumulatedPetStars % 1 === 0 ? totalAccumulatedPetStars : totalAccumulatedPetStars.toFixed(1)} Sao`;
+      if (stageStatus) stageStatus.textContent = `${pet.name} • Cấp ${currentStage.level}: ${currentStage.title}`;
+
+      const nextStage = pet.stages[stageIdx + 1];
+      if (nextStage) {
+        const prevReq = currentStage.reqStars;
+        const nextReq = nextStage.reqStars;
+        const progressInLevel = Math.max(0, totalAccumulatedPetStars - prevReq);
+        const needed = nextReq - prevReq;
+        const percent = Math.min(100, (progressInLevel / needed) * 100);
+        if (expBar) expBar.style.width = `${percent}%`;
+        if (expText) expText.textContent = `${totalAccumulatedPetStars}/${nextReq} ⭐`;
+      } else {
+        if (expBar) expBar.style.width = `100%`;
+        if (expText) expText.textContent = `MAX 👑`;
+      }
+
+      renderPetEvolutionTimeline();
+    }
+
+    function renderPetEvolutionTimeline() {
+      const timelineContainer = document.getElementById("pet-evolution-timeline");
+      if (!timelineContainer) return;
+
+      const pet = PET_SPECIES_DATA[activePetSpeciesId];
+      if (!pet) return;
+
+      timelineContainer.innerHTML = pet.stages.map((st, idx) => {
+        const isUnlocked = totalAccumulatedPetStars >= st.reqStars;
+        const isCurrent = currentPetStageIndex === idx;
+
+        return `
+          <div class="p-2.5 rounded-2xl border-2 flex items-center justify-between gap-2 transition ${
+            isCurrent
+              ? 'bg-purple-100 border-purple-400 shadow-sm'
+              : isUnlocked
+              ? 'bg-white border-emerald-300'
+              : 'bg-slate-50 border-slate-200 opacity-60'
+          }">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black ${
+                isUnlocked ? 'bg-emerald-500 text-white' : 'bg-slate-300 text-slate-600'
+              }">
+                ${isUnlocked ? '✓' : st.level}
+              </span>
+              <div>
+                <div class="font-black text-xs sm:text-sm text-slate-800">${st.title}</div>
+                <div class="text-[10px] text-slate-500 font-bold">${st.desc}</div>
+              </div>
+            </div>
+            <span class="text-[11px] font-black whitespace-nowrap ${isUnlocked ? 'text-emerald-700' : 'text-amber-800'}">
+              ${st.reqStars === 0 ? 'Bắt đầu' : st.reqStars + ' ⭐'}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function interactWithPet() {
+      playPetCuteSound();
+      PetAnimationEngine.triggerHappy();
+
+      const pet = PET_SPECIES_DATA[activePetSpeciesId];
+      const quotes = pet.quotes || ["Bé đọc to tớ nghe nhé! 💕"];
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+
+      const bubble = document.getElementById("pet-speech-bubble");
+      const bubbleText = document.getElementById("pet-speech-text");
+      if (bubble && bubbleText) {
+        bubbleText.textContent = randomQuote;
+        bubble.classList.remove('hidden');
+
+        if (petSpeechTimeout) clearTimeout(petSpeechTimeout);
+        petSpeechTimeout = setTimeout(() => {
+          bubble.classList.add('hidden');
+        }, 2800);
+      }
+    }
+
+    function checkPetEvolutionAfterStar(addedStars) {
+      const oldStars = totalAccumulatedPetStars;
+      totalAccumulatedPetStars = parseFloat((totalAccumulatedPetStars + addedStars).toFixed(1));
+
+      const pet = PET_SPECIES_DATA[activePetSpeciesId];
+      let oldStageIdx = 0;
+      let newStageIdx = 0;
+
+      pet.stages.forEach((st, idx) => {
+        if (oldStars >= st.reqStars) oldStageIdx = idx;
+        if (totalAccumulatedPetStars >= st.reqStars) newStageIdx = idx;
+      });
+
+      updatePetUI();
+      PetAnimationEngine.triggerHappy();
+
+      if (newStageIdx > oldStageIdx) {
+        setTimeout(() => {
+          triggerEvolutionCelebration(pet.stages[newStageIdx]);
+        }, 1900);
+      }
+    }
+
+    function triggerEvolutionCelebration(stage) {
+      playPetEvolutionFanfare();
+      triggerBigConfetti();
+
+      const titleEl = document.getElementById("celebration-pet-title");
+      const descEl = document.getElementById("celebration-pet-desc");
+      if (titleEl) titleEl.textContent = stage.title;
+      if (descEl) descEl.textContent = stage.desc;
+
+      const popup = document.getElementById("pet-evolution-celebration");
+      if (popup) popup.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeEvolutionCelebration() {
+      const popup = document.getElementById("pet-evolution-celebration");
+      if (popup) popup.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function choosePetSpecies(speciesId) {
+      if (!PET_SPECIES_DATA[speciesId]) return;
+      activePetSpeciesId = speciesId;
+
+      ['dragon', 'cat', 'penguin', 'unicorn'].forEach(id => {
+        const btn = document.getElementById(`pet-choice-${id}`);
+        if (!btn) return;
+        if (id === speciesId) {
+          btn.className = "p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-purple-50 border-purple-400 shadow-sm";
+        } else {
+          btn.className = "p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-white border-slate-200 hover:bg-pink-50";
+        }
+      });
+
+      updatePetUI();
+      PetAnimationEngine.triggerHappy();
+    }
+
+    function openPetModal() {
+      updatePetUI();
+      const modal = document.getElementById("pet-modal");
+      if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closePetModal() {
+      const modal = document.getElementById("pet-modal");
+      if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    /* =========================================================================
+       STREAMING_CHUNK:Handling flashcard interactions, scoring, and round flow...
+       XỬ LÝ ĐÁNH GIÁ THẺ & TIẾN ĐỘ VÒNG HỌC
+       ========================================================================= */
+    function calculateTotalScore() {
+      let score = completedCardIds.size * 1.0;
+      score += halfCardIds.size * 0.5;
+      return score % 1 === 0 ? score : score.toFixed(1);
+    }
+
+    function markCardHalfSuccess() {
+      const card = currentSessionDeck[currentIndex];
+      if (!card) return;
+
+      if (completedCardIds.has(card.id)) return;
+
+      playEncouragingHarp();
+      const btnHalf = document.getElementById("btn-mark-half");
+      triggerHalfStarBurstEffect(btnHalf);
+
+      if (!halfCardIds.has(card.id)) {
+        halfCardIds.add(card.id);
+        checkPetEvolutionAfterStar(0.5);
+
+        setTimeout(() => {
+          const starDisplay = document.getElementById("star-count-display");
+          if (starDisplay) starDisplay.textContent = calculateTotalScore();
+        }, 1800);
+      }
+      renderCard();
+    }
+
+    function markCurrentCardSuccess() {
+      const card = currentSessionDeck[currentIndex];
+      if (!card) return;
+
+      playSuccessRewardSound();
+      const btnSuccess = document.getElementById("btn-mark-success");
+      triggerStarBurstEffect(btnSuccess);
+
+      let gained = 1.0;
+      if (halfCardIds.has(card.id)) {
+        halfCardIds.delete(card.id);
+        gained = 0.5;
+      }
+
+      if (!completedCardIds.has(card.id)) {
+        completedCardIds.add(card.id);
+        checkPetEvolutionAfterStar(gained);
+
+        setTimeout(() => {
+          const starDisplay = document.getElementById("star-count-display");
+          if (starDisplay) starDisplay.textContent = calculateTotalScore();
+          triggerMiniConfetti();
+        }, 1900);
+      }
+      renderCard();
+    }
+
+    function triggerMiniConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 55,
+          spread: 65,
+          origin: { y: 0.75 }
+        });
+      }
+    }
+
+    function triggerBigConfetti() {
+      if (typeof confetti !== 'function') return;
+      const end = Date.now() + 2.5 * 1000;
+      const colors = ['#f43f5e', '#fb923c', '#eab308', '#10b981', '#0ea5e9', '#a855f7'];
+
+      (function frame() {
+        confetti({
+          particleCount: 6,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors
+        });
+        confetti({
+          particleCount: 6,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+    }
+
+    /* =========================================================================
+       STREAMING_CHUNK:Rendering flashcard visuals and navigating deck...
+       HIỂN THỊ THẺ FLASHCARD & ĐIỀU HƯỚNG
+       ========================================================================= */
+    function renderCard(direction = 'in') {
+      const card = currentSessionDeck[currentIndex];
+      if (!card) return;
+
+      const activeCard = document.getElementById("active-card");
+      const badgeNum = document.getElementById("card-badge-num");
+      const categoryName = document.getElementById("card-category-name");
+      const statusPill = document.getElementById("card-status-pill");
+      const cardEmoji = document.getElementById("card-emoji");
+      const cardSentence = document.getElementById("card-sentence");
+      const rhythmGuide = document.getElementById("card-rhythm-guide");
+      const btnMarkText = document.getElementById("btn-mark-text");
+      const btnHalfText = document.getElementById("btn-half-text");
+
+      if (badgeNum) {
+        const padIndex = String(currentIndex + 1).padStart(2, '0');
+        const padTotal = String(currentSessionDeck.length).padStart(2, '0');
+        badgeNum.textContent = `CÂU ${padIndex} / ${padTotal}`;
+      }
+
+      const levelNames = {
+        1: "Cấp 1: Sao Nhí Khởi Động",
+        2: "Cấp 2: Ngôi Nhà Bé Yêu",
+        3: "Cấp 3: Vần Tròn Môi & Khó",
+        4: "Cấp 4: Phù Thủy Đọc Chuẩn",
+        5: "Cấp 5: Nhà Văn Nhí Diễn Cảm"
+      };
+      if (categoryName) categoryName.textContent = levelNames[currentLevel] || "Luyện Đọc Trơn";
+
+      const isFull = completedCardIds.has(card.id);
+      const isHalf = halfCardIds.has(card.id);
+
+      if (statusPill) {
+        if (isFull) {
+          statusPill.innerHTML = `<span class="text-amber-700">Đã Đọc Trơn ⭐</span>`;
+          statusPill.className = "px-3 py-1 rounded-xl text-xs font-black bg-amber-100 border border-amber-300 shadow-sm flex items-center gap-1";
+        } else if (isHalf) {
+          statusPill.innerHTML = `<span class="text-emerald-700">Có Cố Gắng 🌱</span>`;
+          statusPill.className = "px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 border border-emerald-300 shadow-sm flex items-center gap-1";
+        } else {
+          statusPill.innerHTML = `<span>Chưa đọc ⚪</span>`;
+          statusPill.className = "px-3 py-1 rounded-xl text-xs font-black bg-white/85 text-slate-500 border border-slate-200 shadow-sm flex items-center gap-1";
+        }
+      }
+
+      if (cardEmoji) cardEmoji.textContent = card.emoji;
+      if (cardSentence) {
+        cardSentence.textContent = card.text;
+        cardSentence.className = `text-3xl sm:text-4xl md:text-5xl font-black font-baloo leading-snug tracking-wide ${card.textColor} pop-text px-2 py-1`;
+      }
+      if (rhythmGuide) rhythmGuide.textContent = card.guide;
+
+      if (btnMarkText) {
+        btnMarkText.textContent = isFull ? "Đã Thuộc 1⭐" : "Đọc Trơn Thành Công!";
+      }
+      if (btnHalfText) {
+        btnHalfText.textContent = isHalf ? "Đã Đạt +½ Sao 🌱" : "Cố Gắng Lắm! +½ Sao";
+      }
+
+      const progressBarFill = document.getElementById("progress-bar-fill");
+      const progressTextSmall = document.getElementById("progress-text-small");
+      const percent = ((currentIndex + 1) / currentSessionDeck.length) * 100;
+      if (progressBarFill) progressBarFill.style.width = `${percent}%`;
+      if (progressTextSmall) progressTextSmall.textContent = `${currentIndex + 1}/${currentSessionDeck.length} câu`;
+
+      if (activeCard) {
+        activeCard.className = `card-transition slide-${direction} w-full h-full rounded-3xl sm:rounded-[36px] p-5 sm:p-8 flex flex-col justify-between items-center text-center shadow-2xl border-4 sm:border-8 rainbow-card relative overflow-hidden bg-gradient-to-br ${card.theme}`;
+        setTimeout(() => {
+          activeCard.classList.remove('slide-left-out', 'slide-right-out');
+          activeCard.classList.add('slide-in');
+        }, 30);
+      }
+    }
+
+    function goNext() {
+      if (currentIndex < currentSessionDeck.length - 1) {
+        currentIndex++;
+        renderCard('next');
+      } else {
+        finishRoundAndShowBoard();
+      }
+    }
+
+    function goPrev() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderCard('prev');
+      }
+    }
+
+    function selectLevel(lvl) {
+      currentLevel = lvl;
+      for (let i = 1; i <= 5; i++) {
+        const tab = document.getElementById(`tab-lvl-${i}`);
+        if (!tab) continue;
+        if (i === lvl) {
+          tab.className = "lvl-btn active-level px-2.5 py-1.5 rounded-xl font-black bg-rose-500 text-white whitespace-nowrap shadow border border-rose-600 flex items-center gap-1";
+        } else {
+          tab.className = "lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1";
+        }
+      }
+      startNewRandomRound();
+    }
+
+    function changeRoundSize() {
+      const select = document.getElementById("select-round-size");
+      if (select) {
+        roundSize = parseInt(select.value, 10) || 15;
+      }
+      startNewRandomRound();
+    }
+
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function startNewRandomRound() {
+      const pool = QUESTION_BANK[`level${currentLevel}`] || QUESTION_BANK.level1;
+      const shuffled = shuffleArray(pool);
+      currentSessionDeck = shuffled.slice(0, roundSize);
+      currentIndex = 0;
+      completedCardIds.clear();
+      halfCardIds.clear();
+
+      const starCountDisplay = document.getElementById("star-count-display");
+      const starTotalDisplay = document.getElementById("star-total-display");
+      if (starCountDisplay) starCountDisplay.textContent = "0";
+      if (starTotalDisplay) starTotalDisplay.textContent = `/${currentSessionDeck.length}`;
+
+      renderCard();
+    }
+
+    /* =========================================================================
+       STREAMING_CHUNK:Implementing results modal and progress tracking...
+       BẢNG THÀNH TÍCH VÀ LỊCH SỬ HỌC TẬP
+       ========================================================================= */
+    function finishRoundAndShowBoard() {
+      roundCount++;
+      const currentScore = parseFloat(calculateTotalScore());
+      const maxScore = currentSessionDeck.length;
+      const ratio = currentScore / maxScore;
+
+      const fullCount = completedCardIds.size;
+      const halfCount = halfCardIds.size;
+      const unreadCount = maxScore - fullCount - halfCount;
+
+      let badgeTitle = "🌟 BÉ SIÊU NHÂN ĐỌC TRƠN!";
+      if (ratio >= 0.9) {
+        badgeTitle = "🏆 ĐỈNH CAO! SIÊU NHÂN ĐỌC TRƠN!";
+      } else if (ratio >= 0.7) {
+        badgeTitle = "🌟 XUẤT SẮC! BÉ CHĂM NGOAN QUÁ!";
+      } else if (ratio >= 0.4) {
+        badgeTitle = "🌱 CỐ GẮNG RẤT TỐT! TIẾN BỘ RÕ RỆT!";
+      } else {
+        badgeTitle = "💪 CỐ LÊN BÉ ƠI! LUYỆN THÊM CHÚT NHÉ!";
+      }
+
+      const scoreBig = document.getElementById("result-score-big");
+      const scoreMax = document.getElementById("result-score-max");
+      const badgeTitleEl = document.getElementById("result-badge-title");
+      const statFull = document.getElementById("stat-full-count");
+      const statHalf = document.getElementById("stat-half-count");
+      const statUnread = document.getElementById("stat-unread-count");
+
+      if (scoreBig) scoreBig.textContent = currentScore;
+      if (scoreMax) scoreMax.textContent = `/${maxScore}`;
+      if (badgeTitleEl) badgeTitleEl.textContent = badgeTitle;
+      if (statFull) statFull.textContent = fullCount;
+      if (statHalf) statHalf.textContent = halfCount;
+      if (statUnread) statUnread.textContent = unreadCount;
+
+      roundHistory.unshift({
+        id: roundCount,
+        level: currentLevel,
+        score: currentScore,
+        max: maxScore,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      renderHistoryList();
+
+      const modal = document.getElementById("result-modal");
+      if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+      triggerBigConfetti();
+    }
+
+    function renderHistoryList() {
+      const container = document.getElementById("history-list-container");
+      const label = document.getElementById("history-total-label");
+      if (!container) return;
+
+      if (label) label.textContent = `Đã lưu ${roundHistory.length} lượt`;
+
+      container.innerHTML = roundHistory.map((item) => `
+        <div class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2">
+            <span class="font-black text-rose-600">#${item.id}</span>
+            <span class="font-bold text-slate-700">Cấp ${item.level}</span>
+            <span class="text-[10px] text-slate-400 font-medium">(${item.time})</span>
+          </div>
+          <div class="flex items-center gap-1 font-black text-amber-700">
+            <span>⭐ ${item.score}/${item.max}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function closeResultModal() {
+      const modal = document.getElementById("result-modal");
+      if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function retryCurrentDeck() {
+      completedCardIds.clear();
+      halfCardIds.clear();
+      currentIndex = 0;
+      const starDisplay = document.getElementById("star-count-display");
+      if (starDisplay) starDisplay.textContent = "0";
+      closeResultModal();
+      renderCard();
+    }
+
+    function startNewRandomRoundFromModal() {
+      closeResultModal();
+      startNewRandomRound();
+    }
+
+    function toggleAutoPlay() {
+      const autoIcon = document.getElementById("auto-icon");
+      const autoText = document.getElementById("auto-text");
+      const btnAutoPlay = document.getElementById("btn-auto-play");
+
+      if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = null;
+        if (autoIcon) autoIcon.textContent = "▶️";
+        if (autoText) autoText.textContent = "Tự chạy";
+        if (btnAutoPlay) btnAutoPlay.classList.remove("bg-rose-100", "border-rose-400", "text-rose-700");
+      } else {
+        if (autoIcon) autoIcon.textContent = "⏸️";
+        if (autoText) autoText.textContent = "Tạm dừng";
+        if (btnAutoPlay) btnAutoPlay.classList.add("bg-rose-100", "border-rose-400", "text-rose-700");
+        autoPlayInterval = setInterval(() => {
+          goNext();
+        }, 4500);
+      }
+    }
+
+    /* =========================================================================
+       STREAMING_CHUNK:Binding touch events and keyboard listener hooks...
+       CỬ CHỈ VUỐT CHẠM & PHÍM TẮT
+       ========================================================================= */
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const swipeContainer = document.getElementById("flashcard-container");
+
+    if (swipeContainer) {
+      swipeContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      swipeContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const swipeThreshold = 45;
+        if (touchEndX < touchStartX - swipeThreshold) {
+          goNext();
+        }
+        if (touchEndX > touchStartX + swipeThreshold) {
+          goPrev();
+        }
+      }, { passive: true });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      const resultModal = document.getElementById("result-modal");
+      const petModal = document.getElementById("pet-modal");
+      const isModalOpen = (resultModal && !resultModal.classList.contains('opacity-0')) ||
+                          (petModal && !petModal.classList.contains('opacity-0'));
+
+      if (!isModalOpen) {
+        if (e.code === 'ArrowRight') goNext();
+        if (e.code === 'ArrowLeft') goPrev();
+        if (e.code === 'Space') {
+          e.preventDefault();
+          markCurrentCardSuccess();
+        }
+      }
+    });
+
+    const cardEmojiEl = document.getElementById("card-emoji");
+    if (cardEmojiEl) cardEmojiEl.addEventListener("click", triggerMiniConfetti);
+
+    document.getElementById("result-modal")?.addEventListener("click", (e) => {
+      if (e.target === document.getElementById("result-modal")) closeResultModal();
+    });
+    document.getElementById("pet-modal")?.addEventListener("click", (e) => {
+      if (e.target === document.getElementById("pet-modal")) closePetModal();
+    });
+
+    window.onload = function() {
+      PetAnimationEngine.startLoop();
+      updatePetUI();
+      startNewRandomRound();
+    };
+  </script>
+</body>
+</html>
