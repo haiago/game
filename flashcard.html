@@ -10,20 +10,29 @@
   <!-- Canvas Confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- Google Fonts: Baloo 2 & Nunito -->
+  <!-- Google Fonts: Be Vietnam Pro, Quicksand, Nunito (Font chuẩn giáo dục & thân thiện cho bé lớp 1) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800;900&family=Nunito:wght@700;800;900;1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,500;0,600;0,700;0,800;0,900;1,600;1,700&family=Nunito:wght@600;700;800;900&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --font-reading: 'Be Vietnam Pro', -apple-system, sans-serif;
+    }
     body {
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Be Vietnam Pro', 'Quicksand', 'Nunito', -apple-system, sans-serif;
       user-select: none;
       -webkit-user-select: none;
       touch-action: pan-y;
     }
     .font-baloo {
-      font-family: 'Baloo 2', cursive;
+      font-family: 'Quicksand', 'Be Vietnam Pro', 'Nunito', sans-serif;
+      letter-spacing: 0.015em;
+    }
+    .font-reading {
+      font-family: var(--font-reading);
+      letter-spacing: 0.02em;
+      line-height: 1.42;
     }
 
     /* Hiệu ứng viền cầu vồng neon đổi màu mượt mà */
@@ -39,14 +48,14 @@
       animation: rainbow-border 8s linear infinite;
     }
 
-    /* Chữ nổi 3D có viền trắng tương phản cao cho bé dễ nhìn */
+    /* Chữ nổi 3D thanh mảnh, sắc nét, giữ trọn dấu thanh tiếng Việt rõ ràng cho bé lớp 1 */
     .pop-text {
       text-shadow: 
-        -3px -3px 0 #ffffff,
-         3px -3px 0 #ffffff,
-        -3px  3px 0 #ffffff,
-         3px  3px 0 #ffffff,
-         0 6px 16px rgba(0, 0, 0, 0.22);
+        -1.5px -1.5px 0 #ffffff,
+         1.5px -1.5px 0 #ffffff,
+        -1.5px  1.5px 0 #ffffff,
+         1.5px  1.5px 0 #ffffff,
+         0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     /* Emoji nhảy múa bồng bềnh thu hút trẻ */
@@ -177,6 +186,12 @@
           <span class="text-xs sm:text-sm">🎲</span>
           <span>Lượt Mới</span>
         </button>
+
+        <!-- Nút Đổi Font Chữ Chuẩn Thân Thiện -->
+        <button id="btn-toggle-font" onclick="toggleReadingFont()" title="Đổi kiểu font chữ chuẩn thân thiện cho bé" class="px-2 sm:px-2.5 py-1.5 bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 text-white rounded-xl shadow-xs border border-sky-600 text-[11px] sm:text-xs font-black flex items-center gap-1 active:scale-95 transition">
+          <span class="text-xs sm:text-sm">🔤</span>
+          <span id="font-btn-label">Font Chuẩn</span>
+        </button>
       </div>
     </div>
 
@@ -227,19 +242,19 @@
     <!-- Tab chọn 5 Cấp Độ Đồng Bộ Theo Level Thú Cưng -->
     <div id="level-tabs-bar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 text-[11px] sm:text-xs">
       <button onclick="selectLevel(1)" id="tab-lvl-1" class="lvl-btn active-level px-2.5 py-1.5 rounded-xl font-black bg-rose-500 text-white whitespace-nowrap shadow border border-rose-600 flex items-center gap-1">
-        <span>🌱</span> Cấp 1: Khởi động (50 câu)
+        <span>🌱</span> Cấp 1: Khởi động (100 câu)
       </button>
       <button onclick="selectLevel(2)" id="tab-lvl-2" class="lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1">
-        <span>🏡</span> Cấp 2: Ngôi nhà bé (50 câu)
+        <span>🏡</span> Cấp 2: Ngôi nhà bé (100 câu)
       </button>
       <button onclick="selectLevel(3)" id="tab-lvl-3" class="lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1">
-        <span>🎯</span> Cấp 3: Vần tròn môi (50 câu)
+        <span>🎯</span> Cấp 3: Vần tròn môi (100 câu)
       </button>
       <button onclick="selectLevel(4)" id="tab-lvl-4" class="lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1">
-        <span>🧙‍♂️</span> Cấp 4: Trị đọc sai (50 câu)
+        <span>🧙‍♂️</span> Cấp 4: Trị đọc sai (100 câu)
       </button>
       <button onclick="selectLevel(5)" id="tab-lvl-5" class="lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1">
-        <span>🏆</span> Cấp 5: Diễn cảm (50 câu)
+        <span>🏆</span> Cấp 5: Diễn cảm (100 câu)
       </button>
     </div>
 
@@ -279,7 +294,7 @@
             🎒
           </div>
 
-          <div id="card-sentence" class="text-3xl sm:text-4xl md:text-5xl font-black font-baloo leading-snug tracking-wide text-rose-800 pop-text px-2 py-1">
+          <div id="card-sentence" class="text-3xl sm:text-4xl md:text-5xl font-black font-reading leading-relaxed tracking-wide text-rose-800 pop-text px-2 py-1">
             Bé đi học.
           </div>
         </div>
@@ -528,7 +543,7 @@
 
   <script>
     /* =========================================================================
-       NGÂN HÀNG 250 CÂU LUYỆN ĐỌC TRƠN LỚP 1 (5 CẤP ĐỘ x 50 CÂU TOÀN VẸN)
+       NGÂN HÀNG 500 CÂU LUYỆN ĐỌC TRƠN LỚP 1 (5 CẤP ĐỘ x 100 CÂU TOÀN VẸN)
        ========================================================================= */
     const QUESTION_BANK = {
       level1: [
@@ -564,8 +579,8 @@
         { id: 130, text: "Bàn học gỗ.", emoji: "🪑", guide: "Dấu ngã ở tiếng: gỗ", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
         { id: 131, text: "Bé soi gương.", emoji: "🪞", guide: "Vần ương trong tiếng: soi gương", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
         { id: 132, text: "Đèn bàn sáng.", emoji: "💡", guide: "Âm s trong tiếng: sáng", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
-        { id: 133, text: "Quả mít dai.", emoji: "🍈", guide: "Âm qu và vần it: quả mít", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
-        { id: 134, text: "Xe bò kéo.", emoji: "🐂", guide: "Đọc 3 tiếng dứt khoát", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 133, text: "Quả mít chín.", emoji: "🍈", guide: "Âm qu và vần it: quả mít chín", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 134, text: "Bò kéo xe.", emoji: "🐂", guide: "Đọc 3 tiếng dứt khoát: bò kéo xe", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
         { id: 135, text: "Bé tập đếm.", emoji: "🔢", guide: "Vần âm và vần em: tập đếm", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
         { id: 136, text: "Cá rô phi.", emoji: "🐟", guide: "Âm r rung nhẹ: cá rô phi", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
         { id: 137, text: "Mẹ ru bé.", emoji: "🤱", guide: "Âm r trong tiếng: ru bé", theme: "from-emerald-200 via-green-100 to-lime-200", textColor: "text-emerald-900" },
@@ -573,7 +588,7 @@
         { id: 139, text: "Bé đi ngủ.", emoji: "🛏️", guide: "Dấu hỏi ở tiếng: ngủ", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
         { id: 140, text: "Bình hoa đẹp.", emoji: "🏺", guide: "Vần inh và vần oa: bình hoa", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
         { id: 141, text: "Bé cài nơ.", emoji: "🎀", guide: "Âm n đọc chuẩn: cài nơ", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
-        { id: 142, text: "Trái na mở mắt.", emoji: "🍐", guide: "Âm tr uốn nhẹ: trái na", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 142, text: "Quả na chín.", emoji: "🍐", guide: "Âm qu và n: quả na chín", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
         { id: 143, text: "Cún con sủa.", emoji: "🐕", guide: "Âm s và dấu hỏi: sủa", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
         { id: 144, text: "Đồng hồ reo.", emoji: "⏰", guide: "Âm r trong tiếng: reo", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
         { id: 145, text: "Bé vâng lời.", emoji: "🙏", guide: "Âm v và l: vâng lời", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
@@ -581,7 +596,57 @@
         { id: 147, text: "Bé nhai kĩ.", emoji: "🥣", guide: "Dấu ngã gằn nhẹ: nhai kĩ", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
         { id: 148, text: "Ngựa phi nhanh.", emoji: "🐎", guide: "Vần anh trong tiếng: phi nhanh", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
         { id: 149, text: "Bé tập vẽ.", emoji: "🖍️", guide: "Dấu ngã ở tiếng: vẽ", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
-        { id: 150, text: "Bé ngoan lắm.", emoji: "🥰", guide: "Tròn môi: ngoan lắm", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" }
+        { id: 150, text: "Bé ngoan lắm.", emoji: "🥰", guide: "Tròn môi: ngoan lắm", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 151, text: "Bé chào cô.", emoji: "👩‍🏫", guide: "Âm ch và c: chào cô", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
+        { id: 152, text: "Bé rửa mặt.", emoji: "🧼", guide: "Vần ưa và vần ăt: rửa mặt", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 153, text: "Bé chải đầu.", emoji: "🪮", guide: "Vần ai và vần âu: chải đầu", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 154, text: "Cá chép đỏ.", emoji: "🐠", guide: "Vần ep: cá chép đỏ", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 155, text: "Nụ hoa hồng.", emoji: "🌹", guide: "Âm n và vần ong: hoa hồng", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 156, text: "Bé có ô.", emoji: "☂️", guide: "Âm ô tròn môi rõ ràng", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 157, text: "Mẹ pha trà.", emoji: "🍵", guide: "Âm ph và tr: pha trà", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 158, text: "Bố lái xe.", emoji: "🚗", guide: "Vần ai: bố lái xe", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 159, text: "Bé vỗ tay.", emoji: "👏", guide: "Dấu ngã ở tiếng: vỗ tay", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 160, text: "Cây có quả.", emoji: "🍎", guide: "Âm c và qu: có quả", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 161, text: "Bé ôm bà.", emoji: "👵", guide: "Vần ôm: bé ôm bà", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 162, text: "Bé có bi.", emoji: "🔮", guide: "Đọc dứt khoát 3 tiếng", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 163, text: "Mèo bắt chuột.", emoji: "🐈", guide: "Vần uôt: bắt chuột", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 164, text: "Gà mổ thóc.", emoji: "🌾", guide: "Vần oc: gà mổ thóc", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 165, text: "Bé vẽ tranh.", emoji: "🖼️", guide: "Âm tr và vần anh: tranh", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 166, text: "Bé thổi kèn.", emoji: "🎺", guide: "Vần oi và en: thổi kèn", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 167, text: "Trăng tròn xoe.", emoji: "🌕", guide: "Âm tr và tròn môi: xoe", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 168, text: "Bé hát ca.", emoji: "🎤", guide: "Vần at: bé hát ca", theme: "from-emerald-200 via-green-100 to-lime-200", textColor: "text-emerald-900" },
+        { id: 169, text: "Cá quẫy đuôi.", emoji: "🏊", guide: "Vần uôi và âm qu: quẫy đuôi", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 170, text: "Mẹ may đầm.", emoji: "👗", guide: "Vần âm: may đầm", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
+        { id: 171, text: "Bé gấp chăn.", emoji: "🛏️", guide: "Vần ăp và ăn: gấp chăn", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 172, text: "Bé mang giày.", emoji: "👟", guide: "Vần ang và ay: mang giày", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
+        { id: 173, text: "Hoa cúc vàng.", emoji: "🌼", guide: "Vần uc và ang: cúc vàng", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 174, text: "Bé uống sữa.", emoji: "🥛", guide: "Dấu ngã ở tiếng: sữa", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 175, text: "Bé ăn táo.", emoji: "🍎", guide: "Vần ao: ăn táo", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 176, text: "Bé nhớ mẹ.", emoji: "❤️", guide: "Dấu sắc và dấu hỏi: nhớ mẹ", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 177, text: "Bướm lượn quanh.", emoji: "🦋", guide: "Vần ươm và vần uơn: lượn", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 178, text: "Trời xanh biếc.", emoji: "🌤️", guide: "Âm tr và vần iêc: xanh biếc", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 179, text: "Tay bé sạch.", emoji: "🧼", guide: "Âm s đọc chuẩn: tay bé sạch", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 180, text: "Bé đi dạo.", emoji: "🚶", guide: "Âm d và vần ao: đi dạo", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 181, text: "Ong tìm mật.", emoji: "🐝", guide: "Vần ong và ăt: tìm mật", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 182, text: "Bé lau bàn.", emoji: "🧽", guide: "Vần au và an: lau bàn", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 183, text: "Bé rửa chân.", emoji: "🦶", guide: "Âm ch và vần ân: rửa chân", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 184, text: "Chuối chín vàng.", emoji: "🍌", guide: "Vần uôi và in: chuối chín", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 185, text: "Bé mặc ấm.", emoji: "🧣", guide: "Vần ăc và âm: mặc ấm", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 186, text: "Gà kêu chiếp.", emoji: "🐥", guide: "Vần iêp: gà kêu chiếp", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 187, text: "Bé khoanh tay.", emoji: "🙇", guide: "Vần oanh tròn môi: khoanh", theme: "from-emerald-200 via-green-100 to-lime-200", textColor: "text-emerald-900" },
+        { id: 188, text: "Bé dừng đèn đỏ.", emoji: "🚦", guide: "Vần ưng và vần e: dừng đèn đỏ", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 189, text: "Bé tưới rau.", emoji: "🌱", guide: "Vần ươi và au: tưới rau", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 190, text: "Bé quét sân.", emoji: "🧹", guide: "Vần et và ân: quét sân", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 191, text: "Sách mở ra.", emoji: "📖", guide: "Âm s đọc chuẩn: sách mở", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 192, text: "Bé viết bài.", emoji: "📝", guide: "Vần iêt và ai: viết bài", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 193, text: "Hoa sen hồng.", emoji: "🪷", guide: "Vần en và ong: sen hồng", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 194, text: "Mây trắng bay.", emoji: "☁️", guide: "Âm tr và vần ay: mây trắng", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 195, text: "Bé xếp vở.", emoji: "📚", guide: "Âm x: xếp vở", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 196, text: "Bé mỉm cười.", emoji: "😊", guide: "Vần im và ươi: mỉm cười", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
+        { id: 197, text: "Bé rất vui.", emoji: "🎉", guide: "Vần ui: bé rất vui", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 198, text: "Mẹ yêu bé.", emoji: "👩‍👧", guide: "Vần yêu: mẹ yêu bé", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 199, text: "Bé chăm học.", emoji: "🎓", guide: "Âm ch và vần oc: chăm học", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 200, text: "Bé ngoan nhất.", emoji: "🥇", guide: "Tròn môi vần oan: ngoan nhất", theme: "from-amber-300 via-yellow-200 to-amber-200", textColor: "text-amber-950" }
       ],
       level2: [
         { id: 201, text: "Bé giúp mẹ nhặt rau.", emoji: "🥬", guide: "Ngắt nhịp: Bé giúp mẹ / nhặt rau", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
@@ -593,19 +658,19 @@
         { id: 207, text: "Bút chì đã gọt nhọn.", emoji: "✏️", guide: "Đọc liền cụm: gọt nhọn", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
         { id: 208, text: "Bé tô màu bông hoa.", emoji: "🎨", guide: "Tròn môi: bông hoa", theme: "from-indigo-200 via-sky-100 to-cyan-200", textColor: "text-indigo-900" },
         { id: 209, text: "Mặt trời mọc đằng đông.", emoji: "🌅", guide: "Âm tr chắc tiếng: mặt trời", theme: "from-yellow-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
-        { id: 210, text: "Bầu trời xanh ngắt.", emoji: "☁️", guide: "Vần ăt trong tiếng: xanh ngắt", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
+        { id: 210, text: "Bầu trời hôm nay xanh ngắt.", emoji: "☁️", guide: "Vần ăt trong tiếng: xanh ngắt", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
         { id: 211, text: "Đàn chim bay về tổ.", emoji: "🕊️", guide: "Đọc liền 5 tiếng êm ái", theme: "from-purple-200 via-violet-100 to-sky-200", textColor: "text-purple-900" },
-        { id: 212, text: "Suối chảy róc rách.", emoji: "💧", guide: "Từ láy mô phỏng: róc rách", theme: "from-teal-200 via-cyan-100 to-blue-200", textColor: "text-teal-900" },
+        { id: 212, text: "Dòng suối nhỏ chảy róc rách.", emoji: "💧", guide: "Từ láy mô phỏng: róc rách", theme: "from-teal-200 via-cyan-100 to-blue-200", textColor: "text-teal-900" },
         { id: 213, text: "Vườn nhà nở đầy hoa.", emoji: "🌺", guide: "Vần ươn trong tiếng: vườn", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
         { id: 214, text: "Cây khế ngọt trĩu cành.", emoji: "⭐", guide: "Dấu ngã ở tiếng: trĩu", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
         { id: 215, text: "Bé chào mẹ khi đi học.", emoji: "🙋‍♂️", guide: "Ngắt: Bé chào mẹ / khi đi học", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
-        { id: 216, text: "Trống trường giòn giã.", emoji: "🥁", guide: "Âm tr và dấu ngã: giòn giã", theme: "from-orange-200 via-red-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 216, text: "Tiếng trống trường vang giòn giã.", emoji: "🥁", guide: "Âm tr và dấu ngã: giòn giã", theme: "from-orange-200 via-red-100 to-amber-200", textColor: "text-orange-900" },
         { id: 217, text: "Các bạn cùng xếp hàng.", emoji: "👫", guide: "Vần ang trong tiếng: xếp hàng", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
         { id: 218, text: "Lớp học thật ngăn nắp.", emoji: "🏫", guide: "Vần ắp trong từ: ngăn nắp", theme: "from-indigo-200 via-purple-100 to-teal-200", textColor: "text-indigo-900" },
         { id: 219, text: "Bé lắng nghe cô giảng.", emoji: "👂", guide: "Phân biệt vần: ăng - ang", theme: "from-rose-200 via-amber-100 to-yellow-200", textColor: "text-rose-900" },
         { id: 220, text: "Giờ ra chơi vui nhộn.", emoji: "⚽", guide: "Đọc tươi vui, dứt khoát", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
-        { id: 221, text: "Bé gấp chăn màn gọn.", emoji: "🛌", guide: "Vần ân và an: gấp chăn màn", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
-        { id: 222, text: "Bé dọn bát đĩa sau ăn.", emoji: "🥣", guide: "Dấu ngã: bát đĩa", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 221, text: "Bé gấp chăn màn gọn gàng.", emoji: "🛌", guide: "Từ láy: gọn gàng", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 222, text: "Bé cất bát đĩa sau bữa ăn.", emoji: "🥣", guide: "Dấu ngã: bát đĩa / bữa ăn", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
         { id: 223, text: "Chú mèo vồ bóng len.", emoji: "🧶", guide: "Âm v và l: bóng len", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
         { id: 224, text: "Đàn cá tung tăng bơi.", emoji: "🐠", guide: "Từ láy: tung tăng bơi", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
         { id: 225, text: "Mẹ pha sữa ấm cho em.", emoji: "🥛", guide: "Dấu ngã: pha sữa ấm", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
@@ -627,13 +692,63 @@
         { id: 241, text: "Ông bà luôn vui tươi.", emoji: "🧓", guide: "Vần uôn và ươi: luôn vui tươi", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
         { id: 242, text: "Bé tưới rau sau hè.", emoji: "🌱", guide: "Vần ươi: tưới rau", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
         { id: 243, text: "Quả na chín mở mắt.", emoji: "🍈", guide: "Âm qu và n: quả na", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
-        { id: 244, text: "Bé khoe điểm mười đỏ.", emoji: "💯", guide: "Vần oe và ươi: khoe điểm mười", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 244, text: "Bé khoe điểm mười đỏ thắm.", emoji: "💯", guide: "Vần oe và ươi: khoe điểm mười", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
         { id: 245, text: "Tiếng cười vui rộn rã.", emoji: "😆", guide: "Dấu ngã ở tiếng: rộn rã", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
         { id: 246, text: "Bé gọt bút cẩn thận.", emoji: "✏️", guide: "Ngắt: Bé gọt bút / cẩn thận", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
         { id: 247, text: "Hồ sen ngát hương thơm.", emoji: "🪷", guide: "Âm s và h: sen ngát hương", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
-        { id: 248, text: "Đàn lợn ăn cám no.", emoji: "🐖", guide: "Âm l đọc chuẩn: đàn lợn", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 248, text: "Đàn lợn ăn no ngủ say.", emoji: "🐖", guide: "Âm l và s: đàn lợn / ngủ say", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
         { id: 249, text: "Bé chúc mẹ ngủ ngon.", emoji: "🌙", guide: "Âm ch và ng: ngủ ngon", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
-        { id: 250, text: "Bé thức giấc đúng giờ.", emoji: "⏰", guide: "Âm gi: đúng giờ", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" }
+        { id: 250, text: "Bé thức giấc đúng giờ.", emoji: "⏰", guide: "Âm gi: đúng giờ", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 251, text: "Bé đánh răng thật sạch.", emoji: "🪥", guide: "Âm đ và s: đánh răng sạch", theme: "from-sky-200 via-teal-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 252, text: "Mẹ nấu xôi gấc đỏ.", emoji: "🍚", guide: "Vần ôi và ăc: xôi gấc", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 253, text: "Bố đóng đinh treo tranh.", emoji: "🔨", guide: "Âm đ và tr: đóng đinh / treo tranh", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 254, text: "Bà xâu kim rất khéo.", emoji: "🪡", guide: "Âm x và kh: xâu kim khéo", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 255, text: "Bé cất sách vào ba lô.", emoji: "🎒", guide: "Ngắt nhịp: Bé cất sách / vào ba lô", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 256, text: "Mèo con chăm chỉ liếm lông.", emoji: "🐱", guide: "Âm l chuẩn: liếm lông", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 257, text: "Cún vẫy đuôi mừng bố.", emoji: "🐕", guide: "Dấu ngã: vẫy đuôi", theme: "from-indigo-200 via-sky-100 to-cyan-200", textColor: "text-indigo-900" },
+        { id: 258, text: "Bé rửa chén bát sạch sẽ.", emoji: "🥣", guide: "Âm ch và s: chén bát sạch sẽ", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 259, text: "Hoa hồng tỏa hương thơm.", emoji: "🌹", guide: "Âm h và th: hoa hồng / hương thơm", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 260, text: "Bé quét dọn góc học tập.", emoji: "🧹", guide: "Vần et và âm gi: quét dọn", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 261, text: "Mặt trời chiếu nắng ấm.", emoji: "☀️", guide: "Âm tr và ch: mặt trời chiếu", theme: "from-yellow-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 262, text: "Bé đi ngủ sớm mỗi tối.", emoji: "🌙", guide: "Âm s và vần ơi: sớm / tối", theme: "from-purple-200 via-violet-100 to-sky-200", textColor: "text-purple-900" },
+        { id: 263, text: "Gà trống gáy vang buổi sớm.", emoji: "🐓", guide: "Âm tr và s: trống / buổi sớm", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 264, text: "Vườn rau xanh mơn mởn.", emoji: "🥬", guide: "Vần ơn: mơn mởn", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
+        { id: 265, text: "Bé lau khô đôi tay.", emoji: "🙌", guide: "Vần au và ay: lau khô đôi tay", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
+        { id: 266, text: "Bố đọc báo buổi sớm.", emoji: "📰", guide: "Vần ao và uôi: báo buổi sớm", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 267, text: "Bà nhai trầu đỏ tươi.", emoji: "👵", guide: "Âm tr và vần au: trầu đỏ tươi", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 268, text: "Bé uống hết ly sữa.", emoji: "🥛", guide: "Dấu ngã: ly sữa", theme: "from-teal-200 via-cyan-100 to-blue-200", textColor: "text-teal-900" },
+        { id: 269, text: "Tiếng ve kêu rộn rã.", emoji: "🦗", guide: "Dấu ngã: rộn rã", theme: "from-orange-200 via-red-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 270, text: "Bé tô màu bức tranh.", emoji: "🖍️", guide: "Âm tr: bức tranh", theme: "from-indigo-200 via-purple-100 to-teal-200", textColor: "text-indigo-900" },
+        { id: 271, text: "Con suối reo trong vắt.", emoji: "💧", guide: "Âm s: con suối trong vắt", theme: "from-sky-200 via-cyan-100 to-teal-200", textColor: "text-sky-900" },
+        { id: 272, text: "Bé nhổ cỏ quanh gốc hoa.", emoji: "🌱", guide: "Dấu hỏi: nhổ cỏ", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 273, text: "Mẹ cắt móng tay cho bé.", emoji: "✂️", guide: "Vần ong và ay: móng tay", theme: "from-pink-200 via-rose-100 to-amber-200", textColor: "text-pink-900" },
+        { id: 274, text: "Bé chải tóc thật mượt.", emoji: "💇", guide: "Vần ươt: thật mượt", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 275, text: "Đàn cá bơi lội dưới ao.", emoji: "🐟", guide: "Vần ơi và ôi: bơi lội", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 276, text: "Bé xếp gọn giá giày dép.", emoji: "👞", guide: "Âm gi và d: giá giày dép", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 277, text: "Bé không nói chuyện riêng.", emoji: "🤫", guide: "Vần uyên và iêng: chuyện riêng", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 278, text: "Hoa cúc khoe sắc vàng.", emoji: "🌼", guide: "Vần oe: khoe sắc vàng", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 279, text: "Bé tự xúc cơm ăn.", emoji: "🍚", guide: "Âm x: xúc cơm ăn", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 280, text: "Gió lay nhẹ cành đào.", emoji: "🌸", guide: "Vần ay: lay nhẹ cành", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
+        { id: 281, text: "Bé tập nhảy dây vui vẻ.", emoji: "🪢", guide: "Dấu hỏi: nhảy dây vui vẻ", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 282, text: "Bố đóng kệ sách mới cho bé.", emoji: "🪵", guide: "Âm đ và s: đóng kệ sách", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 283, text: "Bé vâng lời bố mẹ dặn.", emoji: "🙏", guide: "Âm v: vâng lời", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 284, text: "Chim sáo hót líu lo.", emoji: "🐦", guide: "Âm s và l: sáo / líu lo", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 285, text: "Bé yêu thương ông bà.", emoji: "🧓", guide: "Vần ương: yêu thương", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 286, text: "Đèn đỏ bé dừng lại bên đường.", emoji: "🚦", guide: "Ngắt: Đèn đỏ / bé dừng lại", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 287, text: "Trái bưởi chín vàng ươm.", emoji: "🍐", guide: "Vần ươi và ươm: bưởi chín", theme: "from-yellow-200 via-lime-100 to-emerald-200", textColor: "text-amber-900" },
+        { id: 288, text: "Bé lau bảng giúp cô.", emoji: "🧽", guide: "Vần au và ang: lau bảng", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 289, text: "Chiếc cặp sách màu xanh.", emoji: "🎒", guide: "Âm s và x: sách màu xanh", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 290, text: "Mẹ may cho bé chiếc váy đẹp.", emoji: "👗", guide: "Vần ay: may cho bé", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 291, text: "Bé giữ trật tự trong lớp.", emoji: "🤫", guide: "Âm tr: trật tự", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 292, text: "Cơn gió mùa thu mát dịu.", emoji: "🍃", guide: "Vần iu: mát dịu", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 293, text: "Bé ăn nhiều rau xanh.", emoji: "🥦", guide: "Vần au và anh: rau xanh", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 294, text: "Đàn bướm bay lượn quanh.", emoji: "🦋", guide: "Vần ươm và uơn: bướm bay lượn", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 295, text: "Bé chào tạm biệt cô.", emoji: "👋", guide: "Vần iêt: tạm biệt", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 296, text: "Đồng hồ reo reng reng.", emoji: "⏰", guide: "Vần eng: reo reng reng", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 297, text: "Bé mỉm cười chào khách.", emoji: "😊", guide: "Vần im và ach: mỉm cười / khách", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 298, text: "Bàn tay bé nhỏ xinh xắn.", emoji: "🖐️", guide: "Âm x: nhỏ xinh xắn", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 299, text: "Bé viết bài nhanh và đúng.", emoji: "✍️", guide: "Vần anh và ung: nhanh và đúng", theme: "from-teal-200 via-emerald-100 to-cyan-200", textColor: "text-teal-900" },
+        { id: 300, text: "Bé là bông hoa điểm mười.", emoji: "💯", guide: "Vần oa và ươi: hoa điểm mười", theme: "from-rose-300 via-amber-200 to-pink-200", textColor: "text-rose-900" }
       ],
       level3: [
         { id: 301, text: "Bé khoanh tay lễ phép.", emoji: "🙇‍♂️", guide: "Vần oanh tròn môi: khoanh tay", theme: "from-sky-200 via-cyan-100 to-teal-200", textColor: "text-sky-900" },
@@ -657,9 +772,9 @@
         { id: 319, text: "Gió heo may se se lạnh.", emoji: "🌾", guide: "Từ láy dịu nhẹ: se se lạnh", theme: "from-amber-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
         { id: 320, text: "Bé chăm chỉ luyện chữ.", emoji: "📝", guide: "Vần uyên: luyện chữ", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
         { id: 321, text: "Bé huơ tay đón bố về.", emoji: "👋", guide: "Vần uơ: huơ tay", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
-        { id: 322, text: "Hoa vạn thọ xum xuê.", emoji: "🌼", guide: "Vần uê: xum xuê", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 322, text: "Cây hoa giấy nở xum xuê.", emoji: "🌼", guide: "Vần uê: nở xum xuê", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
         { id: 323, text: "Chú cún chạy quýnh quáng.", emoji: "🐕", guide: "Vần uynh - uang: quýnh quáng", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
-        { id: 324, text: "Trọng tài thổi còi huýt.", emoji: "📢", guide: "Vần uyt: còi huýt", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 324, text: "Chú cảnh sát tuýt còi xin đường.", emoji: "📢", guide: "Vần uyt: tuýt còi", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
         { id: 325, text: "Vườn hoa huệ trắng ngần.", emoji: "🪻", guide: "Vần uê: hoa huệ", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
         { id: 326, text: "Bé mở toang cánh cửa sổ.", emoji: "🪟", guide: "Vần oang: mở toang", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
         { id: 327, text: "Bạn Nga mặc áo khoác đỏ.", emoji: "🧥", guide: "Vần oac: áo khoác", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
@@ -671,7 +786,7 @@
         { id: 333, text: "Bé giải bài toán rất nhanh.", emoji: "🧮", guide: "Vần oan: bài toán", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
         { id: 334, text: "Khóm tre nghiêng bóng mát.", emoji: "🎋", guide: "Vần iêng: nghiêng bóng mát", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
         { id: 335, text: "Tiếng ve kêu râm ran.", emoji: "🦗", guide: "Từ láy: râm ran", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
-        { id: 336, text: "Bé ngoan được tặng phiếu.", emoji: "🎫", guide: "Vần iêu: phiếu bé ngoan", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 336, text: "Bé ngoan được tặng phiếu khen.", emoji: "🎫", guide: "Vần iêu: phiếu khen", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
         { id: 337, text: "Chim chuyền cành thoăn thoắt.", emoji: "🐦", guide: "Vần uyên và oăt", theme: "from-emerald-200 via-green-100 to-lime-200", textColor: "text-emerald-900" },
         { id: 338, text: "Bố khuấy đều ly sữa nóng.", emoji: "☕", guide: "Vần uây: khuấy đều", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
         { id: 339, text: "Bé chạy huỳnh huỵch ngoài sân.", emoji: "🏃", guide: "Vần uynh - uych khó", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
@@ -679,65 +794,165 @@
         { id: 341, text: "Bé khoác vai bạn thân.", emoji: "🫂", guide: "Vần oac: khoác vai", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-800" },
         { id: 342, text: "Ngọn đuốc sáng rực rỡ.", emoji: "🔥", guide: "Vần uôc: ngọn đuốc", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
         { id: 343, text: "Đoàn kết là sức mạnh.", emoji: "🤝", guide: "Vần oan: đoàn kết", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
-        { id: 344, text: "Bé huýt sáo vang rộn.", emoji: "😙", guide: "Vần uyt và s: huýt sáo", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
-        { id: 345, text: "Lá vàng xoay tít bay.", emoji: "🍂", guide: "Vần oay: xoay tít", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 344, text: "Bé huýt sáo vang rộn ràng.", emoji: "😙", guide: "Vần uyt và r: huýt sáo rộn ràng", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 345, text: "Lá vàng bay xoay tít trong gió.", emoji: "🍂", guide: "Vần oay: xoay tít", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
         { id: 346, text: "Bé múa dẻo như tiên.", emoji: "🧚", guide: "Vần ua và iên: múa dẻo", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
         { id: 347, text: "Con đường làng quanh co.", emoji: "🛤️", guide: "Vần oanh: quanh co", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
         { id: 348, text: "Vườn cam sai trĩu cành.", emoji: "🍊", guide: "Âm s và tr: sai trĩu", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
         { id: 349, text: "Bé đọc thơ lưu loát.", emoji: "📖", guide: "Vần oat: lưu loát", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
-        { id: 350, text: "Mẹ mỉm cười xoa đầu bé.", emoji: "🤱", guide: "Vần oa tròn môi: xoa đầu", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" }
+        { id: 350, text: "Mẹ mỉm cười xoa đầu bé.", emoji: "🤱", guide: "Vần oa tròn môi: xoa đầu", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 351, text: "Bé huơ tay vẫy chào chú hải quân.", emoji: "⚓", guide: "Vần uơ: huơ tay vẫy chào", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 352, text: "Hoa vạn thọ xum xuê trước ngõ.", emoji: "🌼", guide: "Vần uê: xum xuê trước ngõ", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 353, text: "Bé xem biểu diễn xiếc khỉ vui nhộn.", emoji: "🐵", guide: "Vần iêu và iêc: biểu diễn xiếc", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 354, text: "Chiếc xích đu đung đưa dưới bóng mát.", emoji: "🎪", guide: "Vần ich và uô: xích đu / bóng mát", theme: "from-teal-200 via-sky-100 to-indigo-200", textColor: "text-teal-900" },
+        { id: 355, text: "Bé cùng mẹ khuấy nồi chè đậu xanh.", emoji: "🍲", guide: "Vần uây: khuấy nồi chè", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 356, text: "Tiếng chim hót ríu rít trên ngọn cây.", emoji: "🐦", guide: "Âm r: ríu rít trên ngọn cây", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
+        { id: 357, text: "Bé lau sạch chiếc gương tròn xoe.", emoji: "🪞", guide: "Tròn môi vần oe: tròn xoe", theme: "from-sky-200 via-cyan-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 358, text: "Đoàn xe lửa chạy xình xịch qua đèo.", emoji: "🚂", guide: "Vần oan và ich: đoàn xe lửa", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
+        { id: 359, text: "Bé mặc áo len cổ lọ màu tuyết trắng.", emoji: "❄️", guide: "Vần uyêt: màu tuyết trắng", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 360, text: "Bé chạy lon ton theo mẹ ra chợ hoa.", emoji: "💐", guide: "Vần on và oa: lon ton / chợ hoa", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 361, text: "Chú cún mừng quýnh vẫy đuôi đón bé.", emoji: "🐶", guide: "Vần uynh: mừng quýnh", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 362, text: "Bé xòe ngón tay đếm từ một đến mười.", emoji: "🔢", guide: "Vần oe: xòe ngón tay", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 363, text: "Dòng suối trong veo lượn quanh xóm nhỏ.", emoji: "🏞️", guide: "Vần eo và uơn: trong veo / lượn", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 364, text: "Bé đọc to bài văn trước cả lớp.", emoji: "📖", guide: "Âm đ và tr: đọc to / trước lớp", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 365, text: "Vườn hoa ngát hương thơm trong nắng sớm.", emoji: "🌺", guide: "Vần ươn và ang: ngát hương thơm", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
+        { id: 366, text: "Bé xếp hình tòa lâu đài thật lộng lẫy.", emoji: "🏰", guide: "Dấu ngã: lộng lẫy", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 367, text: "Mẹ gọt đĩa hoa quả ngọt ngào cho bé.", emoji: "🍎", guide: "Vần oa và ao: hoa quả ngọt ngào", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 368, text: "Bé thổi kèn vang lên từng khúc nhạc.", emoji: "🎺", guide: "Vần oi và en: thổi kèn", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 369, text: "Bố dạy bé cách buộc dây giày thật chặt.", emoji: "👟", guide: "Vần uôc và ay: buộc dây giày", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
+        { id: 370, text: "Chim sáo nâu nhảy nhót trên cành bàng.", emoji: "🐦", guide: "Âm s và n: sáo nâu nhảy nhót", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 371, text: "Bé ngắm bông hoa hồng nhung thơm ngát.", emoji: "🌹", guide: "Vần ơi và ung: hoa hồng nhung", theme: "from-rose-200 via-pink-100 to-purple-200", textColor: "text-rose-900" },
+        { id: 372, text: "Bầu trời mùa đông nhiều mây xám xịt.", emoji: "☁️", guide: "Âm x: xám xịt", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 373, text: "Bé cùng bạn dạo chơi quanh hồ sen.", emoji: "🪷", guide: "Vần ao và en: dạo chơi / hồ sen", theme: "from-pink-200 via-rose-100 to-amber-200", textColor: "text-pink-900" },
+        { id: 374, text: "Bà vuốt tóc khen bé rất ngoan ngoãn.", emoji: "👵", guide: "Tròn môi: ngoan ngoãn", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 375, text: "Chiếc thuyền buồm đỏ thắm lướt ra khơi.", emoji: "⛵", guide: "Vần uyên và uôm: thuyền buồm", theme: "from-sky-200 via-cyan-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 376, text: "Bé vẽ quả dưa hấu đỏ ngọt lịm.", emoji: "🍉", guide: "Vần ưa và âu: dưa hấu đỏ", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 377, text: "Bé rửa sạch cốc nước sau khi uống.", emoji: "🥛", guide: "Vần ôc và uông: cốc nước", theme: "from-teal-200 via-emerald-100 to-cyan-200", textColor: "text-teal-900" },
+        { id: 378, text: "Tiếng cười giòn giã vang khắp góc sân.", emoji: "😆", guide: "Âm gi và dấu ngã: giòn giã", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 379, text: "Đàn kiến cần cù tha mồi về tổ.", emoji: "🐜", guide: "Vần iên và ân: kiến cần cù", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 380, text: "Bé không đùa nghịch trong lớp học.", emoji: "🏫", guide: "Vần ua và ich: đùa nghịch", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 381, text: "Cánh hoa đào bay lả tả trong làn gió xuân.", emoji: "🌸", guide: "Dấu hỏi: bay lả tả trong gió", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
+        { id: 382, text: "Bé gấp chiếc thuyền giấy màu vàng tươi.", emoji: "🚢", guide: "Vần uyên và ươi: thuyền giấy / tươi", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 383, text: "Bé lau sạch bảng đen giúp cô giáo.", emoji: "🧽", guide: "Vần ang và en: bảng đen", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 384, text: "Con đường làng uốn lượn bên bờ kênh.", emoji: "🏞️", guide: "Vần uơn và ênh: uốn lượn / kênh", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 385, text: "Bé cẩn thận gọt từng chiếc bút chì.", emoji: "✏️", guide: "Âm c và ch: cẩn thận / bút chì", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 386, text: "Bác bảo vệ đánh trống báo giờ tan học.", emoji: "🥁", guide: "Âm tr và an: trống / tan học", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 387, text: "Bé giữ gìn sách vở luôn sạch sẽ.", emoji: "📚", guide: "Âm gi và s: giữ gìn / sạch sẽ", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 388, text: "Bé nắm tay em nhỏ dắt qua đường.", emoji: "🤝", guide: "Âm d và tr: dắt qua đường", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 389, text: "Những tia nắng ấm rọi sáng gian phòng.", emoji: "☀️", guide: "Vần ia và ang: tia nắng / sáng", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 390, text: "Bé tưới khóm hoa mười giờ rực rỡ.", emoji: "🌺", guide: "Âm r: rực rỡ", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 391, text: "Bé làm xong bài tập cô giao về nhà.", emoji: "📝", guide: "Âm b và g: bài tập / giao", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 392, text: "Cơn mưa rào tạnh hẳn trời lại sáng trong.", emoji: "🌈", guide: "Âm r và tr: mưa rào / sáng trong", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 393, text: "Bé lễ phép thưa gửi với người lớn.", emoji: "🙇", guide: "Vần ưa và ửi: thưa gửi", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 394, text: "Mẹ may cho bé chiếc khẩu trang xinh.", emoji: "😷", guide: "Vần âu và ang: khẩu trang xinh", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
+        { id: 395, text: "Bé biết nói lời cảm ơn chân thành.", emoji: "💐", guide: "Vần ơn và ân: cảm ơn / chân thành", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
+        { id: 396, text: "Đàn vịt con bơi lội dưới bóng tre.", emoji: "🦆", guide: "Vần ơi và ôi: bơi lội", theme: "from-yellow-200 via-amber-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 397, text: "Bé giúp mẹ quét sân sạch bóng.", emoji: "🧹", guide: "Vần et và âm s: quét sân sạch", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 398, text: "Bé chăm ngoan được cô tặng hoa điểm mười.", emoji: "💮", guide: "Tròn môi: chăm ngoan / hoa điểm mười", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 399, text: "Mỗi ngày bé học thêm nhiều điều mới lạ.", emoji: "💡", guide: "Vần iêu và ơi: nhiều điều mới lạ", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 400, text: "Bé đọc sách chăm chỉ để mở mang kiến thức.", emoji: "📚", guide: "Âm ch và k: chăm chỉ / kiến thức", theme: "from-sky-300 via-teal-200 to-indigo-200", textColor: "text-indigo-950" }
       ],
       level4: [
-        { id: 401, text: "Mẹ đi chợ mua cá trắm.", emoji: "🐟", guide: "Âm tr cong lưỡi chắc: cá trắm", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
-        { id: 402, text: "Bé không xả rác bừa bãi.", emoji: "🚯", guide: "Âm x nhẹ và dấu ngã: bừa bãi", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
-        { id: 403, text: "Cây sung có nhiều quả non.", emoji: "🌳", guide: "Âm s cong lưỡi: cây sung", theme: "from-green-200 via-lime-100 to-teal-200", textColor: "text-green-900" },
-        { id: 404, text: "Bé xâu kim giúp bà ngoại.", emoji: "🪡", guide: "Âm x nhẹ: xâu kim", theme: "from-purple-200 via-pink-100 to-indigo-200", textColor: "text-purple-900" },
-        { id: 405, text: "Bố lái xe cẩn thận qua cầu.", emoji: "🚗", guide: "Ngắt: Bố lái xe / qua cầu", theme: "from-orange-200 via-yellow-100 to-rose-200", textColor: "text-orange-900" },
-        { id: 406, text: "Hoa sen thơm ngát đầm lầy.", emoji: "🪷", guide: "Âm s và l: sen - đầm lầy", theme: "from-sky-200 via-blue-100 to-teal-200", textColor: "text-sky-900" },
-        { id: 407, text: "Bé suy nghĩ tìm cách giải.", emoji: "💡", guide: "Dấu ngã gằn nhẹ: suy nghĩ", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
-        { id: 408, text: "Vườn rau cải nở hoa vàng.", emoji: "🌼", guide: "Dấu hỏi hạ giọng nhẹ: rau cải", theme: "from-indigo-200 via-sky-100 to-purple-200", textColor: "text-indigo-900" },
-        { id: 409, text: "Cánh đồng lúa chín vàng ươm.", emoji: "🌾", guide: "Âm l bật đầu lưỡi: đồng lúa", theme: "from-green-200 via-emerald-100 to-yellow-200", textColor: "text-green-900" },
-        { id: 410, text: "Bé luôn nhớ lời cô dặn.", emoji: "👂", guide: "Âm l chuẩn: luôn nhớ lời", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
-        { id: 411, text: "Bà nhóm bếp lửa củi hồng.", emoji: "🪵", guide: "Dấu hỏi nhẹ nhàng: lửa củi", theme: "from-sky-200 via-cyan-100 to-teal-200", textColor: "text-sky-900" },
-        { id: 412, text: "Trăng rằm tròn vành vạnh.", emoji: "🌕", guide: "Rung lưỡi ở âm tr và r: trăng rằm", theme: "from-amber-200 via-yellow-100 to-rose-200", textColor: "text-amber-900" },
-        { id: 413, text: "Bé lau chùi bàn sạch sẽ.", emoji: "✨", guide: "Âm s và dấu ngã: sạch sẽ", theme: "from-teal-200 via-emerald-100 to-cyan-200", textColor: "text-teal-900" },
-        { id: 414, text: "Chú chim sẻ chuyền cành êm.", emoji: "🐤", guide: "Âm s nhẹ: chim sẻ", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
-        { id: 415, text: "Bé vui sướng đón nhận quà.", emoji: "🎁", guide: "Âm s cong lưỡi: vui sướng", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
-        { id: 416, text: "Cơn gió lùa qua ô cửa sổ.", emoji: "🪟", guide: "Âm l và s: lùa / cửa sổ", theme: "from-green-200 via-teal-100 to-lime-200", textColor: "text-green-900" },
-        { id: 417, text: "Mẹ ôm bé vào lòng vỗ về.", emoji: "🤗", guide: "Dấu ngã ngân nhẹ: vỗ về", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
-        { id: 418, text: "Đàn lợn con ủn ỉn đòi ăn.", emoji: "🐷", guide: "Dấu hỏi hạ giọng: ủn ỉn", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
-        { id: 419, text: "Bé rèn từng nét chữ thẳng.", emoji: "📏", guide: "Âm r và th: chữ thẳng", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
-        { id: 420, text: "Cả nhà luôn yêu thương nhau.", emoji: "❤️", guide: "Âm l chắc tiếng: luôn yêu thương", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
-        { id: 421, text: "Con trâu gặm cỏ bờ đê.", emoji: "🐃", guide: "Âm tr: con trâu gặm cỏ", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
-        { id: 422, text: "Bé chia sẻ đồ chơi cùng bạn.", emoji: "🧸", guide: "Âm ch và s: chia sẻ", theme: "from-sky-200 via-teal-100 to-cyan-200", textColor: "text-sky-900" },
-        { id: 423, text: "Mẹ nấu canh sườn chua ngọt.", emoji: "🍲", guide: "Âm s: canh sườn", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
-        { id: 424, text: "Bé xúc xích ăn bữa sáng.", emoji: "🌭", guide: "Âm x nhẹ: xúc xích", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
-        { id: 425, text: "Bé làm nũng đòi mẹ bế.", emoji: "🥺", guide: "Dấu ngã: làm nũng", theme: "from-rose-200 via-pink-100 to-indigo-200", textColor: "text-rose-900" },
-        { id: 426, text: "Chú rùa bò chầm chậm.", emoji: "🐢", guide: "Âm r và ch: rùa bò chậm", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
-        { id: 427, text: "Bé giữ gìn đồ chơi sạch.", emoji: "🧼", guide: "Âm gi và s: giữ gìn / sạch", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
-        { id: 428, text: "Nước giếng trong vắt mát rượi.", emoji: "🚰", guide: "Âm gi và r: giếng / mát rượi", theme: "from-indigo-200 via-sky-100 to-cyan-200", textColor: "text-indigo-900" },
-        { id: 429, text: "Bé dũng cảm tiêm phòng.", emoji: "💉", guide: "Dấu ngã: dũng cảm", theme: "from-yellow-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
-        { id: 430, text: "Mẹ dặn bé đi bên phải.", emoji: "🚶", guide: "Âm d và ph: dặn / bên phải", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
-        { id: 431, text: "Cây chuối trổ hoa rực rỡ.", emoji: "🌺", guide: "Âm tr và r: trổ / rực rỡ", theme: "from-purple-200 via-violet-100 to-sky-200", textColor: "text-purple-900" },
-        { id: 432, text: "Bé xách cặp đi bộ tới trường.", emoji: "🎒", guide: "Âm x và tr: xách cặp / trường", theme: "from-teal-200 via-cyan-100 to-blue-200", textColor: "text-teal-900" },
-        { id: 433, text: "Chim sáo hót ríu rít trên cây.", emoji: "🐦", guide: "Âm s và r: sáo / ríu rít", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
-        { id: 434, text: "Bé rửa sạch đôi bàn chân.", emoji: "🦶", guide: "Âm s và ch: sạch / chân", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
-        { id: 435, text: "Nắng lung linh trên ngọn tre.", emoji: "🎋", guide: "Âm l và tr: lung linh / tre", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
-        { id: 436, text: "Bé nỗ lực rèn chữ đẹp.", emoji: "✍️", guide: "Dấu ngã: nỗ lực / rèn chữ", theme: "from-orange-200 via-red-100 to-amber-200", textColor: "text-orange-900" },
-        { id: 437, text: "Dòng sông uốn lượn quanh làng.", emoji: "🏞️", guide: "Âm s và l: sông / lượn / làng", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
-        { id: 438, text: "Bé xếp dép ngay ngắn lại.", emoji: "🩴", guide: "Âm x và ng: xếp dép", theme: "from-indigo-200 via-purple-100 to-teal-200", textColor: "text-indigo-900" },
-        { id: 439, text: "Cả nhà cười nói rôm rả.", emoji: "😄", guide: "Âm r và dấu hỏi: rôm rả", theme: "from-rose-200 via-amber-100 to-yellow-200", textColor: "text-rose-900" },
-        { id: 440, text: "Bé ngắm trăng sáng vằng vặc.", emoji: "🌕", guide: "Âm tr và s: trăng sáng", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
-        { id: 441, text: "Mẹ chải tóc mượt cho bé.", emoji: "💇", guide: "Âm ch: chải tóc mượt", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
-        { id: 442, text: "Bố đóng chiếc giá sách mới.", emoji: "🪚", guide: "Âm gi và s: giá sách", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
-        { id: 443, text: "Bé vẽ bức tranh mùa xuân.", emoji: "🖼️", guide: "Âm tr và x: tranh / mùa xuân", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
-        { id: 444, text: "Hoa sen tỏa ngát hương thơm.", emoji: "🪷", guide: "Âm s và dấu hỏi: sen tỏa", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
-        { id: 445, text: "Bé lo lắng khi bị điểm kém.", emoji: "😟", guide: "Âm l chuẩn: lo lắng", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
-        { id: 446, text: "Mẹ vỗ về khuyên nhủ bé.", emoji: "🤱", guide: "Dấu ngã và hỏi: vỗ về / nhủ", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
-        { id: 447, text: "Bé quyết tâm siêng năng học.", emoji: "💪", guide: "Âm s và n: siêng năng", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
-        { id: 448, text: "Cánh diều lượn giữa trời cao.", emoji: "🪁", guide: "Âm d và tr: giữa trời cao", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
-        { id: 449, text: "Bé xoa dịu vết đau cho em.", emoji: "🩹", guide: "Âm x và d: xoa dịu", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
-        { id: 450, text: "Trời thu trong xanh mát mẻ.", emoji: "🍂", guide: "Âm tr và x: trời trong xanh", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" }
+        { id: 401, text: "Mẹ đi chợ mua con cá trắm tươi ngon.", emoji: "🐟", guide: "Âm tr cong lưỡi chắc: cá trắm tươi ngon", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 402, text: "Bé không xả rác bừa bãi ra sân trường.", emoji: "🚯", guide: "Âm x nhẹ và dấu ngã: bừa bãi", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 403, text: "Cây sung bên bờ ao có từng chùm quả non.", emoji: "🌳", guide: "Âm s cong lưỡi: cây sung / chùm quả", theme: "from-green-200 via-lime-100 to-teal-200", textColor: "text-green-900" },
+        { id: 404, text: "Bé khéo léo xâu kim giúp bà ngoại may áo.", emoji: "🪡", guide: "Âm x nhẹ: khéo léo / xâu kim", theme: "from-purple-200 via-pink-100 to-indigo-200", textColor: "text-purple-900" },
+        { id: 405, text: "Bố lái xe ô tô cẩn thận khi qua cầu dài.", emoji: "🚗", guide: "Ngắt: Bố lái xe / qua cầu dài", theme: "from-orange-200 via-yellow-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 406, text: "Hoa sen tỏa hương thơm ngát khắp đầm sen quê hương.", emoji: "🪷", guide: "Âm s và th: hoa sen / thơm ngát", theme: "from-sky-200 via-blue-100 to-teal-200", textColor: "text-sky-900" },
+        { id: 407, text: "Bé suy nghĩ thật kỹ để tìm cách giải bài toán khó.", emoji: "💡", guide: "Dấu ngã gằn nhẹ: suy nghĩ / kỹ", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 408, text: "Vườn rau cải sau nhà nở rộ những bông hoa vàng.", emoji: "🌼", guide: "Dấu hỏi hạ giọng nhẹ: rau cải / nở rộ", theme: "from-indigo-200 via-sky-100 to-purple-200", textColor: "text-indigo-900" },
+        { id: 409, text: "Cánh đồng lúa chín vàng ươm dưới nắng mùa gặt.", emoji: "🌾", guide: "Âm l bật đầu lưỡi: đồng lúa / mùa gặt", theme: "from-green-200 via-emerald-100 to-yellow-200", textColor: "text-green-900" },
+        { id: 410, text: "Bé luôn chăm ngoan và ghi nhớ lời cô giáo dặn.", emoji: "👂", guide: "Âm l chuẩn: luôn nhớ lời", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 411, text: "Bà ngồi bên bếp nhóm ngọn lửa củi hồng ấm áp.", emoji: "🪵", guide: "Dấu hỏi nhẹ nhàng: ngọn lửa củi", theme: "from-sky-200 via-cyan-100 to-teal-200", textColor: "text-sky-900" },
+        { id: 412, text: "Ánh trăng rằm tháng Tám sáng trong và tròn vành vạnh.", emoji: "🌕", guide: "Rung lưỡi ở âm tr và r: trăng rằm / tròn", theme: "from-amber-200 via-yellow-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 413, text: "Bé lau chùi bàn học của mình thật sạch sẽ.", emoji: "✨", guide: "Âm s và dấu ngã: sạch sẽ", theme: "from-teal-200 via-emerald-100 to-cyan-200", textColor: "text-teal-900" },
+        { id: 414, text: "Chú chim sẻ nhỏ chuyền cành êm ái dưới vòm lá xanh.", emoji: "🐤", guide: "Âm s nhẹ: chim sẻ / chuyền cành", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 415, text: "Bé vui sướng đón nhận món quà sinh nhật ý nghĩa.", emoji: "🎁", guide: "Âm s cong lưỡi: vui sướng / ý nghĩa", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 416, text: "Cơn gió thu mát rượi lùa qua từng ô cửa sổ.", emoji: "🪟", guide: "Âm l và s: lùa / cửa sổ", theme: "from-green-200 via-teal-100 to-lime-200", textColor: "text-green-900" },
+        { id: 417, text: "Mẹ âu yếm ôm bé vào lòng và dịu dàng vỗ về.", emoji: "🤗", guide: "Dấu ngã ngân nhẹ: âu yếm / vỗ về", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 418, text: "Đàn lợn con ủn ỉn vẫy tai đòi mẹ cho ăn.", emoji: "🐷", guide: "Dấu hỏi hạ giọng: ủn ỉn", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
+        { id: 419, text: "Bé kiên nhẫn rèn từng nét chữ thật thẳng hàng ngay ngắn.", emoji: "📏", guide: "Âm r và th: rèn / chữ thẳng", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 420, text: "Mọi người trong gia đình luôn yêu thương và chia sẻ cùng nhau.", emoji: "❤️", guide: "Âm l chắc tiếng: luôn yêu thương", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 421, text: "Con trâu béo mộng thong thả gặm cỏ bên bờ đê.", emoji: "🐃", guide: "Âm tr: con trâu gặm cỏ", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 422, text: "Bé vui vẻ chia sẻ đồ chơi yêu thích cùng các bạn.", emoji: "🧸", guide: "Âm ch và s: chia sẻ", theme: "from-sky-200 via-teal-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 423, text: "Mẹ nấu món canh sườn chua ngọt thơm lừng cho cả nhà.", emoji: "🍲", guide: "Âm s: canh sườn chua ngọt", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 424, text: "Bé ăn bánh mì kẹp xúc xích thơm ngon vào bữa sáng.", emoji: "🌭", guide: "Âm x nhẹ: xúc xích / bữa sáng", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 425, text: "Bé sà vào lòng mẹ làm nũng sau giờ tan học.", emoji: "🥺", guide: "Dấu ngã: làm nũng", theme: "from-rose-200 via-pink-100 to-indigo-200", textColor: "text-rose-900" },
+        { id: 426, text: "Chú rùa nhỏ bò từng bước chầm chậm trên bãi cỏ xanh.", emoji: "🐢", guide: "Âm r và ch: rùa bò chầm chậm", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 427, text: "Bé luôn giữ gìn đồ chơi sạch sẽ và cất gọn gàng.", emoji: "🧼", guide: "Âm gi và s: giữ gìn / sạch sẽ", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 428, text: "Dòng nước giếng làng quanh năm trong vắt và mát rượi.", emoji: "🚰", guide: "Âm gi và r: giếng / mát rượi", theme: "from-indigo-200 via-sky-100 to-cyan-200", textColor: "text-indigo-900" },
+        { id: 429, text: "Bé rất dũng cảm, không hề khóc nhè khi đi tiêm phòng.", emoji: "💉", guide: "Dấu ngã: dũng cảm / khóc nhè", theme: "from-yellow-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 430, text: "Mẹ dặn bé khi đi bộ trên đường phải luôn đi bên phải.", emoji: "🚶", guide: "Âm d và ph: dặn / bên phải", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
+        { id: 431, text: "Cây chuối sau vườn trổ buồng quả xanh mướt sai trĩu cành.", emoji: "🌺", guide: "Âm tr và r: trổ buồng / sai trĩu", theme: "from-purple-200 via-violet-100 to-sky-200", textColor: "text-purple-900" },
+        { id: 432, text: "Mỗi sớm mai bé vui vẻ mang cặp đi bộ tới trường.", emoji: "🎒", guide: "Âm x và tr: sớm mai / tới trường", theme: "from-teal-200 via-cyan-100 to-blue-200", textColor: "text-teal-900" },
+        { id: 433, text: "Những chú chim sáo hót líu lo ríu rít trên ngọn cây.", emoji: "🐦", guide: "Âm s và r: sáo / ríu rít", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 434, text: "Bé rửa sạch đôi bàn chân mát mẻ trước khi lên giường ngủ.", emoji: "🦶", guide: "Âm s và ch: sạch / bàn chân", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
+        { id: 435, text: "Ánh nắng sớm lung linh nhảy múa trên những ngọn tre xanh.", emoji: "🎋", guide: "Âm l và tr: lung linh / ngọn tre", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 436, text: "Bé nỗ lực rèn luyện để từng trang vở luôn sạch đẹp.", emoji: "✍️", guide: "Dấu ngã: nỗ lực / sạch đẹp", theme: "from-orange-200 via-red-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 437, text: "Dòng sông xanh hiền hòa uốn lượn quanh đồng lúa chín.", emoji: "🏞️", guide: "Âm s và l: sông / uốn lượn", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 438, text: "Bé xếp giày dép ngay ngắn thẳng hàng trước cửa lớp học.", emoji: "🩴", guide: "Âm x và ng: xếp dép / ngay ngắn", theme: "from-indigo-200 via-purple-100 to-teal-200", textColor: "text-indigo-900" },
+        { id: 439, text: "Cả nhà quây quần bên bàn ăn cười nói thật rôm rả.", emoji: "😄", guide: "Âm r và dấu hỏi: rôm rả", theme: "from-rose-200 via-amber-100 to-yellow-200", textColor: "text-rose-900" },
+        { id: 440, text: "Bé ngồi ngoài hiên cùng ông ngắm vầng trăng sáng vằng vặc.", emoji: "🌕", guide: "Âm tr và s: trăng sáng vằng vặc", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
+        { id: 441, text: "Mỗi sáng sớm mẹ nhẹ nhàng chải mái tóc mượt cho bé.", emoji: "💇", guide: "Âm ch: chải tóc mượt", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 442, text: "Bố khéo tay đóng cho bé một chiếc giá sách bằng gỗ rất đẹp.", emoji: "🪚", guide: "Âm gi và s: giá sách", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 443, text: "Bé nắn nót vẽ bức tranh mùa xuân tràn ngập sắc hoa.", emoji: "🖼️", guide: "Âm tr và x: tranh / mùa xuân", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 444, text: "Những bông sen hồng ngát hương thơm ngát giữa hồ nước trong.", emoji: "🪷", guide: "Âm s và ng: sen hồng / thơm ngát", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 445, text: "Bé chú ý nghe cô sửa bài để tiến bộ và làm bài tốt hơn.", emoji: "😟", guide: "Âm l và s: lắng nghe / sửa bài", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 446, text: "Mẹ ôm bé vào lòng và nhẹ nhàng khuyên nhủ từng lời.", emoji: "🤱", guide: "Dấu ngã và hỏi: vỗ về / khuyên nhủ", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 447, text: "Bé quyết tâm chăm chỉ học tập để đạt kết quả xuất sắc.", emoji: "💪", guide: "Âm s và x: xuất sắc / chăm chỉ", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 448, text: "Cánh diều no gió bay lượn thong thả giữa tầng trời xanh cao.", emoji: "🪁", guide: "Âm d và tr: diều bay lượn / trời cao", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 449, text: "Bé nhẹ nhàng dỗ dành và xoa dịu vết đau cho em nhỏ.", emoji: "🩹", guide: "Âm x và d: xoa dịu / dỗ dành", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 450, text: "Tiết trời mùa thu hôm nay trong xanh và mát mẻ vô cùng.", emoji: "🍂", guide: "Âm tr và x: trong xanh / mát mẻ", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 451, text: "Bé đọc phân biệt thật rõ ràng giữa âm l và âm n.", emoji: "🗣️", guide: "Phân biệt l/n: l và n rõ ràng", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 452, text: "Cô giáo khen em phát âm rất chuẩn hai âm s và x.", emoji: "👩‍🏫", guide: "Phân biệt s/x: chuẩn hai âm s và x", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 453, text: "Cây tre xanh rì rào trong làn gió thoảng.", emoji: "🎋", guide: "Âm tr và r: tre xanh rì rào", theme: "from-green-200 via-lime-100 to-teal-200", textColor: "text-green-900" },
+        { id: 454, text: "Bé không viết sai dấu ngã với dấu hỏi.", emoji: "✍️", guide: "Phân biệt dấu hỏi và dấu ngã", theme: "from-purple-200 via-pink-100 to-indigo-200", textColor: "text-purple-900" },
+        { id: 455, text: "Dòng nước trong mát chảy qua thung lũng xanh.", emoji: "🏞️", guide: "Âm tr và l: trong mát / thung lũng", theme: "from-orange-200 via-yellow-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 456, text: "Bé rửa tay bằng xà phòng trước khi ăn cơm.", emoji: "🧼", guide: "Âm r và x: rửa tay / xà phòng", theme: "from-sky-200 via-blue-100 to-teal-200", textColor: "text-sky-900" },
+        { id: 457, text: "Mẹ dặn bé đi sang đường phải nhìn trước sau.", emoji: "🚸", guide: "Ngắt: Mẹ dặn bé / nhìn trước sau", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 458, text: "Đàn bồ câu trắng đậu trên mái ngói đỏ tươi.", emoji: "🕊️", guide: "Âm tr và ng: trắng đậu / ngói đỏ", theme: "from-indigo-200 via-sky-100 to-purple-200", textColor: "text-indigo-900" },
+        { id: 459, text: "Bé không quên xếp sách vở cẩn thận vào ngăn.", emoji: "🎒", guide: "Âm x và c: xếp sách / cẩn thận", theme: "from-green-200 via-emerald-100 to-yellow-200", textColor: "text-green-900" },
+        { id: 460, text: "Bà nội ngồi nhai trầu mỉm cười nhìn các cháu.", emoji: "👵", guide: "Âm tr và ch: nhai trầu / các cháu", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 461, text: "Con tàu vượt qua những con sóng lớn ngoài khơi.", emoji: "🚢", guide: "Âm s và l: sóng lớn ngoài khơi", theme: "from-sky-200 via-cyan-100 to-teal-200", textColor: "text-sky-900" },
+        { id: 462, text: "Bé luôn nhường nhịn và chăm sóc em bé nhỏ.", emoji: "👶", guide: "Âm nh và ch: nhường nhịn / chăm sóc", theme: "from-amber-200 via-yellow-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 463, text: "Cánh đồng lúa chín tỏa hương thơm ngát đồng quê.", emoji: "🌾", guide: "Âm l và th: lúa chín / thơm ngát", theme: "from-teal-200 via-emerald-100 to-cyan-200", textColor: "text-teal-900" },
+        { id: 464, text: "Chú chim sâu chuyền cành bắt từng con sâu nhỏ.", emoji: "🐛", guide: "Âm s và ch: sâu chuyền cành", theme: "from-purple-200 via-violet-100 to-pink-200", textColor: "text-purple-900" },
+        { id: 465, text: "Bé tự tin đứng lên đọc to bài thơ trước lớp.", emoji: "🎙️", guide: "Âm đ và tr: đọc to / trước lớp", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 466, text: "Mỗi sáng sớm bé cùng bố chạy bộ quanh công viên.", emoji: "🏃", guide: "Âm s và ch: sáng sớm / chạy bộ", theme: "from-green-200 via-teal-100 to-lime-200", textColor: "text-green-900" },
+        { id: 467, text: "Bé nhặt chiếc lá rụng bỏ đúng vào thùng rác.", emoji: "🍂", guide: "Âm l và r: lá rụng / thùng rác", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 468, text: "Hoa hướng dương luôn hướng về phía mặt trời.", emoji: "🌻", guide: "Âm h và tr: hướng dương / mặt trời", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
+        { id: 469, text: "Bé biết giữ trật tự khi ngồi trong thư viện.", emoji: "📖", guide: "Âm tr và th: trật tự / thư viện", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 470, text: "Bố khuyên bé phải trung thực và thật thà.", emoji: "⭐", guide: "Âm tr và th: trung thực / thật thà", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 471, text: "Đàn gà mẹ dắt đàn con đi kiếm mồi dưới gốc chuối.", emoji: "🐥", guide: "Âm g và d: gà mẹ / dắt đàn con", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 472, text: "Bé phụ mẹ bưng đĩa thức ăn lên bàn ăn tối.", emoji: "🍽️", guide: "Âm ph và b: phụ mẹ / bưng đĩa", theme: "from-sky-200 via-teal-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 473, text: "Chú mèo mướp nằm sưởi nắng trên bậu cửa sổ.", emoji: "🐈", guide: "Âm m và s: mèo mướp / sưởi nắng", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 474, text: "Bé kiên nhẫn luyện từng nét chữ cho ngay ngắn.", emoji: "✍️", guide: "Dấu ngã: kiên nhẫn / ngay ngắn", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 475, text: "Ánh trăng rằm chiếu sáng khắp sân nhà làng quê.", emoji: "🌕", guide: "Âm tr và r: trăng rằm chiếu sáng", theme: "from-rose-200 via-pink-100 to-indigo-200", textColor: "text-rose-900" },
+        { id: 476, text: "Bé biết giúp đỡ bạn bè gặp hoàn cảnh khó khăn.", emoji: "🤝", guide: "Âm b và kh: bạn bè / khó khăn", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 477, text: "Chiếc đồng hồ tích tắc nhắc bé đi ngủ đúng giờ.", emoji: "⏰", guide: "Âm đ và gi: đồng hồ / đúng giờ", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 478, text: "Bé xếp hàng trật tự khi mua vé vào xem kịch.", emoji: "🎟️", guide: "Âm x và tr: xếp hàng / trật tự", theme: "from-indigo-200 via-sky-100 to-cyan-200", textColor: "text-indigo-900" },
+        { id: 479, text: "Cơn mưa rào tưới mát cho ruộng đồng tươi tốt.", emoji: "🌧️", guide: "Âm r và t: mưa rào / tươi tốt", theme: "from-yellow-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 480, text: "Bé khoanh tay cúi đầu chào cô giáo lúc vào lớp.", emoji: "🙇", guide: "Tròn môi vần oanh: khoanh tay chào", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
+        { id: 481, text: "Khóm hoa giấy trước cổng nhà nở đỏ rực rỡ.", emoji: "🌺", guide: "Âm gi và r: hoa giấy / rực rỡ", theme: "from-purple-200 via-violet-100 to-sky-200", textColor: "text-purple-900" },
+        { id: 482, text: "Bé gấp quần áo gọn gàng cho vào trong tủ.", emoji: "👕", guide: "Âm g và q: gọn gàng / quần áo", theme: "from-teal-200 via-cyan-100 to-blue-200", textColor: "text-teal-900" },
+        { id: 483, text: "Cả nhà cùng quây quần bên mâm cơm ấm áp.", emoji: "🍲", guide: "Âm qu và c: quây quần / cơm ấm áp", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 484, text: "Bé không xem ti vi quá gần để bảo vệ mắt.", emoji: "📺", guide: "Âm v và b: ti vi / bảo vệ mắt", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
+        { id: 485, text: "Đàn cá tung tăng bơi lội dưới làn nước trong.", emoji: "🐠", guide: "Âm t và b: tung tăng / bơi lội", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 486, text: "Bé chăm chỉ làm bài tập để được điểm mười.", emoji: "💯", guide: "Âm ch và đ: chăm chỉ / điểm mười", theme: "from-orange-200 via-red-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 487, text: "Bố dạy bé chơi cờ vua để rèn luyện trí thông minh mỗi ngày.", emoji: "♟️", guide: "Âm c và th: cờ vua / thông minh", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 488, text: "Bé lau khô giọt nước đọng trên mặt bàn học.", emoji: "💧", guide: "Âm l và đ: lau khô / đọng", theme: "from-indigo-200 via-purple-100 to-teal-200", textColor: "text-indigo-900" },
+        { id: 489, text: "Tiếng chim hót líu lo đón chào ánh bình minh.", emoji: "🌅", guide: "Âm l và b: líu lo / bình minh", theme: "from-rose-200 via-amber-100 to-yellow-200", textColor: "text-rose-900" },
+        { id: 490, text: "Bé giữ gìn vệ sinh răng miệng sáng và tối.", emoji: "🪥", guide: "Âm gi và s: giữ gìn / sáng và tối", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
+        { id: 491, text: "Mẹ mỉm cười khen bé đã biết tự lập hơn xưa.", emoji: "🥰", guide: "Âm m và l: mỉm cười / tự lập", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 492, text: "Bé trồng một cây non và chăm chỉ tưới nước mỗi ngày.", emoji: "🌱", guide: "Âm tr và t: trồng cây non / tưới nước", theme: "from-orange-200 via-rose-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 493, text: "Cơn gió thổi nhẹ làm lá vàng rơi xào xạc.", emoji: "🍂", guide: "Âm th và x: thổi nhẹ / xào xạc", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 494, text: "Bé đọc trơn từng từ một cách lưu loát và rõ ràng.", emoji: "🗣️", guide: "Âm đ và l: đọc trơn / lưu loát", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 495, text: "Bác nông dân gặt lúa vàng trĩu nặng trên đồng.", emoji: "🌾", guide: "Âm n và tr: nông dân / trĩu nặng", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 496, text: "Bé luôn có ý thức giữ gìn sách vở sạch đẹp.", emoji: "📘", guide: "Âm s và đ: sách vở / sạch đẹp", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 497, text: "Chú công an điều khiển giao thông ở ngã tư đường.", emoji: "👮", guide: "Âm c và ng: công an / ngã tư", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 498, text: "Bé rất vui vì đạt được danh hiệu cháu ngoan Bác Hồ.", emoji: "🏅", guide: "Âm ch và ng: cháu ngoan Bác Hồ", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 499, text: "Mỗi cuốn sách hay là một người bạn tốt của bé.", emoji: "📚", guide: "Âm s và b: sách hay / bạn tốt", theme: "from-cyan-200 via-teal-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 500, text: "Bé vươn vai chào đón một ngày học tập hứng khởi.", emoji: "☀️", guide: "Vần ươn và ưng: vươn vai / hứng khởi", theme: "from-rose-300 via-amber-200 to-pink-200", textColor: "text-rose-950" }
       ],
       level5: [
         { id: 501, text: "Mỗi ngày đến trường là một ngày vui.", emoji: "🎒", guide: "Ngắt: Mỗi ngày đến trường / là một ngày vui", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
@@ -748,9 +963,9 @@
         { id: 506, text: "Bé nắm chặt tay mẹ khi đi qua đoạn đường đông.", emoji: "🤝", guide: "Ngắt: Bé nắm chặt tay mẹ / khi qua đường", theme: "from-purple-200 via-indigo-100 to-pink-200", textColor: "text-purple-900" },
         { id: 507, text: "Chim mẹ tha từng cọng rơm khô về xây tổ ấm.", emoji: "🪹", guide: "Ngắt: Chim mẹ tha rơm / về xây tổ ấm", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
         { id: 508, text: "Bé xếp hàng ngay ngắn trước giờ vào lớp học.", emoji: "🚶", guide: "Ngắt: Bé xếp hàng ngay ngắn / vào lớp học", theme: "from-indigo-200 via-sky-100 to-teal-200", textColor: "text-indigo-900" },
-        { id: 509, text: "Sau cơn mưa to bầu trời lại trong veo sáng sủa.", emoji: "🌈", guide: "Ngắt: Sau cơn mưa to / bầu trời trong veo", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 509, text: "Sau cơn mưa rào bầu trời lại trong xanh và bừng sáng rực rỡ.", emoji: "🌈", guide: "Ngắt: Sau cơn mưa rào / trời lại sáng trong", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
         { id: 510, text: "Cô giáo đọc thơ bằng giọng nói ấm áp dịu dàng.", emoji: "🎙️", guide: "Đọc dịu dàng: giọng nói ấm áp dịu dàng", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
-        { id: 511, text: "Bé cất dọn đồ chơi gọn gàng sau khi cùng bạn chơi.", emoji: "🧸", guide: "Ngắt: Bé dọn đồ chơi / sau khi chơi cùng bạn", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 511, text: "Bé cất dọn đồ chơi gọn gàng sau khi chơi đùa cùng bạn bè.", emoji: "🧸", guide: "Ngắt: Bé dọn đồ chơi / sau khi chơi cùng bạn", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
         { id: 512, text: "Tiếng cười giòn tan rộn rã khắp sân trường giờ chơi.", emoji: "😄", guide: "Đọc vui tươi, hào hứng cả câu", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
         { id: 513, text: "Bà nhẹ nhàng quạt mát ru em bé ngủ tròn giấc say.", emoji: "🪭", guide: "Giọng đọc truyền cảm, êm ái", theme: "from-rose-200 via-pink-100 to-indigo-200", textColor: "text-rose-900" },
         { id: 514, text: "Bé hăng hái giơ tay phát biểu xây dựng bài mới.", emoji: "🙋‍♀️", guide: "Đọc to, hào sảng và dứt khoát", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
@@ -759,9 +974,9 @@
         { id: 517, text: "Bố mẹ vui lòng khi thấy bé tự giác ngồi học bài.", emoji: "😊", guide: "Ngắt: Bố mẹ vui lòng / bé tự giác học", theme: "from-purple-200 via-pink-100 to-violet-200", textColor: "text-purple-900" },
         { id: 518, text: "Dòng sông quê uốn lượn êm đềm bồi đắp bãi ngô xanh.", emoji: "🏞️", guide: "Vần uôn và êm: uốn lượn êm đềm", theme: "from-indigo-200 via-sky-100 to-teal-200", textColor: "text-indigo-900" },
         { id: 519, text: "Bé phấn đấu trở thành con ngoan trò giỏi của lớp.", emoji: "🎖️", guide: "Đọc đầy tự hào và tự tin", theme: "from-teal-200 via-emerald-100 to-lime-200", textColor: "text-teal-900" },
-        { id: 520, text: "Bé đã đọc trơn thành thạo tất cả các câu khó rồi.", emoji: "🎉", guide: "CHÚC MỪNG BÉ! XUẤT SẮC ĐẠT ĐIỂM 10 🏆", theme: "from-rose-300 via-amber-200 to-pink-300", textColor: "text-rose-900" },
+        { id: 520, text: "Bé kiên trì rèn luyện đọc sách mỗi ngày để vốn từ thêm phong phú.", emoji: "🎉", guide: "Đọc to rõ, truyền cảm từng tiếng", theme: "from-rose-300 via-amber-200 to-pink-300", textColor: "text-rose-900" },
         { id: 521, text: "Mỗi buổi sớm mai chim non ca hát chào đón ngày mới.", emoji: "🌄", guide: "Ngắt: Mỗi buổi sớm mai / chim non ca hát", theme: "from-sky-200 via-teal-100 to-blue-200", textColor: "text-sky-900" },
-        { id: 522, text: "Bé kính cẩn đưa đồ bằng hai tay cho ông bà cha mẹ.", emoji: "🤲", guide: "Đọc tôn kính, lễ độ và rõ tiếng", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 522, text: "Bé lễ phép đưa đồ bằng hai tay cho ông bà và cha mẹ.", emoji: "🤲", guide: "Đọc lễ độ, rõ tiếng: lễ phép đưa đồ hai tay", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
         { id: 523, text: "Đêm rằm Trung thu bé cùng bạn bè rước đèn ông sao.", emoji: "🏮", guide: "Ngắt: Đêm Trung thu / rước đèn ông sao", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
         { id: 524, text: "Dưới bóng cây xanh mát các bạn nhỏ đọc truyện tranh.", emoji: "📚", guide: "Ngắt: Dưới bóng cây mát / bé đọc truyện", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
         { id: 525, text: "Bé yêu quý từng trang vở trắng và giữ gìn cẩn thận.", emoji: "📖", guide: "Đọc lưu loát, liền mạch", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
@@ -789,7 +1004,57 @@
         { id: 547, text: "Bé chăm chỉ luyện tập mỗi ngày để đọc trơn thật lưu loát.", emoji: "⭐", guide: "Đọc liền mạch, dứt khoát", theme: "from-green-200 via-emerald-100 to-lime-200", textColor: "text-green-900" },
         { id: 548, text: "Cánh đồng quê mùa gặt thơm nồng mùi rơm rạ thân thương.", emoji: "🌾", guide: "Vần ơm và âm r: rơm rạ", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
         { id: 549, text: "Bé ôm cổ bố thì thầm nói những lời yêu thương chân thành.", emoji: "🤗", guide: "Đọc êm dịu, tình cảm gia đình", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
-        { id: 550, text: "Chúc mừng bé yêu đã chinh phục đỉnh cao đọc trơn lớp một!", emoji: "🏆", guide: "HOÀN THÀNH XUẤT SẮC CẢ 5 CẤP ĐỘ! BÉ LÀ SỐ 1 🥇", theme: "from-amber-300 via-rose-200 to-yellow-300", textColor: "text-red-900" }
+        { id: 550, text: "Bé vui sướng đón nhận những lời khen ngợi của thầy cô và bạn bè.", emoji: "🏆", guide: "Đọc hân hoan, rạng rỡ niềm vui", theme: "from-amber-300 via-rose-200 to-yellow-300", textColor: "text-red-900" },
+        { id: 551, text: "Bé yêu từng góc sân trường rợp bóng mát của hàng cây bàng cổ thụ.", emoji: "🌳", guide: "Ngắt: Bé yêu sân trường / rợp bóng mát cây bàng", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 552, text: "Mỗi buổi sáng mai thức dậy bé tự gấp chăn màn thật phẳng phiu gọn gàng.", emoji: "🛏️", guide: "Ngắt: Mỗi buổi sáng mai / bé gấp chăn gọn gàng", theme: "from-sky-200 via-teal-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 553, text: "Tiếng chim hót rộn rã trên cành cây báo hiệu một ngày mới tươi vui đã bắt đầu.", emoji: "🐦", guide: "Đọc vui tươi, ngân nga nhịp nhàng", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 554, text: "Bé luôn chủ động giúp đỡ bạn bè cùng lớp vượt qua những bài tập khó.", emoji: "🤝", guide: "Ngắt: Bé chủ động giúp bạn / vượt qua bài khó", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 555, text: "Bố mẹ rất tự hào khi thấy bé ngoan ngoãn biết vâng lời thầy cô dạy bảo.", emoji: "🥰", guide: "Đọc ấm áp: biết vâng lời thầy cô dạy bảo", theme: "from-rose-200 via-pink-100 to-indigo-200", textColor: "text-rose-900" },
+        { id: 556, text: "Dưới ánh nắng vàng rực rỡ những bông cúc đua nhau khoe sắc thơm ngát một vùng.", emoji: "🌼", guide: "Ngắt: Dưới ánh nắng vàng / hoa cúc khoe sắc", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 557, text: "Bé chăm chú lắng nghe cô giáo giảng bài để nắm vững từng kiến thức bổ ích.", emoji: "👩‍🏫", guide: "Đọc to rõ: chăm chú lắng nghe cô giảng bài", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 558, text: "Cánh đồng quê hương bao la bát ngát với từng đàn cò trắng bay lả bay la.", emoji: "🌾", guide: "Giọng đọc êm ái: cánh đồng lúa quê hương", theme: "from-indigo-200 via-sky-100 to-cyan-200", textColor: "text-indigo-900" },
+        { id: 559, text: "Bé tự tay tưới nước và bắt sâu cho luống rau xanh mướt sau vườn nhà.", emoji: "🥬", guide: "Ngắt: Bé tự tay tưới nước / cho luống rau xanh", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 560, text: "Sau những ngày luyện tập kiên trì bé đã có thể tự tin đọc trơn lưu loát.", emoji: "🏆", guide: "Đọc dõng dạc, truyền cảm tự hào", theme: "from-pink-200 via-rose-100 to-purple-200", textColor: "text-pink-900" },
+        { id: 561, text: "Bé cùng các bạn thi đua học tốt để giành thật nhiều bông hoa điểm mười đỏ thắm.", emoji: "💯", guide: "Đọc hào hứng: thi đua học tốt", theme: "from-yellow-200 via-orange-100 to-rose-200", textColor: "text-amber-900" },
+        { id: 562, text: "Mẹ là ngọn đuốc sáng soi đường chỉ lối cho bé từng bước đi đầu đời vững chắc.", emoji: "🤱", guide: "Giọng đọc ngọt ngào, tri ân mẹ hiền", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 563, text: "Cơn mưa rào mùa hạ vừa dứt thì cầu vồng bảy sắc lung linh hiện lên rực rỡ.", emoji: "🌈", guide: "Ngắt: Cơn mưa vừa dứt / cầu vồng hiện lên", theme: "from-sky-200 via-blue-100 to-indigo-200", textColor: "text-sky-900" },
+        { id: 564, text: "Bé biết nói lời cảm ơn khi được nhận quà và biết xin lỗi khi mắc lỗi.", emoji: "💐", guide: "Đọc chân thành: biết cảm ơn và xin lỗi", theme: "from-purple-200 via-violet-100 to-sky-200", textColor: "text-purple-900" },
+        { id: 565, text: "Đêm rằm tháng Tám trăng sáng vằng vặc bé cùng bạn bè quây quần phá cỗ Trung thu.", emoji: "🏮", guide: "Đọc vui tươi không khí Tết Trung thu", theme: "from-orange-200 via-red-100 to-amber-200", textColor: "text-orange-900" },
+        { id: 566, text: "Bé giữ gìn đồ dùng học tập cẩn thận không để gãy bút hay quăn mép vở.", emoji: "✏️", guide: "Ngắt: Bé giữ đồ dùng / không quăn mép vở", theme: "from-teal-200 via-cyan-100 to-blue-200", textColor: "text-teal-900" },
+        { id: 567, text: "Bà kể cho bé nghe những câu chuyện cổ tích thấm đượm tình người ấm áp.", emoji: "👵", guide: "Giọng đọc chậm rãi, sâu lắng", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 568, text: "Cây phượng vĩ nở hoa đỏ rực như muôn ngàn ngọn lửa thắp sáng góc sân trường.", emoji: "🌺", guide: "Ngắt: Cây phượng nở hoa / thắp sáng sân trường", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 569, text: "Bé yêu quý quê hương đất nước và nguyện cố gắng rèn luyện nên người có ích.", emoji: "🇻🇳", guide: "Đọc trang nghiêm, tự hào Tổ quốc", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 570, text: "Tiếng cười vui rộn rã của các bạn nhỏ làm bừng sáng cả một khoảng trời tuổi thơ.", emoji: "😄", guide: "Đọc hào hứng, rộn ràng tiếng cười", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 571, text: "Bé biết vâng lời ông bà cha mẹ và luôn là niềm vui lớn của cả gia đình.", emoji: "🏡", guide: "Đọc tràn đầy tình cảm gia đình ấm cúng", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 572, text: "Những giọt sương mai long lanh như những hạt ngọc đọng trên chồi non biếc xanh.", emoji: "💧", guide: "Giọng đọc thanh nhẹ, êm đềm buổi sớm", theme: "from-sky-200 via-cyan-100 to-teal-200", textColor: "text-sky-900" },
+        { id: 573, text: "Bé thích đọc sách vì mỗi trang sách mở ra chân trời tri thức bao la rộng lớn.", emoji: "📖", guide: "Ngắt: Bé thích đọc sách / mở ra chân trời mới", theme: "from-indigo-200 via-purple-100 to-sky-200", textColor: "text-indigo-900" },
+        { id: 574, text: "Bố dẫn bé đi dạo trong công viên hít thở bầu không khí trong lành mát mẻ.", emoji: "🚶", guide: "Đọc thong thả, khoan khoái dễ chịu", theme: "from-teal-200 via-emerald-100 to-cyan-200", textColor: "text-teal-900" },
+        { id: 575, text: "Bé luôn có ý thức rửa tay bằng xà phòng sạch sẽ trước mỗi bữa ăn gia đình.", emoji: "🧼", guide: "Ngắt: Bé rửa tay xà phòng / trước bữa ăn", theme: "from-green-200 via-lime-100 to-emerald-200", textColor: "text-green-900" },
+        { id: 576, text: "Đàn én nhỏ chao liệng giữa nền trời xanh biếc báo hiệu mùa xuân tươi đẹp đã về.", emoji: "🕊️", guide: "Đọc bổng trầm theo nhịp cánh én", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 577, text: "Bé yêu tiếng ve ngân rộn rã và yêu những chùm hoa phượng đỏ của mùa hè.", emoji: "☀️", guide: "Ngắt: Bé yêu tiếng ve ngân / yêu chùm hoa phượng", theme: "from-orange-200 via-amber-100 to-yellow-200", textColor: "text-orange-900" },
+        { id: 578, text: "Mỗi nét chữ xinh xắn trên trang vở trắng là kết quả của sự rèn luyện chăm chỉ.", emoji: "✍️", guide: "Đọc nắn nót, rõ ràng từng tiếng", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
+        { id: 579, text: "Bé biết yêu thương chăm sóc thú cưng và bảo vệ các loài động vật quanh em.", emoji: "🐾", guide: "Đọc âu yếm, ấm áp tình thương yêu", theme: "from-emerald-200 via-green-100 to-teal-200", textColor: "text-emerald-900" },
+        { id: 580, text: "Khi có lỗi bé can đảm nhận lỗi và hứa sẽ sửa chữa để tiến bộ hơn mỗi ngày.", emoji: "😇", guide: "Đọc chân thành, dũng cảm và tự tin", theme: "from-amber-200 via-yellow-100 to-orange-200", textColor: "text-amber-900" },
+        { id: 581, text: "Bé yêu lá cờ đỏ sao vàng năm cánh phấp phới tung bay trong nắng sớm sân trường.", emoji: "🇻🇳", guide: "Đọc hào hùng, ngẩng cao đầu tự hào", theme: "from-rose-200 via-pink-100 to-red-200", textColor: "text-rose-900" },
+        { id: 582, text: "Bé xếp hàng vào lớp trật tự ngay ngắn không xô đẩy hay chen lấn bạn bè.", emoji: "🚶", guide: "Ngắt: Bé xếp hàng ngay ngắn / không xô đẩy bạn", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 583, text: "Tiếng chuông báo hết giờ vang lên khép lại một buổi học tràn ngập niềm vui.", emoji: "🔔", guide: "Đọc vui vẻ, nhẹ nhõm sau giờ học", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 584, text: "Bé cẩn thận khoác ba lô lên vai chào thầy cô và bạn bè trước khi về nhà.", emoji: "🎒", guide: "Đọc lễ phép, dứt khoát và thân thiện", theme: "from-indigo-200 via-sky-100 to-blue-200", textColor: "text-indigo-900" },
+        { id: 585, text: "Mẹ ôm bé vào lòng khen ngợi sau khi thấy bài kiểm tra của bé đạt điểm mười.", emoji: "💮", guide: "Giọng đọc ấm áp, ngập tràn tình thương", theme: "from-rose-200 via-pink-100 to-amber-200", textColor: "text-rose-900" },
+        { id: 586, text: "Mặt hồ phẳng lặng như chiếc gương khổng lồ soi bóng mây trời trong xanh.", emoji: "🪞", guide: "Đọc thanh thoát, êm đềm như mặt hồ", theme: "from-teal-200 via-emerald-100 to-green-200", textColor: "text-teal-900" },
+        { id: 587, text: "Bé biết giúp bà nhặt rau quét nhà và rót nước mát mời ông uống.", emoji: "🍵", guide: "Ngắt: Bé giúp bà nhặt rau / rót nước mời ông", theme: "from-amber-200 via-orange-100 to-yellow-200", textColor: "text-amber-900" },
+        { id: 588, text: "Những cánh diều no gió bay cao vút trên bầu trời làng quê thanh bình yên ả.", emoji: "🪁", guide: "Đọc bay bổng, thư thái theo cánh diều", theme: "from-sky-200 via-indigo-100 to-blue-200", textColor: "text-sky-900" },
+        { id: 589, text: "Bé luôn ghi sâu lời dạy của cô giáo để trở thành trò giỏi của lớp một thân yêu.", emoji: "⭐", guide: "Đọc dứt khoát, thể hiện ý chí vươn lên", theme: "from-purple-200 via-pink-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 590, text: "Cơn gió mùa thu mang theo hương cốm mới ngạt ngào lan tỏa khắp các nẻo đường.", emoji: "🌾", guide: "Đọc diễn cảm, thưởng thức vị ngọt ngào", theme: "from-green-200 via-emerald-100 to-teal-200", textColor: "text-green-900" },
+        { id: 591, text: "Bé tích cực rèn luyện thân thể mỗi ngày để có một cơ thể khỏe mạnh dẻo dai.", emoji: "💪", guide: "Đọc mạnh mẽ, khỏe khoắn và dứt khoát", theme: "from-orange-200 via-amber-100 to-rose-200", textColor: "text-orange-900" },
+        { id: 592, text: "Tiếng hát trong trẻo của các bạn nhỏ như làn gió mát xua tan đi mệt mỏi.", emoji: "🎶", guide: "Giọng đọc trong trẻo, vui tươi như lời ca", theme: "from-pink-200 via-purple-100 to-rose-200", textColor: "text-pink-900" },
+        { id: 593, text: "Bé biết sẻ chia đồ chơi và bánh kẹo ngon cùng bạn bè hàng xóm thân thiết.", emoji: "🍬", guide: "Ngắt: Bé sẻ chia đồ chơi / cùng bạn bè", theme: "from-amber-200 via-yellow-100 to-lime-200", textColor: "text-amber-900" },
+        { id: 594, text: "Mỗi buổi tối trước khi đi ngủ bé chuẩn bị đầy đủ sách vở cho ngày hôm sau.", emoji: "🎒", guide: "Ngắt: Trước khi đi ngủ / bé chuẩn bị sách vở", theme: "from-teal-200 via-cyan-100 to-emerald-200", textColor: "text-teal-900" },
+        { id: 595, text: "Bác nông dân miệt mài gieo từng hạt giống xuống lòng đất để mùa màng bội thu.", emoji: "🌱", guide: "Đọc trân trọng công sức lao động", theme: "from-yellow-200 via-amber-100 to-orange-200", textColor: "text-amber-800" },
+        { id: 596, text: "Bé yêu ánh đèn ấm áp trong ngôi nhà nơi có bố mẹ luôn che chở cho em.", emoji: "🏠", guide: "Giọng đọc ấm cúng, đong đầy hạnh phúc", theme: "from-rose-200 via-amber-100 to-pink-200", textColor: "text-rose-900" },
+        { id: 597, text: "Được đến trường học tập và vui chơi cùng bạn bè là niềm hạnh phúc lớn của bé.", emoji: "🏫", guide: "Đọc tươi vui, rạng rỡ niềm hân hoan", theme: "from-emerald-200 via-teal-100 to-green-200", textColor: "text-emerald-900" },
+        { id: 598, text: "Bé chăm ngoan học giỏi để mai này góp phần xây dựng quê hương thêm giàu đẹp.", emoji: "🌟", guide: "Đọc tràn đầy ước mơ và khát vọng đẹp", theme: "from-sky-200 via-blue-100 to-cyan-200", textColor: "text-sky-900" },
+        { id: 599, text: "Bé đã kiên trì vượt qua từng câu từ khó khăn để chạm tới vinh quang rực rỡ.", emoji: "🎖️", guide: "BÉ XỨNG ĐÁNG NHẬN HUY HIỆU VÀNG DANH DỰ! 🥇", theme: "from-purple-200 via-violet-100 to-rose-200", textColor: "text-purple-900" },
+        { id: 600, text: "Chúc mừng nhà vô địch nhỏ đã hoàn thành xuất sắc toàn bộ 500 câu đọc trơn!", emoji: "👑", guide: "BÉ LÀ THẦN ĐỒNG ĐỌC TRƠN LỚP MỘT XUẤT SẮC NHẤT! 🏆🎊", theme: "from-amber-300 via-rose-300 to-yellow-300", textColor: "text-rose-950" }
       ]
     };
 
@@ -2806,7 +3071,7 @@
           } else {
             tab.className = "lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1 cursor-pointer transition active:scale-95";
           }
-          tab.innerHTML = `<span>${cfg.icon}</span> ${cfg.title} (50 câu)`;
+          tab.innerHTML = `<span>${cfg.icon}</span> ${cfg.title} (100 câu)`;
           tab.title = `Bấm để luyện tập ${cfg.title}`;
           tab.onclick = () => selectLevel(cfg.id);
         } else {
@@ -3189,7 +3454,7 @@
       if (cardEmoji) cardEmoji.textContent = card.emoji;
       if (cardSentence) {
         cardSentence.textContent = card.text;
-        cardSentence.className = `text-3xl sm:text-4xl md:text-5xl font-black font-baloo leading-snug tracking-wide ${card.textColor} pop-text px-2 py-1`;
+        cardSentence.className = `text-3xl sm:text-4xl md:text-5xl font-black font-reading leading-relaxed tracking-wide ${card.textColor} pop-text px-2 py-1`;
       }
       if (rhythmGuide) rhythmGuide.textContent = card.guide;
 
@@ -3421,7 +3686,78 @@
       if (e.target === document.getElementById("pet-modal")) closePetModal();
     });
 
+    /* =========================================================================
+       HỆ THỐNG FONT CHỮ CHUẨN GIÁO DỤC & THÂN THIỆN CHO BÉ LỚP 1
+       ========================================================================= */
+    const FONT_OPTIONS = [
+      { id: 'vietnam', label: 'Font Chuẩn 📚', name: 'Chuẩn Sách Lớp 1 (Be Vietnam Pro)', family: "'Be Vietnam Pro', -apple-system, sans-serif" },
+      { id: 'quicksand', label: 'Bo Tròn 🧸', name: 'Bo Tròn Đáng Yêu (Quicksand)', family: "'Quicksand', 'Be Vietnam Pro', sans-serif" },
+      { id: 'nunito', label: 'Mềm Mại 🎈', name: 'Nét Chữ Mềm Mại (Nunito)', family: "'Nunito', 'Be Vietnam Pro', sans-serif" }
+    ];
+    let currentFontIndex = 0;
+    const FONT_STORAGE_KEY = 'BE_DOC_TRON_FONT_CHOICE';
+
+    function initFontSetting() {
+      try {
+        const saved = localStorage.getItem(FONT_STORAGE_KEY);
+        if (saved) {
+          const idx = FONT_OPTIONS.findIndex(f => f.id === saved);
+          if (idx !== -1) currentFontIndex = idx;
+        }
+      } catch (e) {
+        console.warn("Lỗi đọc font storage:", e);
+      }
+      applyCurrentFont(false);
+    }
+
+    function toggleReadingFont() {
+      currentFontIndex = (currentFontIndex + 1) % FONT_OPTIONS.length;
+      const chosen = FONT_OPTIONS[currentFontIndex];
+      try {
+        localStorage.setItem(FONT_STORAGE_KEY, chosen.id);
+      } catch (e) {
+        console.warn("Lỗi lưu font storage:", e);
+      }
+      applyCurrentFont(true);
+      playClickSound();
+    }
+
+    function applyCurrentFont(showToast = false) {
+      const chosen = FONT_OPTIONS[currentFontIndex];
+      document.documentElement.style.setProperty('--font-reading', chosen.family);
+
+      const label = document.getElementById('font-btn-label');
+      if (label) {
+        label.textContent = chosen.label;
+      }
+
+      if (showToast) {
+        showFontToast(`🔤 ${chosen.name}`);
+      }
+    }
+
+    let fontToastTimeout = null;
+    function showFontToast(msg) {
+      let toast = document.getElementById("font-toast-notification");
+      if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "font-toast-notification";
+        toast.className = "fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white px-4 py-2 rounded-2xl shadow-2xl border-2 border-sky-400 text-xs sm:text-sm font-black transition-all duration-300 pointer-events-none transform -translate-y-2 opacity-0";
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.classList.remove('opacity-0', '-translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      if (fontToastTimeout) clearTimeout(fontToastTimeout);
+      fontToastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-2');
+      }, 2200);
+    }
+
     window.onload = function() {
+      initFontSetting();
       loadPetDataFromStorage();
       PetAnimationEngine.startLoop();
       currentLevel = currentPetStageIndex + 1;

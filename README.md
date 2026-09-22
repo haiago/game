@@ -18,7 +18,7 @@
 
 | Thành phần | Công nghệ / Kỹ thuật | Mô tả chi tiết |
 | :--- | :--- | :--- |
-| **Giao diện & Bố cục** | HTML5, Tailwind CSS (CDN), Google Fonts (`Baloo 2`, `Nunito`) | Giao diện màu sắc pastel sống động, chữ 3D viền trắng tương phản cao (`pop-text`). Cụm điều hướng trên được tinh giản gọn gàng, tôn vinh Khung Thú Cưng (Hero Widget) to rõ, sinh động làm trung tâm động lực cho bé. |
+| **Giao diện & Bố cục** | HTML5, Tailwind CSS (CDN), Google Fonts (`Be Vietnam Pro`, `Quicksand`, `Nunito`) | Giao diện màu sắc pastel sống động. Bộ font chữ chuẩn giáo dục & thân thiện cho bé lớp 1: **`Be Vietnam Pro`** (chuẩn sách giáo khoa, dấu thanh rõ ràng không lem), kết hợp **`Quicksand`** (bo tròn mềm mại) và **`Nunito`** cùng nút chuyển font 1-chạm (`🔤 Font`) ghi nhớ tự động. |
 | **Đồ họa Thú cưng** | HTML5 Canvas 2D API (`PetAnimationEngine`) | Vòng lặp hoạt ảnh `requestAnimationFrame` 60 FPS, vẽ thủ công hình học kết hợp hàm sóng lượng giác (`Math.sin`) tạo độ phập phồng (squash & stretch), nhịp thở, vẫy đuôi. |
 | **Hiệu ứng chuyển động** | Web Animations API (WAAPI) & Canvas Confetti (CDN) | Hiệu ứng hạt nổ 3D (`triggerStarBurstEffect`), huy hiệu sao bay theo quỹ đạo parabol mượt mà vào hộp điểm, pháo giấy bung nở toàn màn hình khi hoàn thành bài. |
 | **Âm thanh tương tác** | Web Audio API (`AudioContext`, `OscillatorNode`, `GainNode`) | Sinh các hợp âm chiptune, tiếng đàn hạc êm dịu, âm thanh kèn lệnh fanfare khi thú cưng tiến hóa. |
@@ -26,20 +26,20 @@
 
 ---
 
-## 📚 Ngân Hàng Câu Hỏi & Cấp Độ Học Tập (250 Thẻ)
+## 📚 Ngân Hàng Câu Hỏi & Cấp Độ Học Tập (500 Thẻ - 100 Thẻ/Cấp)
 
-Ngân hàng dữ liệu (`QUESTION_BANK`) gồm **250 câu/từ** được chuẩn hóa theo chương trình Tiếng Việt lớp 1, phân bổ đều qua 5 cấp độ:
+Ngân hàng dữ liệu (`QUESTION_BANK`) gồm **500 câu/từ độc bản phong phú** được chuẩn hóa theo chương trình Tiếng Việt lớp 1, phân bổ đều qua 5 cấp độ (mỗi cấp đúng **100 câu**, tăng tối đa độ ngẫu nhiên khi luyện tập):
 
-1. **Level 1 - Khởi Động Vui Vẻ (50 câu):**
-   - *Đặc điểm:* Cụm 2–3 tiếng ngắn gọn, tập trung vào thanh điệu (hỏi, ngã, nặng) và vần cơ bản (*"Em cười tươi"*, *"Bé đánh răng"*, *"Bình hoa đẹp"*...).
-2. **Level 2 - Tập Đọc Câu Đơn (50 câu):**
-   - *Đặc điểm:* Câu đơn ngắn 4–6 tiếng về sinh hoạt gia đình, bạn bè và thiên nhiên (*"Bé giúp mẹ nhặt rau"*, *"Bầu trời xanh ngắt"*...).
-3. **Level 3 - Luyện Vần Khó & Từ Láy (50 câu):**
-   - *Đặc điểm:* Câu 6–8 tiếng có vần ghép phức tạp, từ láy tượng thanh/tượng hình (*"Suối chảy róc rách"*, *"Cây khế ngọt trĩu cành"*...).
-4. **Level 4 - Câu Phức & Diễn Cảm (50 câu):**
-   - *Đặc điểm:* Câu dài, rèn luyện kỹ năng ngắt nghỉ hơi theo dấu phẩy, ngữ điệu truyền cảm (*"Mặt trời tỏa ánh nắng mai chan hòa khắp khu vườn"*...).
-5. **Level 5 - Bậc Thầy Đoạn Văn & Thơ (50 câu):**
-   - *Đặc điểm:* Các khổ thơ ngắn hoặc đoạn văn mini 3–4 câu, giúp bé đọc liền mạch, phát triển tư duy đọc hiểu ngữ cảnh.
+1. **Level 1 - Khởi Động Vui Vẻ (100 câu):**
+   - *Đặc điểm:* Cụm 2–3 tiếng ngắn gọn, tập trung vào thanh điệu (hỏi, ngã, nặng) và vần cơ bản (*"Em cười tươi"*, *"Bé đánh răng"*, *"Bình hoa đẹp"*, *"Bé rửa mặt"*, *"Cá chép đỏ"*...).
+2. **Level 2 - Tập Đọc Câu Đơn (100 câu):**
+   - *Đặc điểm:* Câu đơn ngắn 4–6 tiếng về sinh hoạt gia đình, bạn bè và thiên nhiên (*"Bé giúp mẹ nhặt rau"*, *"Bầu trời xanh ngắt"*, *"Bé đánh răng thật sạch"*, *"Mẹ nấu xôi gấc đỏ"*...).
+3. **Level 3 - Luyện Vần Khó & Tròn Môi (100 câu):**
+   - *Đặc điểm:* Câu 6–8 tiếng chứa các vần tròn môi, vần ghép phức tạp và từ láy tượng thanh/tượng hình (`oan, oang, uat, uyt, uyên, oay, oai, uê`...: *"Suối chảy róc rách"*, *"Bé khoanh tay lễ phép"*, *"Hoa vạn thọ xum xuê"*...).
+4. **Level 4 - Câu Phức & Trị Đọc Sai (100 câu):**
+   - *Đặc điểm:* Câu dài rèn luyện phân biệt phụ âm đầu dễ lẫn (`l/n`, `s/x`, `tr/ch`, `r/d/gi`), dấu hỏi/ngã và ngắt nghỉ hơi theo dấu phẩy (*"Bé phân biệt rõ âm lờ và âm nờ khi đọc"*, *"Cây tre xanh rì rào trong làn gió thoảng"*...).
+5. **Level 5 - Bậc Thầy Đoạn Văn & Diễn Cảm (100 câu):**
+   - *Đặc điểm:* Các câu văn phức, khổ thơ và đoạn văn mini 12–20 tiếng giàu hình ảnh, cảm xúc và bài học đạo đức, giúp bé đọc liền mạch, phát triển tư duy đọc hiểu và phong thái tự tin.
 
 ---
 
