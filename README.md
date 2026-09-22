@@ -18,7 +18,7 @@
 
 | Thành phần | Công nghệ / Kỹ thuật | Mô tả chi tiết |
 | :--- | :--- | :--- |
-| **Giao diện & Bố cục** | HTML5, Tailwind CSS (CDN), Google Fonts (`Baloo 2`, `Nunito`) | Giao diện màu sắc pastel sống động, chữ 3D viền trắng tương phản cao (`pop-text`) giúp bé dễ nhìn, dễ đọc. |
+| **Giao diện & Bố cục** | HTML5, Tailwind CSS (CDN), Google Fonts (`Baloo 2`, `Nunito`) | Giao diện màu sắc pastel sống động, chữ 3D viền trắng tương phản cao (`pop-text`). Cụm điều hướng trên được tinh giản gọn gàng, tôn vinh Khung Thú Cưng (Hero Widget) to rõ, sinh động làm trung tâm động lực cho bé. |
 | **Đồ họa Thú cưng** | HTML5 Canvas 2D API (`PetAnimationEngine`) | Vòng lặp hoạt ảnh `requestAnimationFrame` 60 FPS, vẽ thủ công hình học kết hợp hàm sóng lượng giác (`Math.sin`) tạo độ phập phồng (squash & stretch), nhịp thở, vẫy đuôi. |
 | **Hiệu ứng chuyển động** | Web Animations API (WAAPI) & Canvas Confetti (CDN) | Hiệu ứng hạt nổ 3D (`triggerStarBurstEffect`), huy hiệu sao bay theo quỹ đạo parabol mượt mà vào hộp điểm, pháo giấy bung nở toàn màn hình khi hoàn thành bài. |
 | **Âm thanh tương tác** | Web Audio API (`AudioContext`, `OscillatorNode`, `GainNode`) | Sinh các hợp âm chiptune, tiếng đàn hạc êm dịu, âm thanh kèn lệnh fanfare khi thú cưng tiến hóa. |
@@ -51,12 +51,21 @@ Bé có thể tự do lựa chọn và chuyển đổi giữa 4 người bạn �
 - 🐧 **Cánh Cụt Pingu (`penguin`):** Lướt bụng trơn tru trên băng tuyết.
 - 🦄 **Kỳ Lân Cầu Vồng (`unicorn`):** Phát ra ánh sáng cầu vồng phép thuật.
 
-### Các Mốc Tiến Hóa Theo Số Sao:
-- **Cấp 1 (0 ⭐) - Quả Trứng:** Quả trứng ngọ nguậy, đợi bé học để nứt vỏ.
-- **Cấp 2 (5 ⭐) - Thú Con:** Hé mắt chào bé, vẫy cánh tí hon mừng rỡ.
-- **Cấp 3 (15 ⭐) - Trưởng Thành:** Tung tăng chạy nhảy, hò reo cổ vũ khi bé đọc đúng.
-- **Cấp 4 (30 ⭐) - Siêu Cấp:** Trang bị phụ kiện ngầu (kính râm, khăn len, cánh thiên thần).
-- **Cấp 5 (50 ⭐) - Hoàng Gia 👑:** Đội vương miện vàng, đạt danh hiệu Bậc Thầy Đọc Trơn.
+### Quy Trình Nuôi Thú Cưng Lần Lượt & Lưu Trữ Cấp Độ (`localStorage`):
+Bé sẽ được nuôi các bạn thú cưng **lần lượt theo thứ tự**:
+1. 🦖 **Rồng Con Lửa** (Mở khóa mặc định từ đầu)
+2. 🐱 **Mèo Bánh Bao** (Mở khóa khi Rồng Con Lửa tốt nghiệp Cấp 5)
+3. 🐧 **Cánh Cụt Pingu** (Mở khóa khi Mèo Bánh Bao tốt nghiệp Cấp 5)
+4. 🦄 **Kỳ Lân Cầu Vồng** (Mở khóa khi Cánh Cụt Pingu tốt nghiệp Cấp 5)
+
+- **Mốc Tiến Hóa & Mở Khóa Cấp Độ:**
+  - **Cấp 1 (0 ⭐) - Quả Trứng:** Mở khóa **Cấp 1 (50 câu khởi động)**.
+  - **Cấp 2 (5 ⭐) - Thú Con:** Tự động mở khóa & thăng cấp lên **Cấp 2 (50 câu ngôi nhà bé)**.
+  - **Cấp 3 (15 ⭐) - Trưởng Thành:** Tự động mở khóa & thăng cấp lên **Cấp 3 (50 câu vần tròn môi)**.
+  - **Cấp 4 (30 ⭐) - Siêu Cấp:** Tự động mở khóa & thăng cấp lên **Cấp 4 (50 câu trị đọc sai)**.
+  - **Cấp 5 (50 ⭐) - Hoàng Gia 👑:** Đạt cấp độ tối thượng và **Tốt Nghiệp (Graduated 🎓)**. Hệ thống sẽ bật thông báo ăn mừng tưng bừng và mở khóa quả trứng của bạn thú cưng tiếp theo để bé tiếp tục hành trình!
+- **Lưu trữ vĩnh viễn (`localStorage`):** Mọi tiến trình sao, cấp độ của từng con thú và danh sách các con đã mở khóa đều được tự động lưu vào bộ nhớ trình duyệt, không bao giờ bị mất khi tải lại trang hoặc tắt máy.
+- **Vườn Thú:** Bé có thể vào xem danh sách, ghé thăm hoặc chọn lại các bạn thú cưng đã tốt nghiệp (Lv.5 👑) làm bạn đồng hành bất cứ lúc nào. Các bạn chưa mở khóa sẽ hiển thị điều kiện rõ ràng (🔒).
 
 ---
 
@@ -71,7 +80,7 @@ Bé có thể tự do lựa chọn và chuyển đổi giữa 4 người bạn �
   # Truy cập: http://localhost:8080/flashcard.html
   ```
 
-### 2. Các thao tác trong bài học
+### 2. Các thao tác trong bài học (chạy ngầm, giao diện gọn gàng)
 - **Chuyển thẻ:**
   - *Màn hình cảm ứng (Mobile/Tablet):* Vuốt sang trái (thẻ kế tiếp) hoặc vuốt sang phải (thẻ trước đó).
   - *Bàn phím (Desktop):* Bấm phím mũi tên `←` (Lùi) hoặc `→` (Tiếp theo).
@@ -79,7 +88,6 @@ Bé có thể tự do lựa chọn và chuyển đổi giữa 4 người bạn �
   - **Đọc trơn đúng (+1 ⭐):** Bấm nút màu xanh lá hoặc phím `Spacebar`.
   - **Cần cố gắng (+½ ⭐):** Bấm nút màu vàng khuyến khích để bé ôn lại sau.
 - **Chế độ Tự động chạy (Auto-play):** Bấm nút "Tự chạy" để tự động lật thẻ sau mỗi 4.5 giây.
-- **Tùy chỉnh số lượng thẻ mỗi lượt:** Có thể chọn học theo lượt 10, 15, 20, 30 hoặc 50 câu.
 - **Xem bảng thành tích:** Bấm "Xem kết quả" để xem tổng kết số sao đạt được, tỷ lệ hoàn thành và danh sách các từ cần ôn luyện.
 
 ---

@@ -137,111 +137,95 @@
     <div class="absolute bottom-20 right-8 text-2xl opacity-40 animate-bounce">✨</div>
   </div>
 
-  <!-- Header: HỘP SAO CỠ LỚN & CÁC NÚT ĐIỀU HƯỚNG CHÍNH -->
-  <header class="w-full max-w-4xl mx-auto z-10 bg-white/90 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-md border-2 border-amber-300 p-2.5 sm:p-3.5 flex flex-col gap-2.5">
+  <!-- Header: CỤM ĐIỀU HƯỚNG TINH GỌN & WIDGET THÚ CƯNG NỔI BẬT -->
+  <header class="w-full max-w-4xl mx-auto z-10 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-md border-2 border-amber-300 p-2.5 sm:p-3 flex flex-col gap-2">
     
-    <div class="flex items-center justify-between flex-wrap gap-2 sm:gap-4">
-      <!-- Logo & Tên ứng dụng -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-yellow-400 flex items-center justify-center text-white text-2xl shadow">
+    <!-- HÀNG TRÊN: Logo & Nút điều khiển được thu nhỏ tinh tế, không lấn át -->
+    <div class="flex items-center justify-between flex-wrap gap-1.5 sm:gap-2">
+      <!-- Logo & Tên ứng dụng tinh gọn -->
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-rose-500 to-amber-400 flex items-center justify-center text-white text-base sm:text-lg shadow-xs">
           ⭐
         </div>
-        <div>
-          <h1 class="text-lg sm:text-2xl font-black font-baloo text-rose-600 tracking-wide flex items-center gap-1.5 leading-none">
-            BÉ ĐỌC TRƠN <span class="text-xs sm:text-sm bg-rose-500 text-white font-sans font-black px-2 py-0.5 rounded-full">LỚP 1</span>
-          </h1>
-          <p class="text-[11px] sm:text-xs font-bold text-amber-800 mt-0.5">250 Câu Luyện Đọc • Tích Sao Nuôi Thú Cưng</p>
-        </div>
+        <h1 class="text-sm sm:text-base font-black font-baloo text-rose-600 tracking-wide flex items-center gap-1.5 leading-none">
+          BÉ ĐỌC TRƠN <span class="text-[10px] sm:text-xs bg-rose-500 text-white font-sans font-black px-1.5 py-0.2 rounded-full">LỚP 1</span>
+        </h1>
       </div>
 
-      <!-- Hàng nút: Âm thanh, Hộp Sao Lớn, Kết Thúc, Lượt Mới -->
-      <div class="flex items-center gap-2 sm:gap-3 ml-auto">
-        <!-- Bật/Tắt âm thanh -->
-        <button id="btn-sound-toggle" onclick="toggleSoundFx()" title="Bật/Tắt âm thanh" class="w-10 h-10 sm:w-11 sm:h-11 bg-pink-100 hover:bg-pink-200 text-pink-700 rounded-2xl border-2 border-pink-300 transition active:scale-95 flex items-center justify-center shadow-sm">
-          <span id="sound-icon" class="text-lg sm:text-xl">🔊</span>
+      <!-- Hàng nút tiện ích thu nhỏ vừa vặn -->
+      <div class="flex items-center gap-1.5 sm:gap-2 ml-auto">
+        <!-- Bật/Tắt âm thanh nhỏ xinh -->
+        <button id="btn-sound-toggle" onclick="toggleSoundFx()" title="Bật/Tắt âm thanh" class="w-8 h-8 sm:w-8.5 sm:h-8.5 bg-pink-50 hover:bg-pink-100 text-pink-700 rounded-xl border border-pink-200 transition active:scale-95 flex items-center justify-center shadow-xs">
+          <span id="sound-icon" class="text-sm sm:text-base">🔊</span>
         </button>
 
-        <!-- HỘP ĐẾM SAO SIÊU TO NỔI BẬT DÀNH CHO BÉ -->
-        <div id="star-badge-box" class="flex items-center bg-gradient-to-b from-amber-50 to-yellow-100 border-3 border-amber-400 px-3.5 sm:px-5 py-1 sm:py-1.5 rounded-2xl font-black shadow-md transition-transform border-[3px]">
-          <span class="text-2xl sm:text-3xl mr-1.5 filter drop-shadow-sm animate-pulse">⭐</span>
-          <span id="star-count-display" class="text-2xl sm:text-3xl font-black text-amber-900 font-baloo tracking-tight">0</span>
-          <span id="star-total-display" class="text-sm sm:text-base text-amber-700 font-bold ml-1 font-baloo">/15</span>
+        <!-- HỘP ĐẾM SAO TINH GỌN -->
+        <div id="star-badge-box" class="flex items-center bg-gradient-to-b from-amber-50 to-yellow-100 border-2 border-amber-300 px-2.5 sm:px-3 py-1 rounded-xl font-black shadow-xs transition-transform">
+          <span class="text-base sm:text-lg mr-1 filter drop-shadow-xs">⭐</span>
+          <span id="star-count-display" class="text-base sm:text-lg font-black text-amber-900 font-baloo tracking-tight">0</span>
+          <span id="star-total-display" class="text-xs sm:text-sm text-amber-700 font-bold ml-0.5 font-baloo">/5</span>
         </div>
 
-        <!-- Nút Kết Thúc & Lưu Bảng Sao -->
-        <button id="btn-finish-round" onclick="finishRoundAndShowBoard()" title="Kết thúc lượt học và xem bảng sao" class="px-3 sm:px-3.5 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white rounded-2xl shadow-md border-2 border-amber-600 text-xs sm:text-sm font-black flex items-center gap-1.5 active:scale-95 transition">
-          <span class="text-base sm:text-lg">🏁</span>
+        <!-- Nút Kết Thúc nhỏ gọn -->
+        <button id="btn-finish-round" onclick="finishRoundAndShowBoard()" title="Kết thúc lượt học và xem bảng sao" class="px-2.5 sm:px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white rounded-xl shadow-xs border border-amber-600 text-[11px] sm:text-xs font-black flex items-center gap-1 active:scale-95 transition">
+          <span class="text-xs sm:text-sm">🏁</span>
           <span>Kết Thúc</span>
         </button>
 
-        <!-- Nút Lượt Mới (Random bộ câu mới) -->
-        <button id="btn-restart-round" onclick="startNewRandomRound()" title="Bốc ngẫu nhiên bộ câu mới" class="px-3 sm:px-4 py-2 bg-gradient-to-r from-rose-500 to-amber-500 hover:opacity-95 text-white rounded-2xl shadow-md border-2 border-rose-600 text-xs sm:text-sm font-black flex items-center gap-1.5 active:scale-95 transition">
-          <span class="text-base sm:text-lg">🎲</span>
+        <!-- Nút Lượt Mới nhỏ gọn -->
+        <button id="btn-restart-round" onclick="startNewRandomRound()" title="Bốc ngẫu nhiên bộ câu mới" class="px-2.5 sm:px-3 py-1.5 bg-gradient-to-r from-rose-500 to-amber-500 hover:opacity-95 text-white rounded-xl shadow-xs border border-rose-600 text-[11px] sm:text-xs font-black flex items-center gap-1 active:scale-95 transition">
+          <span class="text-xs sm:text-sm">🎲</span>
           <span>Lượt Mới</span>
         </button>
       </div>
     </div>
 
-    <!-- WIDGET THÚ CƯNG ĐỒNG HÀNH HOẠT HÌNH 2D (CANVAS PET ANIMATION) -->
-    <div class="w-full bg-gradient-to-r from-amber-100/90 via-pink-100/90 to-purple-100/90 border-2 border-amber-300 rounded-2xl p-2 sm:p-2.5 flex items-center justify-between gap-2 shadow-inner relative">
-      <!-- Thú cưng Avatar & Bong bóng lời thoại khi bấm -->
-      <div class="flex items-center gap-2.5 cursor-pointer relative" onclick="interactWithPet()" title="Chạm vào thú cưng để chơi đùa!">
-        <div id="pet-avatar-wrapper" class="relative">
-          <!-- Canvas hoạt hình thú cưng động 60FPS -->
-          <canvas id="pet-canvas-mini" width="128" height="128" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl shadow-md border-2 border-amber-400 bg-gradient-to-b from-amber-50 to-pink-50 select-none transition-transform hover:scale-105 active:scale-95"></canvas>
-          <!-- Huy hiệu cấp độ -->
-          <span id="pet-lvl-badge" class="absolute -bottom-1 -right-1 bg-rose-500 text-white text-[9px] sm:text-[10px] font-black px-1.5 py-0.2 rounded-full border border-white shadow">
+    <!-- HÀNG THÚ CƯNG ĐỒNG HÀNH: TÂM ĐIỂM NỔI BẬT (HERO PET WIDGET) -->
+    <div class="w-full bg-gradient-to-r from-amber-100 via-rose-100 to-purple-100 border-[3px] border-amber-400 rounded-2xl sm:rounded-3xl p-2.5 sm:p-3 shadow-md flex items-center justify-between gap-3 relative">
+      <!-- Thú cưng Avatar lớn & Tên + Thanh EXP to rõ -->
+      <div class="flex items-center gap-3 cursor-pointer relative group flex-1 min-w-0" onclick="interactWithPet()" title="Chạm vào thú cưng để chơi đùa!">
+        <!-- Avatar Thú Cưng to rõ, viền vàng 3D và hào quang -->
+        <div id="pet-avatar-wrapper" class="relative shrink-0">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-amber-400 via-rose-400 to-purple-400 rounded-2xl sm:rounded-3xl blur-xs opacity-75 group-hover:opacity-100 transition"></div>
+          <!-- Canvas hoạt hình thú cưng động 60FPS kích thước lớn -->
+          <canvas id="pet-canvas-mini" width="128" height="128" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl shadow-md border-[3px] border-amber-400 bg-gradient-to-b from-amber-50 to-pink-50 select-none relative z-10 transition-transform group-hover:scale-105 group-active:scale-95"></canvas>
+          <!-- Huy hiệu cấp độ to rõ, phong cách RPG -->
+          <span id="pet-lvl-badge" class="absolute -bottom-1.5 -right-1.5 z-20 bg-gradient-to-r from-rose-600 to-pink-600 text-white text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-full border-2 border-white shadow-md">
             Lv.1
           </span>
         </div>
 
-        <!-- Tên thú cưng & Thanh EXP sao ấp nở -->
-        <div class="flex flex-col min-w-0">
-          <div class="flex items-center gap-1.5">
-            <span id="pet-name-display" class="font-black text-xs sm:text-sm text-amber-950 truncate font-baloo">Bé Rồng Lửa</span>
-            <span id="pet-title-display" class="text-[10px] sm:text-xs text-rose-600 font-extrabold bg-white/80 px-2 py-0.5 rounded-lg border border-rose-200">Đang ấp 🐣</span>
+        <!-- Tên thú cưng & Thanh EXP to rõ -->
+        <div class="flex flex-col min-w-0 flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="pet-name-display" class="font-black text-base sm:text-lg text-amber-950 truncate font-baloo tracking-tight">Bé Rồng Lửa</span>
+            <span id="pet-title-display" class="text-[11px] sm:text-xs text-rose-700 font-extrabold bg-white/95 px-2.5 py-0.5 rounded-xl border border-rose-200 shadow-xs">Đang ấp 🐣</span>
           </div>
 
-          <!-- Thanh tiến độ sao để thú cưng tiến hóa -->
-          <div class="flex items-center gap-2 mt-1">
-            <div class="w-28 sm:w-44 bg-white/90 rounded-full h-2.5 border border-amber-300 overflow-hidden relative shadow-inner">
-              <div id="pet-exp-bar" class="h-full bg-gradient-to-r from-amber-400 via-rose-400 to-emerald-400 rounded-full transition-all duration-500" style="width: 0%;"></div>
+          <!-- Thanh tiến độ sao to dày, màu sắc kẹo ngọt bắt mắt -->
+          <div class="flex items-center gap-2 mt-1.5">
+            <div class="w-32 sm:w-56 md:w-64 bg-white/95 rounded-full h-3.5 sm:h-4 border-2 border-amber-300 overflow-hidden relative shadow-inner p-0.5">
+              <div id="pet-exp-bar" class="h-full bg-gradient-to-r from-amber-400 via-rose-400 to-emerald-400 rounded-full transition-all duration-500 shadow-sm" style="width: 0%;"></div>
             </div>
-            <span id="pet-exp-text" class="text-[10px] sm:text-[11px] font-black text-amber-900 whitespace-nowrap">0/5 ⭐</span>
+            <span id="pet-exp-text" class="text-[11px] sm:text-xs font-black text-amber-950 whitespace-nowrap bg-amber-200/80 px-2 py-0.5 rounded-lg border border-amber-300 font-baloo">0/5 ⭐</span>
           </div>
         </div>
 
-        <!-- Bong bóng lời thoại thú cưng nổi lên khi chạm -->
-        <div id="pet-speech-bubble" class="pet-bubble hidden absolute left-14 -top-8 sm:-top-9 bg-white text-slate-800 text-[11px] sm:text-xs font-black px-3 py-1.5 rounded-2xl shadow-xl border-2 border-amber-400 whitespace-nowrap z-30 pointer-events-none">
+        <!-- Bong bóng lời thoại thú cưng -->
+        <div id="pet-speech-bubble" class="pet-bubble hidden absolute left-20 -top-9 sm:-top-10 bg-white text-slate-800 text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-2xl shadow-xl border-2 border-amber-400 whitespace-nowrap z-30 pointer-events-none">
           <span id="pet-speech-text">Bé đọc to tớ nghe nhé! 💕</span>
         </div>
       </div>
 
-      <!-- Nút mở Vườn Thú Cưng & Chọn Bạn Đồng Hành -->
-      <button onclick="openPetModal()" class="px-2.5 sm:px-3 py-1.5 sm:py-2 bg-white/90 hover:bg-white text-purple-700 hover:text-purple-900 border-2 border-purple-300 rounded-xl font-black text-[11px] sm:text-xs shadow-sm flex items-center gap-1 active:scale-95 transition whitespace-nowrap">
-        <span>🐾</span>
+      <!-- Nút mở Vườn Thú Cưng nổi bật, mời gọi -->
+      <button onclick="openPetModal()" class="px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 hover:from-purple-500 hover:to-indigo-500 text-white border-2 border-purple-300 rounded-2xl font-black text-xs sm:text-sm shadow-md flex items-center gap-1.5 active:scale-95 transition transform hover:scale-105 whitespace-nowrap shrink-0">
+        <span class="text-sm sm:text-base">🐾</span>
         <span>Vườn Thú</span>
       </button>
     </div>
 
-    <!-- Thanh tiến độ học của vòng hiện tại kèm chọn số câu -->
-    <div class="w-full flex items-center gap-2 pt-0.5">
-      <div class="flex-1 bg-slate-100 rounded-full h-3 border border-slate-200 overflow-hidden relative shadow-inner">
-        <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-rose-500 via-amber-400 to-emerald-500 rounded-full transition-all duration-300" style="width: 6.6%;"></div>
-      </div>
-      <span id="progress-text-small" class="text-xs font-black text-slate-600 whitespace-nowrap">1/15 câu</span>
-      
-      <!-- Lựa chọn số câu thu nhỏ cạnh tiến độ -->
-      <select id="select-round-size" onchange="changeRoundSize()" class="bg-amber-100 hover:bg-amber-200 text-amber-900 text-[11px] sm:text-xs font-black px-2 py-1 rounded-xl border border-amber-300 outline-none cursor-pointer">
-        <option value="10">10 câu</option>
-        <option value="15" selected>15 câu</option>
-        <option value="25">25 câu</option>
-        <option value="50">50 câu</option>
-      </select>
-    </div>
-
-    <!-- Tab chọn 5 Cấp Độ có 50 câu mỗi cấp -->
-    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 text-[11px] sm:text-xs">
+    <!-- Tab chọn 5 Cấp Độ Đồng Bộ Theo Level Thú Cưng -->
+    <div id="level-tabs-bar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 text-[11px] sm:text-xs">
       <button onclick="selectLevel(1)" id="tab-lvl-1" class="lvl-btn active-level px-2.5 py-1.5 rounded-xl font-black bg-rose-500 text-white whitespace-nowrap shadow border border-rose-600 flex items-center gap-1">
         <span>🌱</span> Cấp 1: Khởi động (50 câu)
       </button>
@@ -347,12 +331,7 @@
 
   </main>
 
-  <!-- Footer chỉ dẫn phím tắt & cử chỉ -->
-  <footer class="w-full max-w-4xl mx-auto z-10 bg-white/75 backdrop-blur-sm rounded-2xl border border-white p-2 text-center text-[11px] sm:text-xs font-bold text-slate-600 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-    <span>👆 <b>Vuốt tay</b> trái/phải trên màn hình để chuyển thẻ</span>
-    <span>⌨️ Bấm phím <b>← / →</b></span>
-    <span>⭐ Bấm <b>Phím Cách (Space)</b> để nhận sao</span>
-  </footer>
+
 
   <!-- Modal Bảng Kết Quả Sao & Lịch Sử Cố Gắng -->
   <div id="result-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-300">
@@ -489,50 +468,21 @@
         <div class="bg-gradient-to-r from-amber-50 to-pink-50 border-2 border-amber-300 rounded-2xl p-3 flex items-center justify-between flex-shrink-0">
         </div>
 
-        <!-- 4 Bạn Thú Cưng Bé Có Thể Chọn -->
+        <!-- 4 Bạn Thú Cưng Nuôi Lần Lượt -->
         <div>
-          <div class="text-xs font-black text-purple-900 uppercase tracking-wide mb-2 flex items-center gap-1">
-            <span>🥚</span> CHỌN BẠN THÚ CƯNG BÉ THÍCH NHẤT:
+          <div class="text-xs font-black text-purple-900 uppercase tracking-wide mb-2 flex items-center justify-between">
+            <span class="flex items-center gap-1"><span>🐾</span> VƯỜN THÚ CƯNG CỦA BÉ:</span>
+            <span id="pet-unlock-progress-label" class="text-[10px] text-purple-700 font-bold bg-purple-100 px-2 py-0.5 rounded-full">1/4 Bạn Thú</span>
           </div>
-          <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
-            <button onclick="choosePetSpecies('dragon')" id="pet-choice-dragon" class="p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-purple-50 border-purple-400 shadow-sm">
-              <span class="text-3xl">🦖</span>
-              <div>
-                <div class="font-black text-xs sm:text-sm text-purple-950">Rồng Con Lửa</div>
-                <div class="text-[10px] text-purple-700 font-bold">Dũng cảm &amp; đáng yêu</div>
-              </div>
-            </button>
-
-            <button onclick="choosePetSpecies('cat')" id="pet-choice-cat" class="p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-white border-slate-200 hover:bg-pink-50">
-              <span class="text-3xl">🐱</span>
-              <div>
-                <div class="font-black text-xs sm:text-sm text-slate-800">Mèo Bánh Bao</div>
-                <div class="text-[10px] text-slate-500 font-bold">Thông minh &amp; lanh lợi</div>
-              </div>
-            </button>
-
-            <button onclick="choosePetSpecies('penguin')" id="pet-choice-penguin" class="p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-white border-slate-200 hover:bg-sky-50">
-              <span class="text-3xl">🐧</span>
-              <div>
-                <div class="font-black text-xs sm:text-sm text-slate-800">Cánh Cụt Pingu</div>
-                <div class="text-[10px] text-slate-500 font-bold">Vui nhộn &amp; chăm chỉ</div>
-              </div>
-            </button>
-
-            <button onclick="choosePetSpecies('unicorn')" id="pet-choice-unicorn" class="p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-white border-slate-200 hover:bg-amber-50">
-              <span class="text-3xl">🦄</span>
-              <div>
-                <div class="font-black text-xs sm:text-sm text-slate-800">Kỳ Lân Cầu Vồng</div>
-                <div class="text-[10px] text-slate-500 font-bold">Phép thuật nhiệm màu</div>
-              </div>
-            </button>
+          <div id="pet-choices-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
+            <!-- Nạp động qua JavaScript renderPetChoicesUI() -->
           </div>
         </div>
 
         <!-- Bản đồ 5 Cấp Độ Tiến Hóa -->
         <div>
           <div class="text-xs font-black text-slate-700 uppercase tracking-wide mb-2 flex items-center gap-1">
-            <span>🗺️</span> 5 CẤP ĐỘ TIẾN HÓA:
+            <span>🗺️</span> 5 CẤP ĐỘ TIẾN HÓA CỦA BẠN HIỆN TẠI:
           </div>
           <div id="pet-evolution-timeline" class="flex flex-col gap-2">
             <!-- Nạp tự động qua JavaScript -->
@@ -551,12 +501,12 @@
     </div>
   </div>
 
-  <!-- POPUP CHÚC MỪNG TIẾN HÓA THÀNH CÔNG -->
-  <div id="pet-evolution-celebration" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-    <div class="bg-gradient-to-b from-amber-200 via-yellow-100 to-rose-200 rounded-[36px] max-w-sm w-full p-6 text-center shadow-2xl border-4 border-amber-400 flex flex-col items-center gap-3 relative overflow-hidden">
-      <div class="text-5xl animate-bounce">🎉</div>
-      <h3 class="text-2xl font-black font-baloo text-amber-950">THÚ CƯNG TIẾN HÓA!</h3>
-      <p class="text-xs font-bold text-amber-900">Bé đã tích đủ sao để giúp bạn ấy lớn lên!</p>
+  <!-- POPUP CHÚC MỪNG TIẾN HÓA THÀNH CÔNG HOẶC TỐT NGHIỆP MỞ KHÓA BẠN MỚI -->
+  <div id="pet-evolution-celebration" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-gradient-to-b from-amber-200 via-yellow-100 to-rose-200 rounded-[36px] max-w-sm w-full p-5 sm:p-6 text-center shadow-2xl border-4 border-amber-400 flex flex-col items-center gap-3 relative overflow-hidden animate-in zoom-in-95 duration-200">
+      <div id="celebration-badge-icon" class="text-5xl animate-bounce">🎉</div>
+      <h3 id="celebration-headline" class="text-2xl font-black font-baloo text-amber-950">THÚ CƯNG TIẾN HÓA!</h3>
+      <p id="celebration-subline" class="text-xs font-bold text-amber-900">Bé đã tích đủ sao để giúp bạn ấy lớn lên!</p>
 
       <!-- Sân khấu hoạt họa chúc mừng tiến hóa -->
       <canvas id="pet-canvas-celebrate" width="240" height="240" class="w-44 h-44 my-1 filter drop-shadow-2xl"></canvas>
@@ -564,13 +514,15 @@
       <div id="celebration-pet-title" class="text-xl font-black font-baloo text-rose-700">
         Rồng Con Nứt Vỏ
       </div>
-      <p id="celebration-pet-desc" class="text-xs font-extrabold text-slate-700 bg-white/80 p-3 rounded-2xl border border-amber-300">
+      <p id="celebration-pet-desc" class="text-xs font-extrabold text-slate-700 bg-white/85 p-3 rounded-2xl border border-amber-300 leading-relaxed shadow-inner">
         Rồng con hé mắt chào bé! Cố gắng đọc thêm để rồng lớn nhanh nhé!
       </p>
 
-      <button onclick="closeEvolutionCelebration()" class="w-full py-3 mt-2 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-sm shadow-lg active:scale-95 transition">
-        Tuyệt Vời Quá Bé Ơi! ⭐
-      </button>
+      <div id="celebration-actions-container" class="w-full flex flex-col gap-2 mt-1">
+        <button id="btn-celebration-primary" onclick="closeEvolutionCelebration()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-sm shadow-lg active:scale-95 transition">
+          Tuyệt Vời Quá Bé Ơi! ⭐
+        </button>
+      </div>
     </div>
   </div>
 
@@ -845,7 +797,6 @@
        TRẠNG THÁI ỨNG DỤNG & LOGIC CHÍNH
        ========================================================================= */
     let currentLevel = 1;
-    let roundSize = 15;
     let currentSessionDeck = [];
     let currentIndex = 0;
     let completedCardIds = new Set();
@@ -863,11 +814,11 @@
         id: 'dragon',
         name: 'Rồng Con Lửa',
         stages: [
-          { level: 1, reqStars: 0, title: 'Quả Trứng Bí Ẩn', desc: 'Trứng rồng ấm áp, đang chờ bé đọc tích đủ 5 sao để nứt vỏ!' },
-          { level: 2, reqStars: 5, title: 'Rồng Con Nứt Vỏ', desc: 'Rồng con hé mắt chào bé và vẫy cánh tí hon mừng rỡ!' },
-          { level: 3, reqStars: 15, title: 'Khủng Long Tinh Nghịch', desc: 'Đã biết chạy nhảy tung tăng và hò reo cổ vũ bé đọc to!' },
-          { level: 4, reqStars: 30, title: 'Rồng Lửa Siêu Cấp', desc: 'Đeo kính râm ngầu lòi và phun ra tia lửa ngôi sao rực rỡ!' },
-          { level: 5, reqStars: 50, title: 'Thần Long Hoàng Gia 👑', desc: 'Đội vương miện vàng vô địch! Bé chính là bậc thầy đọc trơn!' }
+          { level: 1, reqStars: 0, title: 'Quả Trứng Lửa Thần Kỳ', desc: 'Trứng rồng ấm áp, vảy rồng óng ánh và hé mắt nhìn bé khi bấm vào!' },
+          { level: 2, reqStars: 5, title: 'Rồng Con Nứt Vỏ', desc: 'Đội mũ vỏ trứng siêu cưng, vẫy cánh tí hon và ve vẩy đuôi lửa chào bé!' },
+          { level: 3, reqStars: 15, title: 'Rồng Lửa Tinh Nghịch', desc: 'Đeo khăn quàng đỏ phiêu lưu, có gai lưng vàng óng và hò reo cổ vũ bé!' },
+          { level: 4, reqStars: 30, title: 'Rồng Lửa Siêu Cấp', desc: 'Chiến binh rồng mang ngọc trái tim lửa rực rỡ và đôi cánh lửa dũng mãnh!' },
+          { level: 5, reqStars: 50, title: 'Thần Long Hoàng Gia 👑', desc: 'Đội vương miện hoàng gia, khoác áo choàng nhung và triệu hồi ngọc rồng bảo vệ bé!' }
         ],
         quotes: [
           "Bé đọc to lên tớ nghe với nha! 🦖",
@@ -928,10 +879,72 @@
       }
     };
 
+    const PET_ORDER = ['dragon', 'cat', 'penguin', 'unicorn'];
+    let unlockedPetSpeciesIds = ['dragon'];
     let activePetSpeciesId = 'dragon';
+    let petProgressData = {
+      dragon: { stars: 0, completed: false },
+      cat: { stars: 0, completed: false },
+      penguin: { stars: 0, completed: false },
+      unicorn: { stars: 0, completed: false }
+    };
     let totalAccumulatedPetStars = 0;
     let currentPetStageIndex = 0;
     let petSpeechTimeout = null;
+
+    const STORAGE_KEY = 'BE_DOC_TRON_PET_PROGRESS_V2';
+
+    function savePetDataToStorage() {
+      try {
+        const payload = {
+          activePetSpeciesId,
+          unlockedPetSpeciesIds,
+          petProgressData,
+          currentLevel
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (err) {
+        console.warn("Lỗi lưu localStorage:", err);
+      }
+    }
+
+    function loadPetDataFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+
+        if (parsed.petProgressData && typeof parsed.petProgressData === 'object') {
+          PET_ORDER.forEach(id => {
+            if (parsed.petProgressData[id]) {
+              petProgressData[id] = {
+                stars: parseFloat(parsed.petProgressData[id].stars) || 0,
+                completed: Boolean(parsed.petProgressData[id].completed)
+              };
+            }
+          });
+        }
+
+        if (Array.isArray(parsed.unlockedPetSpeciesIds) && parsed.unlockedPetSpeciesIds.length > 0) {
+          unlockedPetSpeciesIds = parsed.unlockedPetSpeciesIds.filter(id => PET_ORDER.includes(id));
+          if (!unlockedPetSpeciesIds.includes('dragon')) unlockedPetSpeciesIds.unshift('dragon');
+        }
+
+        if (parsed.activePetSpeciesId && PET_ORDER.includes(parsed.activePetSpeciesId)) {
+          activePetSpeciesId = parsed.activePetSpeciesId;
+        } else {
+          activePetSpeciesId = unlockedPetSpeciesIds[0] || 'dragon';
+        }
+
+        totalAccumulatedPetStars = petProgressData[activePetSpeciesId] ? petProgressData[activePetSpeciesId].stars : 0;
+
+        if (parsed.currentLevel && parsed.currentLevel >= 1 && parsed.currentLevel <= 5) {
+          currentLevel = parsed.currentLevel;
+        }
+      } catch (err) {
+        console.warn("Lỗi đọc localStorage:", err);
+      }
+    }
 
     /* =========================================================================
        STREAMING_CHUNK:Configuring Web Audio API sound synthesizer...
@@ -1109,25 +1122,381 @@
 
         const stage = currentPetStageIndex + 1;
         const isHappy = this.happyTimer > 0;
+        const species = (typeof activePetSpeciesId !== 'undefined' && activePetSpeciesId) ? activePetSpeciesId : 'dragon';
 
-        if (stage === 1) {
-          this.drawEggStage(ctx, isHappy);
-        } else if (stage === 2) {
-          this.drawBabyStage(ctx, isHappy);
-        } else if (stage === 3) {
-          this.drawJuvenileStage(ctx, isHappy);
-        } else if (stage === 4) {
-          this.drawSuperheroStage(ctx, isHappy);
+        if (species === 'dragon') {
+          if (stage === 1) this.drawDragonStage1(ctx, isHappy, totalAccumulatedPetStars);
+          else if (stage === 2) this.drawDragonStage2(ctx, isHappy);
+          else if (stage === 3) this.drawDragonStage3(ctx, isHappy);
+          else if (stage === 4) this.drawDragonStage4(ctx, isHappy);
+          else this.drawDragonStage5(ctx, isHappy);
+        } else if (species === 'cat') {
+          this.drawCat(ctx, stage, isHappy);
+        } else if (species === 'penguin') {
+          this.drawPenguin(ctx, stage, isHappy);
+        } else if (species === 'unicorn') {
+          this.drawUnicorn(ctx, stage, isHappy);
         } else {
-          this.drawChampionStage(ctx, isHappy);
+          if (stage === 1) this.drawDragonStage1(ctx, isHappy, totalAccumulatedPetStars);
+          else if (stage === 2) this.drawDragonStage2(ctx, isHappy);
+          else if (stage === 3) this.drawDragonStage3(ctx, isHappy);
+          else if (stage === 4) this.drawDragonStage4(ctx, isHappy);
+          else this.drawDragonStage5(ctx, isHappy);
         }
 
         this.drawFloatingEffects(ctx);
         ctx.restore();
       },
 
-      // CẤP 1: QUẢ TRỨNG LẮC LƯ & NỨT VỎ
-      drawEggStage(ctx, isHappy) {
+      /* -------------------------------------------------------------------------
+         TIỆN ÍCH VẼ CHIBI ANIME: MẮT LONG LANH, MÕM RỒNG, CÁNH & ĐUÔI LỬA
+         ------------------------------------------------------------------------- */
+      drawAnimeEyes(ctx, lx, rx, y, eyeR, isBlinking, isHappy, irisColor1 = '#3a090d', irisColor2 = '#e11d48') {
+        if (isBlinking) {
+          ctx.lineWidth = 2.4;
+          ctx.strokeStyle = '#2b0909';
+          ctx.beginPath();
+          ctx.arc(lx, y, eyeR, 0.15 * Math.PI, 0.85 * Math.PI);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(lx + eyeR * 0.7, y + eyeR * 0.5);
+          ctx.lineTo(lx + eyeR * 1.1, y + eyeR * 0.1);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(rx, y, eyeR, 0.15 * Math.PI, 0.85 * Math.PI);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(rx - eyeR * 0.7, y + eyeR * 0.5);
+          ctx.lineTo(rx - eyeR * 1.1, y + eyeR * 0.1);
+          ctx.stroke();
+          return;
+        }
+
+        if (isHappy) {
+          ctx.lineWidth = 2.8;
+          ctx.strokeStyle = '#2b0909';
+          ctx.beginPath();
+          ctx.arc(lx, y + 2, eyeR * 0.9, 1.15 * Math.PI, 1.85 * Math.PI);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(rx, y + 2, eyeR * 0.9, 1.15 * Math.PI, 1.85 * Math.PI);
+          ctx.stroke();
+          return;
+        }
+
+        [lx, rx].forEach((ex, idx) => {
+          // Lòng trắng mắt
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.ellipse(ex, y, eyeR * 1.05, eyeR * 1.25, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Tròng mắt chuyển sắc rực rỡ
+          const irisGrad = ctx.createLinearGradient(ex, y - eyeR, ex, y + eyeR);
+          irisGrad.addColorStop(0, irisColor1);
+          irisGrad.addColorStop(0.55, irisColor2);
+          irisGrad.addColorStop(1, '#fbbf24');
+          ctx.fillStyle = irisGrad;
+          ctx.beginPath();
+          ctx.ellipse(ex, y, eyeR * 0.85, eyeR * 1.1, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Đồng tử to tròn sâu thẳm
+          ctx.fillStyle = '#1c0507';
+          ctx.beginPath();
+          ctx.ellipse(ex, y - 1, eyeR * 0.45, eyeR * 0.65, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Đốm sáng long lanh (Highlight đa điểm anime)
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(ex - eyeR * 0.35, y - eyeR * 0.4, eyeR * 0.36, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(ex + eyeR * 0.3, y + eyeR * 0.35, eyeR * 0.18, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Viền mi mắt sắc sảo
+          ctx.strokeStyle = '#2b0909';
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.arc(ex, y - eyeR * 0.2, eyeR * 1.05, 1.2 * Math.PI, 1.8 * Math.PI);
+          ctx.stroke();
+          const flickDir = idx === 0 ? -1 : 1;
+          ctx.beginPath();
+          ctx.moveTo(ex + flickDir * eyeR * 0.8, y - eyeR * 0.8);
+          ctx.lineTo(ex + flickDir * eyeR * 1.25, y - eyeR * 1.05);
+          ctx.stroke();
+        });
+      },
+
+      drawBlush(ctx, lx, rx, y, r = 4.5) {
+        ctx.fillStyle = 'rgba(255, 107, 129, 0.55)';
+        ctx.beginPath();
+        ctx.ellipse(lx, y, r * 1.2, r * 0.8, 0, 0, Math.PI * 2);
+        ctx.ellipse(rx, y, r * 1.2, r * 0.8, 0, 0, Math.PI * 2);
+        ctx.fill();
+      },
+
+      drawDragonSnout(ctx, x, y, isHappy, showFangs = true) {
+        // Mõm tròn màu hồng san hô
+        ctx.fillStyle = '#ff7675';
+        ctx.beginPath();
+        ctx.ellipse(x, y, 10, 6.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 2 lỗ mũi tí hon cưng xỉu
+        ctx.fillStyle = '#7a1c1c';
+        ctx.beginPath();
+        ctx.arc(x - 3.2, y - 1, 1.2, 0, Math.PI * 2);
+        ctx.arc(x + 3.2, y - 1, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#5c1313';
+        ctx.lineWidth = 1.8;
+        if (isHappy || showFangs) {
+          // Miệng cười mở rộng tươi tắn
+          ctx.fillStyle = '#991b1b';
+          ctx.beginPath();
+          ctx.arc(x, y + 1.5, 5, 0.1, Math.PI - 0.1);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Chiếc lưỡi hồng đào nhỏ xinh
+          ctx.fillStyle = '#fb7185';
+          ctx.beginPath();
+          ctx.arc(x, y + 4.5, 3, 1.1 * Math.PI, 1.9 * Math.PI);
+          ctx.fill();
+
+          // 2 chiếc răng nanh trắng sữa tí hon
+          if (showFangs) {
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.moveTo(x - 3.5, y + 1.5);
+            ctx.lineTo(x - 2, y + 4.2);
+            ctx.lineTo(x - 0.8, y + 1.5);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(x + 0.8, y + 1.5);
+            ctx.lineTo(x + 2, y + 4.2);
+            ctx.lineTo(x + 3.5, y + 1.5);
+            ctx.fill();
+          }
+        } else {
+          // Nụ cười chúm chím dễ thương
+          ctx.beginPath();
+          ctx.arc(x - 2.5, y + 2, 2.5, 0.1 * Math.PI, 0.9 * Math.PI);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(x + 2.5, y + 2, 2.5, 0.1 * Math.PI, 0.9 * Math.PI);
+          ctx.stroke();
+        }
+      },
+
+      drawDragonHorns(ctx, lx, ly, rx, ry, hornLength = 16, curveAngle = 0.4) {
+        const drawSingleHorn = (hx, hy, dir) => {
+          ctx.save();
+          ctx.translate(hx, hy);
+          ctx.rotate(dir * curveAngle);
+
+          const grad = ctx.createLinearGradient(0, 0, dir * 8, -hornLength);
+          grad.addColorStop(0, '#f59e0b');
+          grad.addColorStop(0.6, '#fbbf24');
+          grad.addColorStop(1, '#fef08a');
+          ctx.fillStyle = grad;
+          ctx.strokeStyle = '#b45309';
+          ctx.lineWidth = 1.8;
+
+          ctx.beginPath();
+          ctx.moveTo(-dir * 3.5, 2);
+          ctx.quadraticCurveTo(dir * 2, -hornLength * 0.5, dir * 10, -hornLength);
+          ctx.quadraticCurveTo(dir * 6, -hornLength * 0.3, dir * 3.5, 2);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Vạch ngấn sừng rồng hoàng kim
+          ctx.strokeStyle = '#d97706';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(0, -hornLength * 0.35);
+          ctx.lineTo(dir * 5, -hornLength * 0.35);
+          ctx.stroke();
+
+          ctx.restore();
+        };
+
+        drawSingleHorn(lx, ly, -1);
+        drawSingleHorn(rx, ry, 1);
+      },
+
+      drawDragonWings(ctx, lx, ly, rx, ry, flapAngle, wingScale = 1.0, wingColor = '#e11d48', membraneColor = '#fcd34d') {
+        const drawSingleWing = (wx, wy, dir) => {
+          ctx.save();
+          ctx.translate(wx, wy);
+          ctx.scale(dir * wingScale, wingScale);
+          ctx.rotate(flapAngle * dir);
+
+          // Màng cánh rồng mềm mại
+          ctx.fillStyle = membraneColor;
+          ctx.strokeStyle = '#991b1b';
+          ctx.lineWidth = 1.8;
+
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.quadraticCurveTo(-14, -18, -26, -16);
+          ctx.quadraticCurveTo(-20, -4, -18, 4);
+          ctx.quadraticCurveTo(-10, 2, -6, 8);
+          ctx.quadraticCurveTo(-2, 4, 0, 0);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Khung xương cánh trên
+          ctx.strokeStyle = wingColor;
+          ctx.lineWidth = 2.4;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.quadraticCurveTo(-14, -18, -26, -16);
+          ctx.stroke();
+
+          // Vuốt nhọn chóp cánh màu vàng óng
+          ctx.fillStyle = '#fbbf24';
+          ctx.beginPath();
+          ctx.arc(-26, -16, 2, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Gân cánh mềm mại
+          ctx.strokeStyle = 'rgba(153, 27, 27, 0.4)';
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(-12, -10);
+          ctx.lineTo(-18, 4);
+          ctx.moveTo(-6, -5);
+          ctx.lineTo(-6, 8);
+          ctx.stroke();
+
+          ctx.restore();
+        };
+
+        drawSingleWing(lx, ly, 1);
+        drawSingleWing(rx, ry, -1);
+      },
+
+      drawDragonTailWithFlame(ctx, startX, startY, wagAngle, tailLen = 24, flameScale = 1.0) {
+        ctx.save();
+        ctx.translate(startX, startY);
+        ctx.rotate(wagAngle);
+
+        // Đuôi rồng uốn lượn
+        ctx.strokeStyle = '#e11d48';
+        ctx.lineWidth = 6.5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(tailLen * 0.6, 6, tailLen, -8);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#991b1b';
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+
+        // Ngọn lửa rực cháy trên chóp đuôi
+        ctx.save();
+        ctx.translate(tailLen, -8);
+        const flameWobble1 = Math.sin(this.time * 12) * 2.5;
+        const flameWobble2 = Math.cos(this.time * 15) * 2;
+
+        const flameGrad = ctx.createRadialGradient(0, 0, 2, 0, 0, 14 * flameScale);
+        flameGrad.addColorStop(0, '#ffffff');
+        flameGrad.addColorStop(0.25, '#fde047');
+        flameGrad.addColorStop(0.65, '#f97316');
+        flameGrad.addColorStop(1, 'rgba(239, 68, 68, 0)');
+        ctx.fillStyle = flameGrad;
+        ctx.beginPath();
+        ctx.arc(0, 0, 14 * flameScale, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Lớp lửa ngoài
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.moveTo(-4 * flameScale, 0);
+        ctx.quadraticCurveTo(0, -6 * flameScale + flameWobble1, 2 * flameScale, -14 * flameScale);
+        ctx.quadraticCurveTo(6 * flameScale + flameWobble2, -5 * flameScale, 4 * flameScale, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        // Lớp lửa trong màu vàng chanh
+        ctx.fillStyle = '#fde047';
+        ctx.beginPath();
+        ctx.moveTo(-2 * flameScale, 0);
+        ctx.quadraticCurveTo(0, -4 * flameScale + flameWobble2, 1 * flameScale, -9 * flameScale);
+        ctx.quadraticCurveTo(3 * flameScale, -3 * flameScale, 2 * flameScale, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        // Tâm lửa trắng sáng
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(1, -3, 1.5 * flameScale, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+        ctx.restore();
+      },
+
+      drawBellyPlates(ctx, cx, cy, rx, ry) {
+        const bellyGrad = ctx.createLinearGradient(cx, cy - ry, cx, cy + ry);
+        bellyGrad.addColorStop(0, '#fffbeb');
+        bellyGrad.addColorStop(0.6, '#fef08a');
+        bellyGrad.addColorStop(1, '#fde047');
+        ctx.fillStyle = bellyGrad;
+        ctx.strokeStyle = '#eab308';
+        ctx.lineWidth = 1.5;
+
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = '#ca8a04';
+        ctx.lineWidth = 1.2;
+        [-ry * 0.4, 0, ry * 0.4].forEach(offsetY => {
+          ctx.beginPath();
+          const span = Math.sqrt(Math.max(0, 1 - Math.pow(offsetY / ry, 2))) * rx * 0.85;
+          ctx.moveTo(cx - span, cy + offsetY);
+          ctx.quadraticCurveTo(cx, cy + offsetY + 2.5, cx + span, cy + offsetY);
+          ctx.stroke();
+        });
+      },
+
+      drawCuteFeet(ctx, lx, ly, rx, ry, footR = 6) {
+        [lx, rx].forEach(fx => {
+          ctx.fillStyle = '#ff6b6b';
+          ctx.strokeStyle = '#991b1b';
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.ellipse(fx, ly, footR * 1.1, footR * 0.75, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          // 3 móng chân tí hon màu trắng sữa
+          ctx.fillStyle = '#ffffff';
+          for (let c = -1; c <= 1; c++) {
+            ctx.beginPath();
+            ctx.arc(fx + c * 2.8, ly + footR * 0.5, 1.2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
+      },
+
+      /* -------------------------------------------------------------------------
+         5 CẤP TIẾN HÓA CỦA RỒNG CON LỬA (CHIBI ANIME ĐÁNG YÊU)
+         ------------------------------------------------------------------------- */
+      // CẤP 1: QUẢ TRỨNG LỬA THẦN KỲ (VẢY RỒNG ÓNG ÁNH, HÉ MẮT BÉ BỎNG)
+      drawDragonStage1(ctx, isHappy, stars = 0) {
         const wobble = Math.sin(this.time * 4) * (isHappy ? 0.22 : 0.08);
         const squash = Math.sin(this.time * 3) * 0.03;
 
@@ -1135,524 +1504,712 @@
         ctx.rotate(wobble);
         ctx.scale(1 + squash, 1 - squash);
 
-        const auraGrad = ctx.createRadialGradient(0, 0, 10, 0, 0, 50);
-        auraGrad.addColorStop(0, 'rgba(251, 191, 36, 0.45)');
-        auraGrad.addColorStop(1, 'rgba(251, 191, 36, 0)');
+        // Hào quang ấm áp tỏa ra quanh quả trứng
+        const auraGrad = ctx.createRadialGradient(0, 10, 10, 0, 10, 52);
+        auraGrad.addColorStop(0, 'rgba(251, 146, 60, 0.45)');
+        auraGrad.addColorStop(0.7, 'rgba(239, 68, 68, 0.15)');
+        auraGrad.addColorStop(1, 'rgba(239, 68, 68, 0)');
         ctx.fillStyle = auraGrad;
         ctx.beginPath();
-        ctx.arc(0, 5, 48, 0, Math.PI * 2);
+        ctx.arc(0, 10, 52, 0, Math.PI * 2);
         ctx.fill();
 
+        // Thân vỏ trứng rồng đỏ ruby chuyển sắc
         ctx.beginPath();
-        ctx.ellipse(0, 6, 26, 34, 0, 0, Math.PI * 2);
-        const eggGrad = ctx.createLinearGradient(-20, -25, 20, 35);
-        eggGrad.addColorStop(0, '#fef08a');
-        eggGrad.addColorStop(0.3, '#f472b6');
-        eggGrad.addColorStop(0.8, '#a855f7');
-        eggGrad.addColorStop(1, '#6366f1');
+        ctx.ellipse(0, 6, 27, 36, 0, 0, Math.PI * 2);
+        const eggGrad = ctx.createLinearGradient(-20, -30, 20, 40);
+        eggGrad.addColorStop(0, '#ff7675');
+        eggGrad.addColorStop(0.35, '#e11d48');
+        eggGrad.addColorStop(0.8, '#b91c1c');
+        eggGrad.addColorStop(1, '#7f1d1d');
         ctx.fillStyle = eggGrad;
         ctx.fill();
-        ctx.lineWidth = 2.5;
-        ctx.strokeStyle = '#7e22ce';
+        ctx.lineWidth = 2.6;
+        ctx.strokeStyle = '#5c1313';
         ctx.stroke();
 
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        ctx.beginPath();
-        ctx.arc(-8, -4, 4.5, 0, Math.PI * 2);
-        ctx.arc(10, 10, 3.5, 0, Math.PI * 2);
-        ctx.arc(-6, 18, 3, 0, Math.PI * 2);
-        ctx.fill();
+        // Họa tiết vảy rồng hoàng kim trang trí trên vỏ trứng
+        ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+        ctx.lineWidth = 1.6;
+        [[-12, -8, 6], [0, -12, 7], [12, -8, 6], [-6, 12, 7], [6, 12, 7], [-10, 24, 6], [10, 24, 6]].forEach(([sx, sy, sr]) => {
+          ctx.beginPath();
+          ctx.arc(sx, sy, sr, 0.1 * Math.PI, 0.9 * Math.PI);
+          ctx.stroke();
+        });
 
+        // Đốm sáng bóng loáng trên vỏ trứng
         ctx.beginPath();
-        ctx.ellipse(-11, -12, 6, 14, -0.4, 0, Math.PI * 2);
+        ctx.ellipse(-12, -12, 6, 15, -0.4, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
         ctx.fill();
 
-        const stars = totalAccumulatedPetStars;
-        if (stars > 0) {
-          ctx.strokeStyle = '#fff';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(-4, -6);
-          ctx.lineTo(2, 0);
-          ctx.lineTo(-2, 8);
-          if (stars >= 2.5) {
-            ctx.lineTo(8, 12);
-            ctx.lineTo(14, 8);
-          }
-          ctx.stroke();
+        // Vết nứt vỏ rực sáng ánh lửa vàng
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(-16, 2);
+        ctx.lineTo(-8, -4);
+        ctx.lineTo(0, 5);
+        ctx.lineTo(8, -3);
+        ctx.lineTo(16, 3);
+        ctx.stroke();
 
-          ctx.fillStyle = '#fef08a';
+        // Rồng con hé mắt tò mò và thò sừng nhỏ ra ngoài!
+        if (stars >= 1 || isHappy) {
+          this.drawDragonHorns(ctx, -8, -26, 8, -26, 8, 0.25);
+
+          ctx.save();
+          ctx.fillStyle = '#2b0909';
           ctx.beginPath();
-          ctx.arc(2, 0, 3 + Math.sin(this.time * 6) * 1.5, 0, Math.PI * 2);
+          ctx.ellipse(0, 1, 14, 7, 0, 0, Math.PI * 2);
           ctx.fill();
+          this.drawAnimeEyes(ctx, -6, 6, 1, 3.8, this.isBlinking, isHappy, '#5c1313', '#f97316');
+          ctx.restore();
         }
 
         ctx.restore();
       },
 
-      // CẤP 2: BÉ THÚ CƯNG MỚI NỞ (CHỚP MẮT & VẪY CÁNH)
-      drawBabyStage(ctx, isHappy) {
+      // CẤP 2: RỒNG CON NỨT VỎ (ĐỘI MŨ VỎ TRỨNG, VẪY CÁNH TÍ HON)
+      drawDragonStage2(ctx, isHappy) {
         const floatY = Math.sin(this.time * 3.5) * 3.5;
-        const wingFlap = Math.sin(this.time * (isHappy ? 16 : 8)) * 0.4;
-        const jumpY = isHappy ? -Math.abs(Math.sin(this.time * 8)) * 9 : 0;
+        const wingFlap = Math.sin(this.time * (isHappy ? 18 : 10)) * 0.45;
+        const jumpY = isHappy ? -Math.abs(Math.sin(this.time * 8)) * 10 : 0;
 
         ctx.save();
         ctx.translate(0, floatY + jumpY);
 
-        ctx.save();
-        ctx.fillStyle = '#ec4899';
-        ctx.save();
-        ctx.translate(-16, -2);
-        ctx.rotate(-0.3 + wingFlap);
-        ctx.beginPath();
-        ctx.ellipse(-8, -4, 9, 5, -0.3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        ctx.restore();
-        ctx.save();
-        ctx.translate(16, -2);
-        ctx.rotate(0.3 - wingFlap);
-        ctx.beginPath();
-        ctx.ellipse(8, -4, 9, 5, 0.3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        ctx.restore();
-        ctx.restore();
+        // Đôi cánh rồng mini phấp phới phía sau
+        this.drawDragonWings(ctx, -14, 4, 14, 4, wingFlap, 0.75, '#e11d48', '#fef08a');
 
-        ctx.fillStyle = '#fb923c';
-        ctx.strokeStyle = '#c2410c';
+        // Đuôi ve vẩy đốm lửa nhỏ
+        const tailWag = Math.sin(this.time * 7) * 0.35;
+        this.drawDragonTailWithFlame(ctx, 10, 15, tailWag, 16, 0.7);
+
+        // Thân hình rồng con bầu bĩnh mũm mĩm
+        ctx.fillStyle = '#ff6b6b';
+        ctx.strokeStyle = '#991b1b';
         ctx.lineWidth = 2.2;
         ctx.beginPath();
-        ctx.ellipse(0, 10, 18, 16, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 12, 17, 15, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#fef08a';
-        ctx.beginPath();
-        ctx.ellipse(0, 13, 11, 10, 0, 0, Math.PI * 2);
-        ctx.fill();
+        // Bụng tròn màu kem sữa mềm mại
+        this.drawBellyPlates(ctx, 0, 13, 11, 10);
 
-        ctx.fillStyle = '#fb923c';
-        ctx.beginPath();
-        ctx.arc(0, -7, 19, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
+        // Bàn chân tí hon
+        this.drawCuteFeet(ctx, -9, 25, 9, 25, 5.5);
 
-        ctx.fillStyle = '#facc15';
-        ctx.strokeStyle = '#ca8a04';
-        ctx.beginPath();
-        ctx.ellipse(-11, -22, 4.5, 7, -0.35, 0, Math.PI * 2);
-        ctx.ellipse(11, -22, 4.5, 7, 0.35, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-
-        if (this.isBlinking) {
-          ctx.strokeStyle = '#431407';
-          ctx.lineWidth = 2.2;
-          ctx.beginPath();
-          ctx.arc(-7, -8, 5, 0.2, Math.PI - 0.2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(7, -8, 5, 0.2, Math.PI - 0.2);
-          ctx.stroke();
-        } else {
-          ctx.fillStyle = '#292524';
-          ctx.beginPath();
-          ctx.ellipse(-7, -8, 5.5, 7.5, 0, 0, Math.PI * 2);
-          ctx.ellipse(7, -8, 5.5, 7.5, 0, 0, Math.PI * 2);
-          ctx.fill();
-
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath();
-          ctx.arc(-8, -10, 2.4, 0, Math.PI * 2);
-          ctx.arc(6, -10, 2.4, 0, Math.PI * 2);
-          ctx.arc(-5, -6, 1.2, 0, Math.PI * 2);
-          ctx.arc(9, -6, 1.2, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        ctx.fillStyle = 'rgba(244, 63, 94, 0.55)';
-        ctx.beginPath();
-        ctx.arc(-12, -2, 4, 0, Math.PI * 2);
-        ctx.arc(12, -2, 4, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.strokeStyle = '#7c2d12';
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        if (isHappy) {
-          ctx.arc(0, -2, 4.5, 0, Math.PI);
-          ctx.fillStyle = '#f43f5e';
-          ctx.fill();
-        } else {
-          ctx.arc(0, -3, 3, 0.1, Math.PI - 0.1);
-        }
-        ctx.stroke();
-
-        ctx.restore();
-      },
-
-      // CẤP 3: THIẾU NIÊN KHÁM PHÁ (ÁO CHOÀNG & LỬA ĐUÔI)
-      drawJuvenileStage(ctx, isHappy) {
-        const floatY = Math.sin(this.time * 3.8) * 4;
-        const wingFlap = Math.sin(this.time * 9) * 0.45;
-        const capeWave = Math.sin(this.time * 7) * 4;
-
-        ctx.save();
-        ctx.translate(0, floatY);
-
-        ctx.fillStyle = '#ef4444';
-        ctx.beginPath();
-        ctx.moveTo(-8, 3);
-        ctx.lineTo(-24, 25 + capeWave);
-        ctx.lineTo(-8, 22);
-        ctx.lineTo(8, 22);
-        ctx.lineTo(24, 25 - capeWave);
-        ctx.lineTo(8, 3);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = '#8b5cf6';
-        ctx.strokeStyle = '#5b21b6';
-        ctx.lineWidth = 2;
-        ctx.save();
-        ctx.translate(-18, -4);
-        ctx.rotate(-0.4 + wingFlap);
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(-18, -12);
-        ctx.lineTo(-14, 4);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.restore();
-        ctx.save();
-        ctx.translate(18, -4);
-        ctx.rotate(0.4 - wingFlap);
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(18, -12);
-        ctx.lineTo(14, 4);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.restore();
-
-        ctx.fillStyle = '#38bdf8';
-        ctx.strokeStyle = '#0284c7';
+        // Đầu rồng con tròn xoe
+        ctx.fillStyle = '#ff7979';
+        ctx.strokeStyle = '#991b1b';
         ctx.lineWidth = 2.4;
         ctx.beginPath();
-        ctx.ellipse(0, 11, 19, 17, 0, 0, Math.PI * 2);
+        ctx.arc(0, -6, 18, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#f0f9ff';
-        ctx.beginPath();
-        ctx.ellipse(0, 13, 12, 11, 0, 0, Math.PI * 2);
-        ctx.fill();
+        // Đôi mắt anime long lanh yêu kiều
+        this.drawAnimeEyes(ctx, -7, 7, -7, 5.2, this.isBlinking, isHappy, '#4a0e17', '#e11d48');
 
+        // Mõm và nụ cười rồng con
+        this.drawDragonSnout(ctx, 0, -1, isHappy, true);
+
+        // Đôi má ửng hồng e thẹn
+        this.drawBlush(ctx, -12, 12, -2, 3.8);
+
+        // Đôi sừng vàng tí hon
+        this.drawDragonHorns(ctx, -10, -20, 10, -20, 11, 0.35);
+
+        // Chiếc mũ vỏ trứng nứt đội đầu siêu cưng
         ctx.save();
-        const tailWag = Math.sin(this.time * 6) * 0.25;
-        ctx.translate(14, 18);
-        ctx.rotate(tailWag);
-        ctx.fillStyle = '#38bdf8';
+        ctx.translate(0, -18);
+        ctx.fillStyle = '#fef3c7';
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.arc(6, 4, 6, 0, Math.PI * 2);
+        ctx.moveTo(-14, 2);
+        ctx.lineTo(-9, 6);
+        ctx.lineTo(-4, 2);
+        ctx.lineTo(1, 6);
+        ctx.lineTo(6, 2);
+        ctx.lineTo(10, 5);
+        ctx.lineTo(14, 1);
+        ctx.bezierCurveTo(14, -14, -14, -14, -14, 2);
+        ctx.closePath();
         ctx.fill();
-        ctx.fillStyle = '#f59e0b';
+        ctx.stroke();
+
+        // Vết nứt trên mũ vỏ trứng
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.arc(11, 4, 4 + Math.sin(this.time * 8) * 1.5, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.moveTo(-2, -8);
+        ctx.lineTo(2, -3);
+        ctx.lineTo(0, 2);
+        ctx.stroke();
         ctx.restore();
 
-        ctx.fillStyle = '#38bdf8';
+        ctx.restore();
+      },
+
+      // CẤP 3: RỒNG LỬA TINH NGHỊCH (KHĂN ĐỎ PHIÊU LƯU, GAI LƯNG VÀNG)
+      drawDragonStage3(ctx, isHappy) {
+        const floatY = Math.sin(this.time * 3.5) * 4;
+        const wingFlap = Math.sin(this.time * 8) * 0.42;
+        const scarfWave = Math.sin(this.time * 7) * 4;
+
+        ctx.save();
+        ctx.translate(0, floatY);
+
+        // Đôi cánh rồng trưởng thành
+        this.drawDragonWings(ctx, -18, 0, 18, 0, wingFlap, 1.05, '#dc2626', '#fef08a');
+
+        // Đuôi rồng ve vẩy ngọn lửa rực rỡ 2 tầng màu
+        const tailWag = Math.sin(this.time * 6) * 0.3;
+        this.drawDragonTailWithFlame(ctx, 12, 16, tailWag, 22, 1.1);
+
+        // Khăn quàng đỏ phiêu lưu tung bay theo gió
+        ctx.fillStyle = '#ef4444';
+        ctx.strokeStyle = '#b91c1c';
+        ctx.lineWidth = 1.6;
         ctx.beginPath();
-        ctx.arc(0, -9, 21, 0, Math.PI * 2);
+        ctx.moveTo(-6, 3);
+        ctx.lineTo(-24, 16 + scarfWave);
+        ctx.lineTo(-18, 22 + scarfWave);
+        ctx.lineTo(-4, 8);
+        ctx.closePath();
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#fbbf24';
-        ctx.strokeStyle = '#d97706';
+        // Thân rồng khỏe khoắn
+        ctx.fillStyle = '#ff4d4d';
+        ctx.strokeStyle = '#991b1b';
+        ctx.lineWidth = 2.4;
         ctx.beginPath();
-        ctx.ellipse(-12, -26, 5, 9, -0.4, 0, Math.PI * 2);
-        ctx.ellipse(12, -26, 5, 9, 0.4, 0, Math.PI * 2);
+        ctx.ellipse(0, 12, 19, 17, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
-        if (this.isBlinking) {
-          ctx.strokeStyle = '#082f49';
-          ctx.lineWidth = 2.4;
+        // Bụng rồng ngấn vàng nhạt
+        this.drawBellyPlates(ctx, 0, 13, 12, 11);
+
+        // Bàn chân
+        this.drawCuteFeet(ctx, -10, 27, 10, 27, 6.5);
+
+        // Hàng gai lưng vàng óng trên đỉnh đầu
+        ctx.fillStyle = '#f59e0b';
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 1.5;
+        [[-6, -26], [0, -29], [6, -26]].forEach(([spx, spy]) => {
           ctx.beginPath();
-          ctx.arc(-8, -10, 6, 0.2, Math.PI - 0.2);
-          ctx.arc(8, -10, 6, 0.2, Math.PI - 0.2);
+          ctx.moveTo(spx - 3, spy + 4);
+          ctx.lineTo(spx, spy - 3);
+          ctx.lineTo(spx + 3, spy + 4);
+          ctx.closePath();
+          ctx.fill();
           ctx.stroke();
-        } else {
-          ctx.fillStyle = '#082f49';
-          ctx.beginPath();
-          ctx.ellipse(-8, -10, 6, 8, 0, 0, Math.PI * 2);
-          ctx.ellipse(8, -10, 6, 8, 0, 0, Math.PI * 2);
-          ctx.fill();
+        });
 
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath();
-          ctx.arc(-9, -12, 2.5, 0, Math.PI * 2);
-          ctx.arc(7, -12, 2.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        ctx.fillStyle = 'rgba(244, 63, 94, 0.5)';
+        // Đầu rồng
+        ctx.fillStyle = '#ff6b6b';
+        ctx.strokeStyle = '#991b1b';
+        ctx.lineWidth = 2.4;
         ctx.beginPath();
-        ctx.arc(-14, -3, 4, 0, Math.PI * 2);
-        ctx.arc(14, -3, 4, 0, Math.PI * 2);
+        ctx.arc(0, -8, 21, 0, Math.PI * 2);
         ctx.fill();
+        ctx.stroke();
 
-        ctx.strokeStyle = '#0c4a6e';
-        ctx.lineWidth = 2;
+        // Sừng rồng uốn lượn phong độ
+        this.drawDragonHorns(ctx, -12, -24, 12, -24, 16, 0.42);
+
+        // Đôi mắt ánh lửa tinh anh
+        this.drawAnimeEyes(ctx, -8, 8, -9, 5.8, this.isBlinking, isHappy, '#450a0a', '#ea580c');
+
+        // Mõm rồng tươi cười với răng nanh xinh
+        this.drawDragonSnout(ctx, 0, -3, isHappy, true);
+
+        // Má hồng phấn
+        this.drawBlush(ctx, -14, 14, -4, 4.2);
+
+        // Nút thắt khăn quàng phía trước
+        ctx.fillStyle = '#ef4444';
+        ctx.strokeStyle = '#b91c1c';
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.arc(0, -3, 4, 0, Math.PI);
+        ctx.arc(0, 4, 4.5, 0, Math.PI * 2);
+        ctx.fill();
         ctx.stroke();
 
         ctx.restore();
       },
 
-      // CẤP 4: SIÊU NHÂN NGẦU LÒI (KÍNH RÂM & SẤM SÉT)
-      drawSuperheroStage(ctx, isHappy) {
-        const floatY = Math.sin(this.time * 4.2) * 4.5;
-        const wingFlap = Math.sin(this.time * 10) * 0.5;
+      // CẤP 4: RỒNG LỬA SIÊU CẤP (VIÊN NGỌC TRÁI TIM LỬA & CÁNH LỬA CHIẾN BINH)
+      drawDragonStage4(ctx, isHappy) {
+        const floatY = Math.sin(this.time * 4) * 4.5;
+        const wingFlap = Math.sin(this.time * 10) * 0.48;
 
         ctx.save();
         ctx.translate(0, floatY);
 
-        ctx.save();
-        ctx.rotate(this.time * 0.5);
-        ctx.strokeStyle = 'rgba(250, 204, 21, 0.4)';
-        ctx.lineWidth = 2;
-        ctx.setLineDash([4, 6]);
-        ctx.beginPath();
-        ctx.arc(0, 0, 36, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.restore();
+        // Đốm lửa ma thuật lượn quanh chiến binh
+        for (let s = 0; s < 4; s++) {
+          const sparkAngle = this.time * 2 + (s * Math.PI) / 2;
+          const sx = Math.cos(sparkAngle) * 36;
+          const sy = Math.sin(sparkAngle) * 20 + 5;
+          ctx.fillStyle = s % 2 === 0 ? '#fde047' : '#f97316';
+          ctx.beginPath();
+          ctx.arc(sx, sy, 2 + Math.sin(this.time * 8 + s) * 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
 
-        ctx.fillStyle = '#a855f7';
-        ctx.strokeStyle = '#6b21a8';
-        ctx.lineWidth = 2.5;
-        ctx.save();
-        ctx.translate(-20, -5);
-        ctx.rotate(-0.5 + wingFlap);
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(-24, -16);
-        ctx.lineTo(-18, 6);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.restore();
-        ctx.save();
-        ctx.translate(20, -5);
-        ctx.rotate(0.5 - wingFlap);
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(24, -16);
-        ctx.lineTo(18, 6);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.restore();
+        // Đôi cánh lửa chiến binh rực cháy
+        this.drawDragonWings(ctx, -22, -2, 22, -2, wingFlap, 1.3, '#b91c1c', '#f59e0b');
 
-        ctx.fillStyle = '#c084fc';
-        ctx.strokeStyle = '#7e22ce';
-        ctx.lineWidth = 2.5;
+        // Ngọn lửa đuôi dũng mãnh
+        const tailWag = Math.sin(this.time * 8) * 0.32;
+        this.drawDragonTailWithFlame(ctx, 14, 15, tailWag, 26, 1.45);
+
+        // Thân rồng dũng mãnh
+        ctx.fillStyle = '#e11d48';
+        ctx.strokeStyle = '#881337';
+        ctx.lineWidth = 2.6;
         ctx.beginPath();
         ctx.ellipse(0, 12, 21, 18, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#facc15';
-        ctx.beginPath();
-        ctx.arc(0, 12, 6.5, 0, Math.PI * 2);
-        ctx.fill();
+        // Bụng rồng
+        this.drawBellyPlates(ctx, 0, 13, 13, 12);
 
-        ctx.fillStyle = '#c084fc';
+        // Viên ngọc Trái Tim Lửa Ruby phát sáng nhịp nhàng trên ngực
+        ctx.save();
+        const gemPulse = 1 + Math.sin(this.time * 6) * 0.12;
+        ctx.translate(0, 8);
+        ctx.scale(gemPulse, gemPulse);
+        ctx.fillStyle = '#ef4444';
+        ctx.strokeStyle = '#fde047';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, -6);
+        ctx.lineTo(6, 0);
+        ctx.lineTo(0, 7);
+        ctx.lineTo(-6, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-1.5, -1.5, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Bàn chân rồng
+        this.drawCuteFeet(ctx, -11, 28, 11, 28, 7);
+
+        // Đầu rồng
+        ctx.fillStyle = '#ff4d4d';
+        ctx.strokeStyle = '#881337';
+        ctx.lineWidth = 2.6;
         ctx.beginPath();
         ctx.arc(0, -9, 22, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#fde047';
-        ctx.strokeStyle = '#ca8a04';
-        ctx.beginPath();
-        ctx.ellipse(-14, -28, 5.5, 11, -0.4, 0, Math.PI * 2);
-        ctx.ellipse(14, -28, 5.5, 11, 0.4, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
+        // Sừng rồng hoàng kim uy nghi
+        this.drawDragonHorns(ctx, -13, -28, 13, -28, 20, 0.46);
 
-        ctx.fillStyle = '#18181b';
-        ctx.strokeStyle = '#facc15';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.roundRect(-18, -16, 16, 12, 4);
-        ctx.fill();
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.roundRect(2, -16, 16, 12, 4);
-        ctx.fill();
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(-2, -10);
-        ctx.lineTo(2, -10);
-        ctx.stroke();
-
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+        // Vương miện chiến binh trên trán đính ngọc đỏ
+        ctx.fillStyle = '#fbbf24';
+        ctx.strokeStyle = '#92400e';
         ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.moveTo(-15, -14);
-        ctx.lineTo(-8, -6);
-        ctx.moveTo(5, -14);
-        ctx.lineTo(12, -6);
+        ctx.moveTo(-14, -18);
+        ctx.lineTo(0, -23);
+        ctx.lineTo(14, -18);
+        ctx.lineTo(10, -14);
+        ctx.lineTo(0, -17);
+        ctx.lineTo(-10, -14);
+        ctx.closePath();
+        ctx.fill();
         ctx.stroke();
-
-        ctx.strokeStyle = '#581c87';
-        ctx.lineWidth = 2.2;
+        ctx.fillStyle = '#ef4444';
         ctx.beginPath();
-        ctx.arc(0, 0, 4.5, 0.2, Math.PI - 0.2);
-        ctx.stroke();
+        ctx.arc(0, -20, 2.8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Đôi mắt chiến binh rực rỡ tự tin
+        this.drawAnimeEyes(ctx, -8, 8, -10, 6.2, this.isBlinking, isHappy, '#450a0a', '#dc2626');
+
+        // Mõm rồng
+        this.drawDragonSnout(ctx, 0, -4, isHappy, true);
+
+        // Má hồng phấn
+        this.drawBlush(ctx, -15, 15, -4, 4.5);
 
         ctx.restore();
       },
 
-      // CẤP 5: HOÀNG GIA VÔ ĐỊCH 👑 (VƯƠNG MIỆN & HÀO QUANG CẦU VỒNG)
-      drawChampionStage(ctx, isHappy) {
+      // CẤP 5: THẦN LONG HOÀNG GIA 👑 (VƯƠNG MIỆN VÀNG, ÁO CHOÀNG NHUNG, NGỌC RỒNG THẦN)
+      drawDragonStage5(ctx, isHappy) {
         const floatY = Math.sin(this.time * 3.5) * 5;
-        const wingFlap = Math.sin(this.time * 12) * 0.55;
+        const wingFlap = Math.sin(this.time * 11) * 0.52;
+        const capeWave = Math.sin(this.time * 6) * 5;
 
         ctx.save();
         ctx.translate(0, floatY);
 
+        // Viên Ngọc Rồng Thần kỳ bí lượn quanh hộ mệnh
         ctx.save();
-        const auraRotate = this.time * 0.8;
-        for (let a = 0; a < 6; a++) {
-          const angle = auraRotate + (a * Math.PI) / 3;
-          const sx = Math.cos(angle) * 38;
-          const sy = Math.sin(angle) * 38;
-          ctx.fillStyle = a % 2 === 0 ? '#facc15' : '#f43f5e';
-          ctx.beginPath();
-          ctx.arc(sx, sy, 3 + Math.sin(this.time * 6 + a) * 1.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
+        const pearlAngle = this.time * 1.5;
+        const px = Math.cos(pearlAngle) * 34;
+        const py = Math.sin(pearlAngle) * 14 - 10;
+        const pearlGrad = ctx.createRadialGradient(px, py, 1, px, py, 9);
+        pearlGrad.addColorStop(0, '#ffffff');
+        pearlGrad.addColorStop(0.35, '#fde047');
+        pearlGrad.addColorStop(0.8, '#f59e0b');
+        pearlGrad.addColorStop(1, 'rgba(217, 119, 6, 0)');
+        ctx.fillStyle = pearlGrad;
+        ctx.beginPath();
+        ctx.arc(px, py, 9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(px - 2, py - 2, 2.2, 0, Math.PI * 2);
+        ctx.fill();
         ctx.restore();
 
-        ctx.fillStyle = '#f59e0b';
-        ctx.strokeStyle = '#b45309';
-        ctx.lineWidth = 2.5;
-        ctx.save();
-        ctx.translate(-22, -6);
-        ctx.rotate(-0.5 + wingFlap);
+        // Áo choàng nhung đỏ hoàng gia viền vàng óng
+        ctx.fillStyle = '#b91c1c';
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 2.2;
         ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(-26, -18);
-        ctx.lineTo(-16, -6);
-        ctx.lineTo(-22, 6);
+        ctx.moveTo(-10, 4);
+        ctx.lineTo(-28, 28 + capeWave);
+        ctx.lineTo(-10, 25);
+        ctx.lineTo(10, 25);
+        ctx.lineTo(28, 28 - capeWave);
+        ctx.lineTo(10, 4);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
-        ctx.restore();
-        ctx.save();
-        ctx.translate(22, -6);
-        ctx.rotate(0.5 - wingFlap);
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(26, -18);
-        ctx.lineTo(16, -6);
-        ctx.lineTo(22, 6);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.restore();
 
-        ctx.fillStyle = '#fbbf24';
-        ctx.strokeStyle = '#b45309';
+        // Đôi cánh rồng hoàng gia kỳ vĩ
+        this.drawDragonWings(ctx, -24, -4, 24, -4, wingFlap, 1.45, '#991b1b', '#fbbf24');
+
+        // Đuôi ngọn lửa thần thánh
+        const tailWag = Math.sin(this.time * 6.5) * 0.35;
+        this.drawDragonTailWithFlame(ctx, 15, 16, tailWag, 28, 1.6);
+
+        // Thân rồng hoàng tộc
+        ctx.fillStyle = '#dc2626';
+        ctx.strokeStyle = '#7f1d1d';
         ctx.lineWidth = 2.6;
         ctx.beginPath();
         ctx.ellipse(0, 13, 22, 19, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#e11d48';
+        // Bụng rồng
+        this.drawBellyPlates(ctx, 0, 14, 14, 13);
+
+        // Huy hiệu hoàng kim đính ruby trước ngực
+        ctx.fillStyle = '#fbbf24';
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.moveTo(0, 6);
-        ctx.lineTo(6, 13);
-        ctx.lineTo(0, 20);
-        ctx.lineTo(-6, 13);
-        ctx.closePath();
+        ctx.arc(0, 9, 6.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(0, 9, 3.2, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = '#fbbf24';
+        // Bàn chân rồng
+        this.drawCuteFeet(ctx, -12, 30, 12, 30, 7.5);
+
+        // Đầu rồng
+        ctx.fillStyle = '#ef4444';
+        ctx.strokeStyle = '#7f1d1d';
+        ctx.lineWidth = 2.6;
         ctx.beginPath();
         ctx.arc(0, -9, 23, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
+        // Sừng rồng hoàng đế uốn lượn
+        this.drawDragonHorns(ctx, -14, -30, 14, -30, 22, 0.48);
+
+        // Vương miện hoàng gia 3 ngọn đính hồng ngọc & lam ngọc 👑
         ctx.save();
         ctx.translate(0, -32 + Math.sin(this.time * 5) * 1.5);
-        ctx.fillStyle = '#eab308';
-        ctx.strokeStyle = '#713f12';
+        ctx.fillStyle = '#f59e0b';
+        ctx.strokeStyle = '#78350f';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(-14, 6);
-        ctx.lineTo(-16, -6);
-        ctx.lineTo(-7, -1);
-        ctx.lineTo(0, -10);
-        ctx.lineTo(7, -1);
-        ctx.lineTo(16, -6);
-        ctx.lineTo(14, 6);
+        ctx.moveTo(-16, 6);
+        ctx.lineTo(-18, -8);
+        ctx.lineTo(-9, -2);
+        ctx.lineTo(0, -12);
+        ctx.lineTo(9, -2);
+        ctx.lineTo(18, -8);
+        ctx.lineTo(16, 6);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#ef4444';
+        // Ngọc ruby trung tâm
+        ctx.fillStyle = '#dc2626';
         ctx.beginPath();
-        ctx.arc(0, -10, 2.5, 0, Math.PI * 2);
-        ctx.arc(-16, -6, 2, 0, Math.PI * 2);
-        ctx.arc(16, -6, 2, 0, Math.PI * 2);
+        ctx.arc(0, -4, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        // Ngọc ngọc bích & sapphire 2 bên
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath();
+        ctx.arc(-10, 0, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#3b82f6';
+        ctx.beginPath();
+        ctx.arc(10, 0, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+        // Ánh sao lấp lánh trên chóp vương miện
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, -12, 1.8, 0, Math.PI * 2);
+        ctx.arc(-18, -8, 1.5, 0, Math.PI * 2);
+        ctx.arc(18, -8, 1.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
 
-        if (this.isBlinking) {
-          ctx.strokeStyle = '#78350f';
+        // Đôi mắt anime tràn đầy yêu thương & niềm tự hào
+        this.drawAnimeEyes(ctx, -9, 9, -10, 6.5, this.isBlinking, isHappy, '#450a0a', '#b91c1c');
+
+        // Mõm rồng
+        this.drawDragonSnout(ctx, 0, -4, isHappy, true);
+
+        // Má hồng phấn
+        this.drawBlush(ctx, -15, 15, -4, 4.8);
+
+        ctx.restore();
+      },
+
+      /* -------------------------------------------------------------------------
+         TẠO HÌNH CÁC LOÀI THÚ CƯNG KHÁC (MÈO BÁNH BAO, CÁNH CỤT, KỲ LÂN)
+         ------------------------------------------------------------------------- */
+      drawCat(ctx, stage, isHappy) {
+        const floatY = Math.sin(this.time * 3.5) * 3.5;
+        ctx.save();
+        ctx.translate(0, floatY);
+
+        if (stage === 1) {
+          ctx.beginPath();
+          ctx.ellipse(0, 6, 26, 35, 0, 0, Math.PI * 2);
+          ctx.fillStyle = '#a7f3d0';
+          ctx.strokeStyle = '#059669';
           ctx.lineWidth = 2.4;
-          ctx.beginPath();
-          ctx.arc(-8, -10, 6, 0.2, Math.PI - 0.2);
-          ctx.arc(8, -10, 6, 0.2, Math.PI - 0.2);
-          ctx.stroke();
-        } else {
-          ctx.fillStyle = '#451a03';
-          ctx.beginPath();
-          ctx.ellipse(-8, -10, 6, 8.5, 0, 0, Math.PI * 2);
-          ctx.ellipse(8, -10, 6, 8.5, 0, 0, Math.PI * 2);
           ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#fbcfe8';
+          ctx.beginPath();
+          ctx.moveTo(-18, -20); ctx.lineTo(-12, -34); ctx.lineTo(-4, -24); ctx.closePath(); ctx.fill();
+          ctx.beginPath();
+          ctx.moveTo(18, -20); ctx.lineTo(12, -34); ctx.lineTo(4, -24); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = 'rgba(5, 150, 105, 0.3)';
+          ctx.beginPath(); ctx.arc(0, 8, 4.5, 0, Math.PI * 2); ctx.fill();
+        } else {
+          ctx.fillStyle = '#fed7aa';
+          ctx.strokeStyle = '#ea580c';
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.ellipse(0, 12, 18, 16, 0, 0, Math.PI * 2);
+          ctx.fill(); ctx.stroke();
 
           ctx.fillStyle = '#ffffff';
           ctx.beginPath();
-          ctx.arc(-9, -12, 2.8, 0, Math.PI * 2);
-          ctx.arc(7, -12, 2.8, 0, Math.PI * 2);
+          ctx.ellipse(0, 13, 11, 10, 0, 0, Math.PI * 2);
           ctx.fill();
+
+          const tailWag = Math.sin(this.time * 6) * 0.3;
+          ctx.save();
+          ctx.translate(14, 15);
+          ctx.rotate(tailWag);
+          ctx.strokeStyle = '#ea580c';
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.moveTo(0, 0); ctx.quadraticCurveTo(12, 5, 12, -12); ctx.stroke();
+          ctx.restore();
+
+          ctx.fillStyle = '#fed7aa';
+          ctx.beginPath();
+          ctx.arc(0, -7, 19, 0, Math.PI * 2);
+          ctx.fill(); ctx.stroke();
+
+          ctx.fillStyle = '#fed7aa';
+          ctx.beginPath();
+          ctx.moveTo(-16, -16); ctx.lineTo(-15, -30); ctx.lineTo(-4, -22); ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(16, -16); ctx.lineTo(15, -30); ctx.lineTo(4, -22); ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#f472b6';
+          ctx.beginPath();
+          ctx.moveTo(-14, -18); ctx.lineTo(-14, -27); ctx.lineTo(-6, -22); ctx.closePath(); ctx.fill();
+          ctx.beginPath();
+          ctx.moveTo(14, -18); ctx.lineTo(14, -27); ctx.lineTo(6, -22); ctx.closePath(); ctx.fill();
+
+          this.drawAnimeEyes(ctx, -7, 7, -8, 5, this.isBlinking, isHappy, '#065f46', '#10b981');
+
+          ctx.fillStyle = '#f472b6';
+          ctx.beginPath();
+          ctx.moveTo(-2, -3); ctx.lineTo(2, -3); ctx.lineTo(0, -1); ctx.closePath(); ctx.fill();
+          ctx.strokeStyle = '#7c2d12'; ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.arc(-2.5, 0, 2.5, 0.1 * Math.PI, 0.9 * Math.PI);
+          ctx.arc(2.5, 0, 2.5, 0.1 * Math.PI, 0.9 * Math.PI);
+          ctx.stroke();
+
+          ctx.strokeStyle = '#9a3412'; ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.moveTo(-12, -2); ctx.lineTo(-22, -4);
+          ctx.moveTo(-12, 1); ctx.lineTo(-22, 2);
+          ctx.moveTo(12, -2); ctx.lineTo(22, -4);
+          ctx.moveTo(12, 1); ctx.lineTo(22, 2);
+          ctx.stroke();
+
+          this.drawBlush(ctx, -12, 12, 0, 3.5);
+
+          if (stage === 3) {
+            ctx.fillStyle = '#ec4899';
+            ctx.beginPath(); ctx.arc(0, 5, 3.5, 0, Math.PI * 2); ctx.fill();
+          } else if (stage === 4) {
+            ctx.fillStyle = '#3b82f6';
+            ctx.beginPath(); ctx.moveTo(-10, 4); ctx.lineTo(-22, 24); ctx.lineTo(-8, 20); ctx.lineTo(8, 20); ctx.lineTo(22, 24); ctx.lineTo(10, 4); ctx.closePath(); ctx.fill();
+          } else if (stage === 5) {
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath(); ctx.moveTo(-12, -24); ctx.lineTo(-14, -34); ctx.lineTo(-6, -29); ctx.lineTo(0, -36); ctx.lineTo(6, -29); ctx.lineTo(14, -34); ctx.lineTo(12, -24); ctx.closePath(); ctx.fill();
+          }
         }
+        ctx.restore();
+      },
 
-        ctx.fillStyle = 'rgba(244, 63, 94, 0.6)';
-        ctx.beginPath();
-        ctx.arc(-14, -3, 4.5, 0, Math.PI * 2);
-        ctx.arc(14, -3, 4.5, 0, Math.PI * 2);
-        ctx.fill();
+      drawPenguin(ctx, stage, isHappy) {
+        const floatY = Math.sin(this.time * 3.5) * 3.5;
+        ctx.save();
+        ctx.translate(0, floatY);
 
-        ctx.strokeStyle = '#78350f';
-        ctx.lineWidth = 2.4;
-        ctx.beginPath();
-        ctx.arc(0, -2, 5.5, 0, Math.PI);
-        ctx.fillStyle = '#f43f5e';
-        ctx.fill();
-        ctx.stroke();
+        if (stage === 1) {
+          ctx.beginPath();
+          ctx.ellipse(0, 6, 26, 35, 0, 0, Math.PI * 2);
+          ctx.fillStyle = '#bae6fd';
+          ctx.strokeStyle = '#0284c7';
+          ctx.lineWidth = 2.4;
+          ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath(); ctx.arc(-6, 2, 4, 0, Math.PI * 2); ctx.arc(6, 12, 3, 0, Math.PI * 2); ctx.fill();
+        } else {
+          ctx.fillStyle = '#1e293b';
+          ctx.strokeStyle = '#0f172a';
+          ctx.lineWidth = 2.4;
+          ctx.beginPath();
+          ctx.ellipse(0, 6, 20, 24, 0, 0, Math.PI * 2);
+          ctx.fill(); ctx.stroke();
 
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.ellipse(0, 8, 14, 18, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          const flap = Math.sin(this.time * 8) * 0.35;
+          ctx.save(); ctx.translate(-18, 4); ctx.rotate(-0.3 + flap);
+          ctx.fillStyle = '#1e293b'; ctx.beginPath(); ctx.ellipse(-4, 0, 5, 12, 0.2, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+          ctx.save(); ctx.translate(18, 4); ctx.rotate(0.3 - flap);
+          ctx.fillStyle = '#1e293b'; ctx.beginPath(); ctx.ellipse(4, 0, 5, 12, -0.2, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+
+          ctx.fillStyle = '#f97316';
+          ctx.beginPath(); ctx.ellipse(-9, 28, 6, 3.5, -0.2, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.ellipse(9, 28, 6, 3.5, 0.2, 0, Math.PI * 2); ctx.fill();
+
+          this.drawAnimeEyes(ctx, -7, 7, -3, 4.8, this.isBlinking, isHappy, '#0369a1', '#38bdf8');
+
+          ctx.fillStyle = '#f97316';
+          ctx.beginPath();
+          ctx.moveTo(-4, 2); ctx.lineTo(4, 2); ctx.lineTo(0, 7); ctx.closePath(); ctx.fill();
+
+          this.drawBlush(ctx, -12, 12, 2, 3.5);
+
+          if (stage >= 3) {
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath(); ctx.ellipse(0, 8, 14, 5, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillRect(-4, 8, 7, 14);
+          }
+          if (stage === 5) {
+            ctx.fillStyle = '#38bdf8';
+            ctx.beginPath(); ctx.moveTo(-10, -18); ctx.lineTo(-12, -26); ctx.lineTo(-5, -22); ctx.lineTo(0, -29); ctx.lineTo(5, -22); ctx.lineTo(12, -26); ctx.lineTo(10, -18); ctx.closePath(); ctx.fill();
+          }
+        }
+        ctx.restore();
+      },
+
+      drawUnicorn(ctx, stage, isHappy) {
+        const floatY = Math.sin(this.time * 3.5) * 3.5;
+        ctx.save();
+        ctx.translate(0, floatY);
+
+        if (stage === 1) {
+          ctx.beginPath();
+          ctx.ellipse(0, 6, 26, 35, 0, 0, Math.PI * 2);
+          const eggGrad = ctx.createLinearGradient(-15, -20, 15, 20);
+          eggGrad.addColorStop(0, '#fbcfe8');
+          eggGrad.addColorStop(0.5, '#ddd6fe');
+          eggGrad.addColorStop(1, '#bae6fd');
+          ctx.fillStyle = eggGrad; ctx.strokeStyle = '#a855f7'; ctx.lineWidth = 2.4;
+          ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath(); ctx.arc(0, 4, 3.5, 0, Math.PI * 2); ctx.fill();
+        } else {
+          ctx.fillStyle = '#ffffff';
+          ctx.strokeStyle = '#c084fc';
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.ellipse(0, 12, 18, 16, 0, 0, Math.PI * 2);
+          ctx.fill(); ctx.stroke();
+
+          const flap = Math.sin(this.time * 10) * 0.4;
+          ctx.save(); ctx.translate(-16, 4); ctx.rotate(-0.3 + flap);
+          ctx.fillStyle = 'rgba(232, 121, 249, 0.6)'; ctx.beginPath(); ctx.ellipse(-6, -2, 8, 5, -0.3, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+          ctx.save(); ctx.translate(16, 4); ctx.rotate(0.3 - flap);
+          ctx.fillStyle = 'rgba(232, 121, 249, 0.6)'; ctx.beginPath(); ctx.ellipse(6, -2, 8, 5, 0.3, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath(); ctx.arc(0, -7, 18, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+          const maneColors = ['#f472b6', '#a78bfa', '#38bdf8', '#facc15'];
+          maneColors.forEach((col, idx) => {
+            ctx.fillStyle = col;
+            ctx.beginPath(); ctx.arc(-10 - idx * 2, -14 + idx * 5, 5, 0, Math.PI * 2); ctx.fill();
+          });
+
+          const hornGrad = ctx.createLinearGradient(0, -10, 0, -32);
+          hornGrad.addColorStop(0, '#f59e0b'); hornGrad.addColorStop(1, '#fef08a');
+          ctx.fillStyle = hornGrad; ctx.strokeStyle = '#b45309'; ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.moveTo(-4, -16); ctx.lineTo(0, -34); ctx.lineTo(4, -16); ctx.closePath();
+          ctx.fill(); ctx.stroke();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath(); ctx.arc(0, -34, 2, 0, Math.PI * 2); ctx.fill();
+
+          this.drawAnimeEyes(ctx, -6, 6, -8, 5, this.isBlinking, isHappy, '#701a75', '#d946ef');
+
+          ctx.fillStyle = '#fbcfe8';
+          ctx.beginPath(); ctx.ellipse(0, -1, 6, 4, 0, 0, Math.PI * 2); ctx.fill();
+          this.drawBlush(ctx, -11, 11, -2, 3.5);
+
+          if (stage === 5) {
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath(); ctx.arc(0, -18, 4, 0, Math.PI * 2); ctx.fill();
+          }
+        }
         ctx.restore();
       },
 
@@ -1893,6 +2450,11 @@
        QUẢN LÝ TIẾN TRÌNH THÚ CƯNG & MODAL TIẾN HÓA
        ========================================================================= */
     function updatePetUI() {
+      if (!petProgressData[activePetSpeciesId]) {
+        petProgressData[activePetSpeciesId] = { stars: 0, completed: false };
+      }
+      totalAccumulatedPetStars = petProgressData[activePetSpeciesId].stars;
+
       const pet = PET_SPECIES_DATA[activePetSpeciesId];
       if (!pet) return;
 
@@ -1917,7 +2479,11 @@
       const stageStatus = document.getElementById("pet-modal-stage-status");
 
       if (nameDisplay) nameDisplay.textContent = pet.name;
-      if (titleDisplay) titleDisplay.textContent = currentStage.title;
+      if (titleDisplay) {
+        titleDisplay.textContent = petProgressData[activePetSpeciesId].completed
+          ? `Tốt Nghiệp 🎓 ${currentStage.title}`
+          : currentStage.title;
+      }
       if (lvlBadge) lvlBadge.textContent = `Lv.${currentStage.level}`;
       if (totalStarsCount) totalStarsCount.textContent = `${totalAccumulatedPetStars % 1 === 0 ? totalAccumulatedPetStars : totalAccumulatedPetStars.toFixed(1)} Sao`;
       if (stageStatus) stageStatus.textContent = `${pet.name} • Cấp ${currentStage.level}: ${currentStage.title}`;
@@ -1933,10 +2499,161 @@
         if (expText) expText.textContent = `${totalAccumulatedPetStars}/${nextReq} ⭐`;
       } else {
         if (expBar) expBar.style.width = `100%`;
-        if (expText) expText.textContent = `MAX 👑`;
+        if (expText) expText.textContent = `MAX 50 ⭐ 👑`;
       }
 
+      const starCountDisplay = document.getElementById("star-count-display");
+      const starTotalDisplay = document.getElementById("star-total-display");
+      if (starCountDisplay) {
+        starCountDisplay.textContent = totalAccumulatedPetStars % 1 === 0 ? totalAccumulatedPetStars : totalAccumulatedPetStars.toFixed(1);
+      }
+      if (starTotalDisplay) {
+        if (nextStage) {
+          starTotalDisplay.textContent = `/${nextStage.reqStars}`;
+        } else {
+          starTotalDisplay.textContent = ` MAX`;
+        }
+      }
+
+      updateLevelTabsUI();
       renderPetEvolutionTimeline();
+      renderPetChoicesUI();
+    }
+
+    function renderPetChoicesUI() {
+      const grid = document.getElementById("pet-choices-grid");
+      if (!grid) return;
+
+      const unlockLabel = document.getElementById("pet-unlock-progress-label");
+      if (unlockLabel) {
+        const completedCount = Object.values(petProgressData).filter(p => p && p.completed).length;
+        unlockLabel.textContent = `${unlockedPetSpeciesIds.length}/${PET_ORDER.length} Đã Mở Khóa • ${completedCount} Tốt Nghiệp 🎓`;
+      }
+
+      const petIcons = {
+        dragon: '🦖',
+        cat: '🐱',
+        penguin: '🐧',
+        unicorn: '🦄'
+      };
+
+      grid.innerHTML = PET_ORDER.map((id, index) => {
+        const pet = PET_SPECIES_DATA[id];
+        const isUnlocked = unlockedPetSpeciesIds.includes(id);
+        const isActive = activePetSpeciesId === id;
+        const data = petProgressData[id] || { stars: 0, completed: false };
+        const isCompleted = Boolean(data.completed || data.stars >= 50);
+
+        const prevPetId = index > 0 ? PET_ORDER[index - 1] : null;
+        const prevPetName = prevPetId ? PET_SPECIES_DATA[prevPetId].name : '';
+
+        if (!isUnlocked) {
+          return `
+            <div onclick="showLockedPetHint('${prevPetName}')" class="p-2.5 sm:p-3 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/90 text-left transition flex items-center justify-between gap-2 opacity-70 cursor-pointer hover:opacity-90 hover:border-slate-400 select-none">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span class="text-3xl filter grayscale opacity-60 shrink-0">🔒</span>
+                <div class="min-w-0">
+                  <div class="font-black text-xs sm:text-sm text-slate-600 flex items-center gap-1.5 truncate">
+                    <span>${pet.name}</span>
+                    <span class="text-[9px] font-black px-1.5 py-0.2 bg-slate-200 text-slate-600 rounded">Khóa</span>
+                  </div>
+                  <div class="text-[10px] text-amber-800 font-bold mt-0.5 truncate">
+                    Nuôi ${prevPetName} đạt Cấp 5 để mở
+                  </div>
+                </div>
+              </div>
+              <span class="text-xs shrink-0">🔒</span>
+            </div>
+          `;
+        }
+
+        let borderBgClass = "bg-white border-slate-200 hover:bg-purple-50/50 shadow-xs";
+        let statusBadge = `<span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">Sẵn Sàng Nuôi ✨</span>`;
+
+        if (isActive) {
+          borderBgClass = "bg-gradient-to-r from-purple-50 to-pink-50 border-purple-400 shadow-md ring-2 ring-purple-300";
+          statusBadge = `<span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-purple-600 text-white shadow-xs animate-pulse">Đang Đồng Hành 🐾</span>`;
+        } else if (isCompleted) {
+          borderBgClass = "bg-amber-50/80 border-amber-300 hover:bg-amber-100/70 shadow-xs";
+          statusBadge = `<span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 font-baloo shadow-xs">Đã Tốt Nghiệp 🎓 👑</span>`;
+        }
+
+        return `
+          <button onclick="choosePetSpecies('${id}')" class="p-2.5 sm:p-3 rounded-2xl border-2 text-left transition flex items-center justify-between gap-2 active:scale-95 cursor-pointer ${borderBgClass}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="text-3xl shrink-0">${petIcons[id] || '🐾'}</span>
+              <div class="min-w-0">
+                <div class="font-black text-xs sm:text-sm text-slate-900 truncate font-baloo">${pet.name}</div>
+                <div class="text-[10px] text-slate-500 font-bold mt-0.5">${data.stars}/50 ⭐ • ${isCompleted ? 'Max Hoàng Gia 👑' : 'Đang nuôi lớn'}</div>
+              </div>
+            </div>
+            <div class="shrink-0">
+              ${statusBadge}
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function showLockedPetHint(prevPetName) {
+      playEncouragingHarp();
+      const bubble = document.getElementById("pet-speech-bubble");
+      const bubbleText = document.getElementById("pet-speech-text");
+      if (bubble && bubbleText) {
+        bubbleText.textContent = `Bé cùng tớ nuôi bạn ${prevPetName} đạt Cấp 5 (50⭐) để đánh thức bạn này nhé! 💕`;
+        bubble.classList.remove('hidden');
+        if (petSpeechTimeout) clearTimeout(petSpeechTimeout);
+        petSpeechTimeout = setTimeout(() => bubble.classList.add('hidden'), 3500);
+      }
+    }
+
+    function updateLevelTabsUI() {
+      const petLevel = currentPetStageIndex + 1; // 1 to 5
+      const pet = PET_SPECIES_DATA[activePetSpeciesId];
+
+      const tabConfigs = [
+        { id: 1, icon: '🌱', title: 'Cấp 1: Khởi động' },
+        { id: 2, icon: '🏡', title: 'Cấp 2: Ngôi nhà bé' },
+        { id: 3, icon: '🎯', title: 'Cấp 3: Vần tròn môi' },
+        { id: 4, icon: '🧙‍♂️', title: 'Cấp 4: Trị đọc sai' },
+        { id: 5, icon: '🏆', title: 'Cấp 5: Diễn cảm' }
+      ];
+
+      tabConfigs.forEach(cfg => {
+        const tab = document.getElementById(`tab-lvl-${cfg.id}`);
+        if (!tab) return;
+
+        const stageInfo = pet ? pet.stages[cfg.id - 1] : null;
+        const reqStars = stageInfo ? stageInfo.reqStars : 0;
+        const isUnlocked = cfg.id <= petLevel;
+        const isActive = cfg.id === currentLevel;
+
+        if (isUnlocked) {
+          if (isActive) {
+            tab.className = "lvl-btn active-level px-2.5 py-1.5 rounded-xl font-black bg-rose-500 text-white whitespace-nowrap shadow border border-rose-600 flex items-center gap-1 cursor-pointer transition transform active:scale-95";
+          } else {
+            tab.className = "lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1 cursor-pointer transition active:scale-95";
+          }
+          tab.innerHTML = `<span>${cfg.icon}</span> ${cfg.title} (50 câu)`;
+          tab.title = `Bấm để luyện tập ${cfg.title}`;
+          tab.onclick = () => selectLevel(cfg.id);
+        } else {
+          tab.className = "lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-400 border border-slate-200 whitespace-nowrap shadow-none flex items-center gap-1 cursor-not-allowed opacity-80";
+          tab.innerHTML = `<span>🔒</span> ${cfg.title} <span class="text-[10px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded-md font-black">Cần Lv.${cfg.id} (${reqStars}⭐)</span>`;
+          tab.title = `Thú cưng cần đạt Cấp ${cfg.id} (${reqStars} sao) để mở khóa!`;
+          tab.onclick = () => {
+            playEncouragingHarp();
+            const bubble = document.getElementById("pet-speech-bubble");
+            const bubbleText = document.getElementById("pet-speech-text");
+            if (bubble && bubbleText) {
+              bubbleText.textContent = `Bé cùng tớ đọc tích đủ ${reqStars} ⭐ để lên Lv.${cfg.id} mở khóa nhé! 💕`;
+              bubble.classList.remove('hidden');
+              if (petSpeechTimeout) clearTimeout(petSpeechTimeout);
+              petSpeechTimeout = setTimeout(() => bubble.classList.add('hidden'), 3200);
+            }
+          };
+        }
+      });
     }
 
     function renderPetEvolutionTimeline() {
@@ -1999,8 +2716,14 @@
     }
 
     function checkPetEvolutionAfterStar(addedStars) {
-      const oldStars = totalAccumulatedPetStars;
-      totalAccumulatedPetStars = parseFloat((totalAccumulatedPetStars + addedStars).toFixed(1));
+      if (!petProgressData[activePetSpeciesId]) {
+        petProgressData[activePetSpeciesId] = { stars: 0, completed: false };
+      }
+
+      const oldStars = petProgressData[activePetSpeciesId].stars;
+      const newStars = parseFloat((oldStars + addedStars).toFixed(1));
+      petProgressData[activePetSpeciesId].stars = newStars;
+      totalAccumulatedPetStars = newStars;
 
       const pet = PET_SPECIES_DATA[activePetSpeciesId];
       let oldStageIdx = 0;
@@ -2011,27 +2734,106 @@
         if (totalAccumulatedPetStars >= st.reqStars) newStageIdx = idx;
       });
 
+      // Kiểm tra tốt nghiệp (đạt Cấp 5 - Max Level 50 sao)
+      let newlyCompleted = false;
+      let nextPetToUnlock = null;
+
+      if (newStageIdx >= 4 && !petProgressData[activePetSpeciesId].completed) {
+        petProgressData[activePetSpeciesId].completed = true;
+        newlyCompleted = true;
+
+        const currentOrderIdx = PET_ORDER.indexOf(activePetSpeciesId);
+        if (currentOrderIdx !== -1 && currentOrderIdx < PET_ORDER.length - 1) {
+          nextPetToUnlock = PET_ORDER[currentOrderIdx + 1];
+          if (!unlockedPetSpeciesIds.includes(nextPetToUnlock)) {
+            unlockedPetSpeciesIds.push(nextPetToUnlock);
+          }
+        }
+      }
+
+      savePetDataToStorage();
       updatePetUI();
       PetAnimationEngine.triggerHappy();
 
       if (newStageIdx > oldStageIdx) {
+        // Thú cưng tiến hóa lên cấp mới! Tự động nâng cấp câu hỏi theo level thú cưng
+        const newPetLevel = newStageIdx + 1;
+        currentLevel = newPetLevel;
+
         setTimeout(() => {
-          triggerEvolutionCelebration(pet.stages[newStageIdx]);
+          triggerEvolutionCelebration(pet.stages[newStageIdx], newlyCompleted, nextPetToUnlock);
+          updatePetUI();
+          startNewRandomRound();
         }, 1900);
       }
     }
 
-    function triggerEvolutionCelebration(stage) {
+    function triggerEvolutionCelebration(stage, newlyCompleted = false, nextPetToUnlock = null) {
       playPetEvolutionFanfare();
       triggerBigConfetti();
 
       const titleEl = document.getElementById("celebration-pet-title");
       const descEl = document.getElementById("celebration-pet-desc");
-      if (titleEl) titleEl.textContent = stage.title;
-      if (descEl) descEl.textContent = stage.desc;
+      const headlineEl = document.getElementById("celebration-headline");
+      const sublineEl = document.getElementById("celebration-subline");
+      const actionsEl = document.getElementById("celebration-actions-container");
+
+      const pet = PET_SPECIES_DATA[activePetSpeciesId];
+
+      if (newlyCompleted) {
+        if (headlineEl) headlineEl.textContent = "🎓 THÚ CƯNG TỐT NGHIỆP!";
+        if (sublineEl) sublineEl.textContent = `Bé đã nuôi lớn hoàn hảo ${pet.name} đạt Cấp 5 Hoàng Gia! 👑`;
+        if (titleEl) titleEl.textContent = `${pet.name} • Thần Thú Hoàng Gia 👑`;
+
+        if (nextPetToUnlock) {
+          const nextPet = PET_SPECIES_DATA[nextPetToUnlock];
+          if (descEl) {
+            descEl.innerHTML = `🌟 <b>XUẤT SẮC!</b> ${pet.name} đã tốt nghiệp rực rỡ!<br>Bạn mới <b>${nextPet.name} 🥚</b> đã xuất hiện và sẵn sàng cùng bé ấp nở!`;
+          }
+          if (actionsEl) {
+            actionsEl.innerHTML = `
+              <button onclick="startNextPet('${nextPetToUnlock}')" class="w-full py-3 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-black text-sm shadow-xl active:scale-95 transition transform hover:scale-102">
+                Bắt Đầu Nuôi ${nextPet.name} Ngay! 🐣
+              </button>
+              <button onclick="closeEvolutionCelebration()" class="w-full py-2.5 rounded-xl bg-white/80 hover:bg-white text-slate-700 font-bold text-xs border border-slate-300 active:scale-95 transition">
+                Ở Lại Chơi Thêm Với ${pet.name} 💕
+              </button>
+            `;
+          }
+        } else {
+          if (descEl) {
+            descEl.innerHTML = `👑 <b>ĐỈNH CAO THẦN ĐỒNG!</b> Bé đã hoàn thành nuôi lớn tất cả 4 bạn thú cưng trong vương quốc! Bé chính là nhà vô địch đọc trơn siêu đẳng nhất!`;
+          }
+          if (actionsEl) {
+            actionsEl.innerHTML = `
+              <button onclick="closeEvolutionCelebration()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-sm shadow-xl active:scale-95 transition">
+                Nhận Vương Miện Đọc Trơn 👑
+              </button>
+            `;
+          }
+        }
+      } else {
+        if (headlineEl) headlineEl.textContent = "🎉 THÚ CƯNG TIẾN HÓA!";
+        if (sublineEl) sublineEl.textContent = "Bé đã tích đủ sao để giúp bạn ấy lớn lên!";
+        if (titleEl) titleEl.textContent = stage.title;
+        if (descEl) descEl.textContent = stage.desc;
+        if (actionsEl) {
+          actionsEl.innerHTML = `
+            <button onclick="closeEvolutionCelebration()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-sm shadow-lg active:scale-95 transition">
+              Tuyệt Vời Quá Bé Ơi! ⭐
+            </button>
+          `;
+        }
+      }
 
       const popup = document.getElementById("pet-evolution-celebration");
       if (popup) popup.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function startNextPet(nextPetId) {
+      closeEvolutionCelebration();
+      choosePetSpecies(nextPetId);
+      triggerBigConfetti();
     }
 
     function closeEvolutionCelebration() {
@@ -2041,19 +2843,20 @@
 
     function choosePetSpecies(speciesId) {
       if (!PET_SPECIES_DATA[speciesId]) return;
+      if (!unlockedPetSpeciesIds.includes(speciesId)) {
+        const idx = PET_ORDER.indexOf(speciesId);
+        const prevName = idx > 0 ? PET_SPECIES_DATA[PET_ORDER[idx - 1]].name : 'thú cưng trước';
+        showLockedPetHint(prevName);
+        return;
+      }
+
       activePetSpeciesId = speciesId;
+      totalAccumulatedPetStars = petProgressData[speciesId] ? petProgressData[speciesId].stars : 0;
+      currentLevel = currentPetStageIndex + 1;
 
-      ['dragon', 'cat', 'penguin', 'unicorn'].forEach(id => {
-        const btn = document.getElementById(`pet-choice-${id}`);
-        if (!btn) return;
-        if (id === speciesId) {
-          btn.className = "p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-purple-50 border-purple-400 shadow-sm";
-        } else {
-          btn.className = "p-2.5 rounded-2xl border-2 text-left transition flex items-center gap-2 bg-white border-slate-200 hover:bg-pink-50";
-        }
-      });
-
+      savePetDataToStorage();
       updatePetUI();
+      startNewRandomRound();
       PetAnimationEngine.triggerHappy();
     }
 
@@ -2093,8 +2896,7 @@
         checkPetEvolutionAfterStar(0.5);
 
         setTimeout(() => {
-          const starDisplay = document.getElementById("star-count-display");
-          if (starDisplay) starDisplay.textContent = calculateTotalScore();
+          updatePetUI();
         }, 1800);
       }
       renderCard();
@@ -2119,8 +2921,7 @@
         checkPetEvolutionAfterStar(gained);
 
         setTimeout(() => {
-          const starDisplay = document.getElementById("star-count-display");
-          if (starDisplay) starDisplay.textContent = calculateTotalScore();
+          updatePetUI();
           triggerMiniConfetti();
         }, 1900);
       }
@@ -2227,12 +3028,6 @@
         btnHalfText.textContent = isHalf ? "Đã Đạt +½ Sao 🌱" : "Cố Gắng Lắm! +½ Sao";
       }
 
-      const progressBarFill = document.getElementById("progress-bar-fill");
-      const progressTextSmall = document.getElementById("progress-text-small");
-      const percent = ((currentIndex + 1) / currentSessionDeck.length) * 100;
-      if (progressBarFill) progressBarFill.style.width = `${percent}%`;
-      if (progressTextSmall) progressTextSmall.textContent = `${currentIndex + 1}/${currentSessionDeck.length} câu`;
-
       if (activeCard) {
         activeCard.className = `card-transition slide-${direction} w-full h-full rounded-3xl sm:rounded-[36px] p-5 sm:p-8 flex flex-col justify-between items-center text-center shadow-2xl border-4 sm:border-8 rainbow-card relative overflow-hidden bg-gradient-to-br ${card.theme}`;
         setTimeout(() => {
@@ -2259,24 +3054,10 @@
     }
 
     function selectLevel(lvl) {
+      const petLevel = currentPetStageIndex + 1;
+      if (lvl > petLevel) return;
       currentLevel = lvl;
-      for (let i = 1; i <= 5; i++) {
-        const tab = document.getElementById(`tab-lvl-${i}`);
-        if (!tab) continue;
-        if (i === lvl) {
-          tab.className = "lvl-btn active-level px-2.5 py-1.5 rounded-xl font-black bg-rose-500 text-white whitespace-nowrap shadow border border-rose-600 flex items-center gap-1";
-        } else {
-          tab.className = "lvl-btn px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 hover:bg-rose-50 whitespace-nowrap shadow-sm border border-slate-200 flex items-center gap-1";
-        }
-      }
-      startNewRandomRound();
-    }
-
-    function changeRoundSize() {
-      const select = document.getElementById("select-round-size");
-      if (select) {
-        roundSize = parseInt(select.value, 10) || 15;
-      }
+      updateLevelTabsUI();
       startNewRandomRound();
     }
 
@@ -2292,16 +3073,12 @@
     function startNewRandomRound() {
       const pool = QUESTION_BANK[`level${currentLevel}`] || QUESTION_BANK.level1;
       const shuffled = shuffleArray(pool);
-      currentSessionDeck = shuffled.slice(0, roundSize);
+      currentSessionDeck = shuffled;
       currentIndex = 0;
       completedCardIds.clear();
       halfCardIds.clear();
 
-      const starCountDisplay = document.getElementById("star-count-display");
-      const starTotalDisplay = document.getElementById("star-total-display");
-      if (starCountDisplay) starCountDisplay.textContent = "0";
-      if (starTotalDisplay) starTotalDisplay.textContent = `/${currentSessionDeck.length}`;
-
+      updatePetUI();
       renderCard();
     }
 
@@ -2473,7 +3250,9 @@
     });
 
     window.onload = function() {
+      loadPetDataFromStorage();
       PetAnimationEngine.startLoop();
+      currentLevel = currentPetStageIndex + 1;
       updatePetUI();
       startNewRandomRound();
     };
