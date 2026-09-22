@@ -43,13 +43,23 @@ Ngân hàng dữ liệu (`QUESTION_BANK`) gồm **250 câu/từ** được chu�
 
 ---
 
-## 🐾 Hệ Sinh Thái Thú Cưng (Pet System)
+## 🐾 Hệ Sinh Thái Thú Cưng (Pet System & Vector Chibi Art)
 
-Bé có thể tự do lựa chọn và chuyển đổi giữa 4 người bạn đồng hành:
-- 🦖 **Rồng Con Lửa (`dragon`):** Tinh nghịch, phun lửa ngôi sao rực rỡ.
-- 🐱 **Mèo Bánh Bao (`cat`):** Dễ thương, biết vỗ tay và cọ má cổ vũ.
-- 🐧 **Cánh Cụt Pingu (`penguin`):** Lướt bụng trơn tru trên băng tuyết.
-- 🦄 **Kỳ Lân Cầu Vồng (`unicorn`):** Phát ra ánh sáng cầu vồng phép thuật.
+Bộ máy đồ họa hoạt hình thủ công (`PetAnimationEngine`) trên Canvas 2D 60 FPS đã được thiết kế lại toàn diện theo phong cách **Chibi Anime siêu cưng, màu sắc rực rỡ, mắt long lanh nhiều tầng ánh sáng và chuyển động sinh động**:
+
+- 🦖 **Rồng Con Lửa (`dragon`):**
+  - *Cấp 1 - Quả Trứng Lửa Thần Kỳ:* Vỏ đỏ ruby vân vảy rồng vàng óng ánh, tỏa hào quang ấm áp; khi chạm vào hoặc có sao sẽ hé mắt to tròn ngắm nhìn bé.
+  - *Cấp 2 - Rồng Con Nứt Vỏ:* Đội mũ vỏ trứng nứt siêu đáng yêu, đôi sừng vàng tí hon, vẫy cánh phấp phới và đuôi ve vẩy ngọn lửa nhỏ.
+  - *Cấp 3 - Rồng Lửa Tinh Nghịch:* Đeo khăn quàng đỏ phiêu lưu tung bay, có 3 gai lưng hoàng kim, răng nanh trắng sữa và đuôi lửa 2 tầng màu.
+  - *Cấp 4 - Rồng Lửa Siêu Cấp:* Chiến binh rồng mang ngọc Trái Tim Lửa phát sáng nhịp tim trên ngực, vương miện trán đính ruby, cánh lửa rực cháy.
+  - *Cấp 5 - Thần Long Hoàng Gia 👑:* Vương miện 3 ngọn đính hồng ngọc & lam ngọc, áo choàng nhung đỏ viền vàng, triệu hồi Viên Ngọc Rồng Thần lượn quanh hộ mệnh cho bé.
+- 🐱 **Mèo Bánh Bao (`cat`):**
+  - Má bánh bao phúng phính, đốm cam tam thể, tai vểnh rung rinh theo nhịp, mắt anime xanh ngọc bích, mũi hồng đào, miệng cười số 3 (`:3`), râu nhí nhảnh, đệm thịt chân hồng hào.
+  - Tiến hóa từ Quả Trứng Bạc Hà -> Mèo con đeo chuông vàng -> Mèo thắt nơ hồng -> Pháp sư sao băng -> Vua Mèo Thần Tài (cầm đồng xu vàng "Điểm 10").
+- 🐧 **Cánh Cụt Pingu (`penguin`):**
+  - Thân chim cánh cụt quả lê tròn trĩnh, bụng trắng muốt, mỏ cam tròn, quàng khăn len đỏ ấm áp, đội vương miện băng tuyết pha lê.
+- 🦄 **Kỳ Lân Cầu Vồng (`unicorn`):**
+  - Ngựa pony trắng ngọc trai, bờm cầu vồng 4 màu bồng bềnh, sừng xoắn hoàng kim phát ánh sao, đôi cánh tiên lấp lánh và vương miện sao thiên hà.
 
 ### Quy Trình Nuôi Thú Cưng Lần Lượt & Lưu Trữ Cấp Độ (`localStorage`):
 Bé sẽ được nuôi các bạn thú cưng **lần lượt theo thứ tự**:
@@ -63,8 +73,8 @@ Bé sẽ được nuôi các bạn thú cưng **lần lượt theo thứ tự**:
   - **Cấp 2 (5 ⭐) - Thú Con:** Tự động mở khóa & thăng cấp lên **Cấp 2 (50 câu ngôi nhà bé)**.
   - **Cấp 3 (15 ⭐) - Trưởng Thành:** Tự động mở khóa & thăng cấp lên **Cấp 3 (50 câu vần tròn môi)**.
   - **Cấp 4 (30 ⭐) - Siêu Cấp:** Tự động mở khóa & thăng cấp lên **Cấp 4 (50 câu trị đọc sai)**.
-  - **Cấp 5 (50 ⭐) - Hoàng Gia 👑:** Đạt cấp độ tối thượng và **Tốt Nghiệp (Graduated 🎓)**. Hệ thống sẽ bật thông báo ăn mừng tưng bừng và mở khóa quả trứng của bạn thú cưng tiếp theo để bé tiếp tục hành trình!
-- **Lưu trữ vĩnh viễn (`localStorage`):** Mọi tiến trình sao, cấp độ của từng con thú và danh sách các con đã mở khóa đều được tự động lưu vào bộ nhớ trình duyệt, không bao giờ bị mất khi tải lại trang hoặc tắt máy.
+  - **Cấp 5 (50 ⭐) - Hoàng Gia 👑:** Đạt cấp độ tối thượng và **Tốt Nghiệp (Graduated 🎓)**. Hệ thống sẽ bật thông báo ăn mừng tưng bừng và mở khóa bạn thú cưng tiếp theo để bé tiếp tục hành trình!
+- **Lưu trữ vĩnh viễn (`localStorage`):** Mọi tiến trình sao, cấp độ của từng con thú và danh sách con đã mở khóa đều được tự động lưu vĩnh viễn qua key `BE_DOC_TRON_PET_PROGRESS_V2`.
 - **Vườn Thú:** Bé có thể vào xem danh sách, ghé thăm hoặc chọn lại các bạn thú cưng đã tốt nghiệp (Lv.5 👑) làm bạn đồng hành bất cứ lúc nào. Các bạn chưa mở khóa sẽ hiển thị điều kiện rõ ràng (🔒).
 
 ---
@@ -80,7 +90,7 @@ Bé sẽ được nuôi các bạn thú cưng **lần lượt theo thứ tự**:
   # Truy cập: http://localhost:8080/flashcard.html
   ```
 
-### 2. Các thao tác trong bài học (chạy ngầm, giao diện gọn gàng)
+### 2. Các thao tác trong bài học
 - **Chuyển thẻ:**
   - *Màn hình cảm ứng (Mobile/Tablet):* Vuốt sang trái (thẻ kế tiếp) hoặc vuốt sang phải (thẻ trước đó).
   - *Bàn phím (Desktop):* Bấm phím mũi tên `←` (Lùi) hoặc `→` (Tiếp theo).
@@ -88,13 +98,13 @@ Bé sẽ được nuôi các bạn thú cưng **lần lượt theo thứ tự**:
   - **Đọc trơn đúng (+1 ⭐):** Bấm nút màu xanh lá hoặc phím `Spacebar`.
   - **Cần cố gắng (+½ ⭐):** Bấm nút màu vàng khuyến khích để bé ôn lại sau.
 - **Chế độ Tự động chạy (Auto-play):** Bấm nút "Tự chạy" để tự động lật thẻ sau mỗi 4.5 giây.
+- **Tương tác với thú cưng:** Nhấp vào thú cưng trên thanh công cụ hoặc trong modal để nghe thú cưng trò chuyện, nhảy mừng rỡ tung tim và sao!
 - **Xem bảng thành tích:** Bấm "Xem kết quả" để xem tổng kết số sao đạt được, tỷ lệ hoàn thành và danh sách các từ cần ôn luyện.
 
 ---
 
 ## 🚀 Đề Xuất Nâng Cấp Tương Lai
 
-1. **Lưu trữ dữ liệu học tập (`localStorage`):** Lưu tiến trình sao và cấp độ thú cưng vào bộ nhớ trình duyệt để không bị mất khi tải lại trang.
-2. **Nhận diện giọng nói (Web Speech API):** Tự động lắng nghe giọng đọc của bé và chấm điểm chính xác theo thời gian thực.
-3. **Giọng đọc mẫu (Text-to-Speech):** Tích hợp nút loa phát âm mẫu chuẩn từng từ để bé nghe và nhắc lại trước khi đọc.
-4. **Tùy chỉnh bộ câu hỏi:** Cho phép phụ huynh nhập danh sách từ vựng/câu theo bài học trên lớp của từng ngày.
+1. **Nhận diện giọng nói (Web Speech API):** Tự động lắng nghe giọng đọc của bé và chấm điểm chính xác theo thời gian thực.
+2. **Giọng đọc mẫu (Text-to-Speech):** Tích hợp nút loa phát âm mẫu chuẩn từng từ để bé nghe và nhắc lại trước khi đọc.
+3. **Tùy chỉnh bộ câu hỏi:** Cho phép phụ huynh nhập danh sách từ vựng/câu theo bài học trên lớp của từng ngày.
