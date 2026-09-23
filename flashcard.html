@@ -478,28 +478,14 @@
           </div>
         </div>
 
-        <!-- Tổng số sao tích lũy nuôi thú -->
-        <div class="bg-gradient-to-r from-amber-50 to-pink-50 border-2 border-amber-300 rounded-2xl p-3 flex items-center justify-between flex-shrink-0">
-        </div>
-
         <!-- 4 Bạn Thú Cưng Nuôi Lần Lượt -->
         <div>
-          <div class="text-xs font-black text-purple-900 uppercase tracking-wide mb-2 flex items-center justify-between">
-            <span class="flex items-center gap-1"><span>🐾</span> VƯỜN THÚ CƯNG CỦA BÉ:</span>
-            <span id="pet-unlock-progress-label" class="text-[10px] text-purple-700 font-bold bg-purple-100 px-2 py-0.5 rounded-full">1/4 Bạn Thú</span>
+          <div class="text-xs sm:text-sm font-black text-purple-900 uppercase tracking-wide mb-2.5 flex items-center justify-between">
+            <span class="flex items-center gap-1.5"><span>🐾</span> VƯỜN THÚ CƯNG CỦA BÉ:</span>
+            <span id="pet-unlock-progress-label" class="text-xs text-purple-800 font-black bg-purple-100 px-3 py-1 rounded-full border border-purple-200">1/4 Mở Khóa</span>
           </div>
-          <div id="pet-choices-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
+          <div id="pet-choices-grid" class="grid grid-cols-2 gap-2.5 sm:gap-3">
             <!-- Nạp động qua JavaScript renderPetChoicesUI() -->
-          </div>
-        </div>
-
-        <!-- Bản đồ 5 Cấp Độ Tiến Hóa -->
-        <div>
-          <div class="text-xs font-black text-slate-700 uppercase tracking-wide mb-2 flex items-center gap-1">
-            <span>🗺️</span> 5 CẤP ĐỘ TIẾN HÓA CỦA BẠN HIỆN TẠI:
-          </div>
-          <div id="pet-evolution-timeline" class="flex flex-col gap-2">
-            <!-- Nạp tự động qua JavaScript -->
           </div>
         </div>
 
@@ -2492,7 +2478,7 @@
       const unlockLabel = document.getElementById("pet-unlock-progress-label");
       if (unlockLabel) {
         const completedCount = Object.values(petProgressData).filter(p => p && p.completed).length;
-        unlockLabel.textContent = `${unlockedPetSpeciesIds.length}/${PET_ORDER.length} Đã Mở Khóa • ${completedCount} Tốt Nghiệp 🎓`;
+        unlockLabel.textContent = `${unlockedPetSpeciesIds.length}/${PET_ORDER.length} Mở Khóa • ${completedCount} 🎓`;
       }
 
       const petIcons = {
@@ -2508,51 +2494,73 @@
         const isActive = activePetSpeciesId === id;
         const data = petProgressData[id] || { stars: 0, completed: false };
         const isCompleted = Boolean(data.completed || data.stars >= 50);
+        const icon = petIcons[id] || '🐾';
 
         const prevPetId = index > 0 ? PET_ORDER[index - 1] : null;
         const prevPetName = prevPetId ? PET_SPECIES_DATA[prevPetId].name : '';
 
+        // Trạng thái KHÓA: Vẫn hiện icon thú cưng to rõ, hấp dẫn để bé tò mò muốn mở khóa
         if (!isUnlocked) {
           return `
-            <div onclick="showLockedPetHint('${prevPetName}')" class="p-2.5 sm:p-3 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/90 text-left transition flex items-center justify-between gap-2 opacity-70 cursor-pointer hover:opacity-90 hover:border-slate-400 select-none">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <span class="text-3xl filter grayscale opacity-60 shrink-0">🔒</span>
-                <div class="min-w-0">
-                  <div class="font-black text-xs sm:text-sm text-slate-600 flex items-center gap-1.5 truncate">
-                    <span>${pet.name}</span>
-                    <span class="text-[9px] font-black px-1.5 py-0.2 bg-slate-200 text-slate-600 rounded">Khóa</span>
-                  </div>
-                  <div class="text-[10px] text-amber-800 font-bold mt-0.5 truncate">
-                    Nuôi ${prevPetName} đạt Cấp 5 để mở
-                  </div>
-                </div>
+            <div onclick="showLockedPetHint('${prevPetName}')" class="p-3 sm:p-4 rounded-3xl border-2 border-dashed border-purple-200 bg-purple-50/40 text-center transition flex flex-col items-center justify-center gap-1.5 cursor-pointer hover:bg-purple-100/50 hover:border-purple-300 active:scale-95 select-none relative group">
+              <!-- Huy hiệu khóa ở góc -->
+              <span class="absolute top-2 right-2 text-xs bg-slate-200/90 text-slate-600 px-1.5 py-0.5 rounded-full font-black flex items-center gap-0.5 shadow-2xs">
+                🔒
+              </span>
+
+              <!-- Icon Thú Cưng to rõ, hấp dẫn (có mờ nhẹ và hiệu ứng ánh hào quang) -->
+              <div class="relative my-1">
+                <span class="text-4xl sm:text-5xl inline-block filter grayscale-[40%] opacity-80 group-hover:scale-110 group-hover:grayscale-0 transition-transform">
+                  ${icon}
+                </span>
               </div>
-              <span class="text-xs shrink-0">🔒</span>
+
+              <!-- Tên thú cưng to rõ không bị cắt -->
+              <div class="font-black text-xs sm:text-sm text-slate-700 font-baloo leading-tight">
+                ${pet.name}
+              </div>
+
+              <!-- Nhãn mở khóa ngắn gọn -->
+              <div class="text-[10px] text-purple-700 font-bold bg-white/90 px-2 py-0.5 rounded-full border border-purple-200">
+                Nuôi ${prevPetName} để mở
+              </div>
             </div>
           `;
         }
 
-        let borderBgClass = "bg-white border-slate-200 hover:bg-purple-50/50 shadow-xs";
-        let statusBadge = `<span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">Sẵn Sàng Nuôi ✨</span>`;
+        // Trạng thái ĐÃ MỞ KHÓA
+        let borderBgClass = "bg-white border-2 border-purple-200 hover:border-purple-300 hover:bg-purple-50/50 shadow-sm";
+        let statusBadge = `<span class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-baloo">Sẵn sàng ✨</span>`;
 
         if (isActive) {
-          borderBgClass = "bg-gradient-to-r from-purple-50 to-pink-50 border-purple-400 shadow-md ring-2 ring-purple-300";
-          statusBadge = `<span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-purple-600 text-white shadow-xs animate-pulse">Đang Đồng Hành 🐾</span>`;
+          borderBgClass = "bg-gradient-to-b from-purple-100/90 via-pink-50 to-amber-50 border-3 border-purple-500 shadow-md ring-2 ring-purple-300";
+          statusBadge = `<span class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-purple-600 text-white font-baloo shadow-xs animate-pulse">Đang chơi 🐾</span>`;
         } else if (isCompleted) {
-          borderBgClass = "bg-amber-50/80 border-amber-300 hover:bg-amber-100/70 shadow-xs";
-          statusBadge = `<span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 font-baloo shadow-xs">Đã Tốt Nghiệp 🎓 👑</span>`;
+          borderBgClass = "bg-gradient-to-b from-amber-50 to-yellow-50 border-2 border-amber-300 hover:bg-amber-100 shadow-sm";
+          statusBadge = `<span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 font-baloo shadow-xs">Tốt nghiệp 👑</span>`;
         }
 
         return `
-          <button onclick="choosePetSpecies('${id}')" class="p-2.5 sm:p-3 rounded-2xl border-2 text-left transition flex items-center justify-between gap-2 active:scale-95 cursor-pointer ${borderBgClass}">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <span class="text-3xl shrink-0">${petIcons[id] || '🐾'}</span>
-              <div class="min-w-0">
-                <div class="font-black text-xs sm:text-sm text-slate-900 truncate font-baloo">${pet.name}</div>
-                <div class="text-[10px] text-slate-500 font-bold mt-0.5">${data.stars}/50 ⭐ • ${isCompleted ? 'Max Hoàng Gia 👑' : 'Đang nuôi lớn'}</div>
-              </div>
+          <button onclick="choosePetSpecies('${id}')" class="p-3 sm:p-4 rounded-3xl text-center transition flex flex-col items-center justify-center gap-1.5 active:scale-95 cursor-pointer relative ${borderBgClass}">
+            <!-- Huy hiệu sao ở góc -->
+            <span class="absolute top-2 right-2 text-[10px] bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded-full font-black flex items-center gap-0.5 shadow-2xs font-baloo">
+              ⭐ ${data.stars}/50
+            </span>
+
+            <!-- Icon Thú Cưng lớn sinh động -->
+            <div class="relative my-1">
+              <span class="text-4xl sm:text-5xl inline-block ${isActive ? 'animate-bounce' : 'transform hover:scale-110'} transition-transform">
+                ${icon}
+              </span>
             </div>
-            <div class="shrink-0">
+
+            <!-- Tên thú cưng to rõ -->
+            <div class="font-black text-xs sm:text-sm text-slate-900 font-baloo leading-tight">
+              ${pet.name}
+            </div>
+
+            <!-- Huy hiệu trạng thái -->
+            <div class="mt-0.5">
               ${statusBadge}
             </div>
           </button>
@@ -2652,41 +2660,7 @@
     }
 
     function renderPetEvolutionTimeline() {
-      const timelineContainer = document.getElementById("pet-evolution-timeline");
-      if (!timelineContainer) return;
-
-      const pet = PET_SPECIES_DATA[activePetSpeciesId];
-      if (!pet) return;
-
-      timelineContainer.innerHTML = pet.stages.map((st, idx) => {
-        const isUnlocked = totalAccumulatedPetStars >= st.reqStars;
-        const isCurrent = currentPetStageIndex === idx;
-
-        return `
-          <div class="p-2.5 rounded-2xl border-2 flex items-center justify-between gap-2 transition ${
-            isCurrent
-              ? 'bg-purple-100 border-purple-400 shadow-sm'
-              : isUnlocked
-              ? 'bg-white border-emerald-300'
-              : 'bg-slate-50 border-slate-200 opacity-60'
-          }">
-            <div class="flex items-center gap-2">
-              <span class="w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black ${
-                isUnlocked ? 'bg-emerald-500 text-white' : 'bg-slate-300 text-slate-600'
-              }">
-                ${isUnlocked ? '✓' : st.level}
-              </span>
-              <div>
-                <div class="font-black text-xs sm:text-sm text-slate-800">${st.title}</div>
-                <div class="text-[10px] text-slate-500 font-bold">${st.desc}</div>
-              </div>
-            </div>
-            <span class="text-[11px] font-black whitespace-nowrap ${isUnlocked ? 'text-emerald-700' : 'text-amber-800'}">
-              ${st.reqStars === 0 ? 'Bắt đầu' : st.reqStars + ' ⭐'}
-            </span>
-          </div>
-        `;
-      }).join('');
+      // Đã tối giản modal bỏ 5 cấp tiến độ nhiều chữ, tập trung vào hình ảnh thú cưng
     }
 
     function interactWithPet() {
