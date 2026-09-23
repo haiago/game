@@ -261,7 +261,7 @@
         <div class="w-full flex items-center justify-between relative z-10">
           <div class="flex items-center gap-2">
             <span id="card-badge-num" class="px-3 py-1 rounded-xl font-black text-xs sm:text-sm shadow-md bg-rose-600 text-white">
-              CÂU 01 / 15
+              CÂU #01 • +1⭐
             </span>
             <span id="card-category-name" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-xl font-extrabold text-[11px] sm:text-xs bg-white/85 text-slate-700 border border-slate-200 shadow-sm">
               Cấp 1: Sao Nhí Khởi Động
@@ -312,21 +312,27 @@
       </div>
     </div>
 
-    <!-- Thanh điều hướng câu: Trước, Tự chạy, Tiếp theo -->
-    <div class="w-full max-w-md flex items-center justify-between mt-3 px-2 gap-2">
-      <button id="btn-prev" onclick="goPrev()" class="flex-1 py-3 px-3 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-800 rounded-2xl font-black text-sm sm:text-base shadow-md border-2 border-slate-200 flex items-center justify-center gap-1.5 transition active:scale-95">
-        <span class="text-lg">◀</span>
-        <span>Câu Trước</span>
+    <!-- Thanh điều hướng câu: Trước, Bỏ qua (-½⭐), Tự chạy, Tiếp theo -->
+    <div class="w-full max-w-lg flex items-center justify-between mt-3 px-2 gap-1.5 sm:gap-2">
+      <button id="btn-prev" onclick="goPrev()" class="flex-1 py-2.5 sm:py-3 px-2.5 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-800 rounded-2xl font-black text-xs sm:text-sm shadow-md border-2 border-slate-200 flex items-center justify-center gap-1 transition active:scale-95">
+        <span class="text-base sm:text-lg">◀</span>
+        <span>Trước</span>
       </button>
 
-      <button id="btn-auto-play" onclick="toggleAutoPlay()" title="Tự động chuyển thẻ sau 4.5 giây" class="p-3 bg-white hover:bg-slate-50 text-slate-700 rounded-2xl border-2 border-slate-200 shadow-md font-extrabold text-xs flex flex-col items-center justify-center transition active:scale-95 whitespace-nowrap min-w-[65px]">
-        <span id="auto-icon" class="text-base">▶️</span>
-        <span id="auto-text" class="text-[10px]">Tự chạy</span>
+      <!-- Nút Bỏ Qua (-½ Sao) -->
+      <button id="btn-skip" onclick="skipCurrentCard()" title="Bỏ qua không đọc câu này (-0.5⭐)" class="flex-1 py-2.5 sm:py-3 px-2 bg-gradient-to-r from-rose-50 to-amber-50 hover:from-rose-100 hover:to-amber-100 text-rose-800 rounded-2xl font-black text-xs sm:text-sm shadow-md border-2 border-rose-300 flex items-center justify-center gap-1 transition active:scale-95 whitespace-nowrap">
+        <span>⏭️</span>
+        <span>Bỏ Qua <span class="text-[10px] text-rose-600 bg-rose-100 px-1 py-0.5 rounded font-black">-½⭐</span></span>
       </button>
 
-      <button id="btn-next" onclick="goNext()" class="flex-1 py-3 px-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-2xl font-black text-sm sm:text-base shadow-lg border-2 border-indigo-700 flex items-center justify-center gap-1.5 transition active:scale-95">
-        <span>Câu Sau</span>
-        <span class="text-lg">▶</span>
+      <button id="btn-auto-play" onclick="toggleAutoPlay()" title="Tự động chuyển thẻ sau 4.5 giây" class="py-2.5 sm:py-3 px-2.5 bg-white hover:bg-slate-50 text-slate-700 rounded-2xl border-2 border-slate-200 shadow-md font-extrabold text-xs flex flex-col items-center justify-center transition active:scale-95 whitespace-nowrap min-w-[55px] sm:min-w-[65px]">
+        <span id="auto-icon" class="text-sm sm:text-base">▶️</span>
+        <span id="auto-text" class="text-[9px] sm:text-[10px]">Tự chạy</span>
+      </button>
+
+      <button id="btn-next" onclick="goNext()" class="flex-1 py-2.5 sm:py-3 px-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-2xl font-black text-xs sm:text-sm shadow-lg border-2 border-indigo-700 flex items-center justify-center gap-1 transition active:scale-95">
+        <span>Tiếp Theo</span>
+        <span class="text-base sm:text-lg">▶</span>
       </button>
     </div>
 
@@ -414,7 +420,7 @@
 
         <button onclick="startNewRandomRoundFromModal()" class="flex-1 py-2.5 px-3 rounded-2xl bg-gradient-to-r from-rose-500 to-amber-500 hover:opacity-95 text-white font-black text-xs sm:text-sm shadow-md border-2 border-rose-600 active:scale-95 transition flex items-center justify-center gap-1">
           <span>🎲</span>
-          <span>Ấp Tiếp Lượt Mới (15 Câu)</span>
+          <span>Ấp Tiếp Lượt Mới ✨</span>
         </button>
       </div>
 
@@ -527,7 +533,7 @@
     </div>
   </div>
 
-  <!-- Ngân hàng 500 câu hỏi luyện đọc trơn (tách riêng tối ưu tải trang) -->
+  <!-- Ngân hàng 300 câu hỏi luyện đọc trơn Cấp 1, 2, 3 chuẩn SGK GDPT 2018 (tách riêng tối ưu tải trang) -->
   <script src="questions.js"></script>
 
   <script>
@@ -767,6 +773,12 @@
       notes.forEach((freq, idx) => {
         playTone(freq, 'triangle', 0.28, idx * 0.12, 0.25);
       });
+    }
+
+    function playSkipPenaltySound() {
+      // Âm thanh cảnh báo nhẹ nhàng khi bỏ qua câu (-½⭐)
+      playTone(330, 'sine', 0.18, 0.00, 0.18);
+      playTone(260, 'sine', 0.22, 0.10, 0.24);
     }
 
     function toggleSoundFx() {
@@ -2154,7 +2166,7 @@
        STREAMING_CHUNK:Implementing animated flying badges and star particle bursts...
        HIỆU ỨNG BUNG HẠT SAO & HUY HIỆU BAY LƯỢN GPU (WAAPI)
        ========================================================================= */
-    function triggerStarBurstEffect(sourceElement) {
+    function triggerStarBurstEffect(sourceElement, starAmount = 1) {
       if (!sourceElement) return;
 
       const sourceRect = sourceElement.getBoundingClientRect();
@@ -2178,16 +2190,17 @@
       const particles = ['⭐', '🌟', '✨', '💛', '🎉', '⭐'];
       const fragment = document.createDocumentFragment();
       const particleElements = [];
+      const count = starAmount >= 2 ? 24 : 18;
 
-      for (let i = 0; i < 18; i++) {
+      for (let i = 0; i < count; i++) {
         const particle = document.createElement('div');
         particle.className = 'gpu-particle text-xl sm:text-2xl select-none';
         particle.textContent = particles[i % particles.length];
         particle.style.left = `${originX}px`;
         particle.style.top = `${originY}px`;
 
-        const angle = (i / 18) * (Math.PI * 2) + (Math.random() * 0.3 - 0.15);
-        const distance = 75 + Math.random() * 95;
+        const angle = (i / count) * (Math.PI * 2) + (Math.random() * 0.3 - 0.15);
+        const distance = (starAmount >= 2 ? 85 : 75) + Math.random() * 95;
         const tx = Math.cos(angle) * distance;
         const ty = Math.sin(angle) * distance;
         const rot = (Math.random() - 0.5) * 540;
@@ -2219,7 +2232,8 @@
       // 2. Huy hiệu sao vàng lớn bay theo đường cung mượt mà không khựng giật
       const flyingBadge = document.createElement('div');
       flyingBadge.className = 'gpu-flying-badge font-baloo px-4 py-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 border-2 border-yellow-100 rounded-full font-black text-amber-950 text-base sm:text-lg shadow-2xl flex items-center gap-2 select-none';
-      flyingBadge.innerHTML = `<span class="text-2xl inline-block">⭐</span><span>+1 SAO!</span>`;
+      const labelText = starAmount === 2 ? '+2 SAO!' : `+${starAmount} SAO!`;
+      flyingBadge.innerHTML = `<span class="text-2xl inline-block">⭐</span><span>${labelText}</span>`;
       flyingBadge.style.left = `${originX}px`;
       flyingBadge.style.top = `${originY}px`;
       flyingBadge.style.filter = 'drop-shadow(0 8px 18px rgba(217, 119, 6, 0.6))';
@@ -2255,7 +2269,7 @@
       };
     }
 
-    function triggerHalfStarBurstEffect(sourceElement) {
+    function triggerHalfStarBurstEffect(sourceElement, starAmount = 0.5) {
       if (!sourceElement) return;
 
       const sourceRect = sourceElement.getBoundingClientRect();
@@ -2317,10 +2331,11 @@
         };
       });
 
-      // 2. Huy hiệu +½ SAO bay mượt mà
+      // 2. Huy hiệu SAO bay mượt mà
       const flyingBadge = document.createElement('div');
       flyingBadge.className = 'gpu-flying-badge font-baloo px-3.5 py-1.5 bg-gradient-to-r from-emerald-400 via-teal-300 to-green-400 border-2 border-emerald-100 rounded-full font-black text-emerald-950 text-sm sm:text-base shadow-2xl flex items-center gap-1.5 select-none';
-      flyingBadge.innerHTML = `<span class="text-xl inline-block">🌱</span><span>+½ SAO!</span>`;
+      const labelText = starAmount === 1 ? '+1 SAO!' : '+½ SAO!';
+      flyingBadge.innerHTML = `<span class="text-xl inline-block">🌱</span><span>${labelText}</span>`;
       flyingBadge.style.left = `${originX}px`;
       flyingBadge.style.top = `${originY}px`;
       flyingBadge.style.filter = 'drop-shadow(0 8px 18px rgba(5, 150, 105, 0.55))';
@@ -2353,6 +2368,38 @@
           void starBadgeBox.offsetWidth;
           starBadgeBox.classList.add('star-box-bump');
         }
+      };
+    }
+
+    function triggerPenaltyEffect(sourceElement) {
+      if (!sourceElement) return;
+      const sourceRect = sourceElement.getBoundingClientRect();
+      const originX = sourceRect.left + sourceRect.width / 2;
+      const originY = sourceRect.top + sourceRect.height / 2;
+
+      // Huy hiệu bay xuống thông báo -0.5 sao
+      const penaltyBadge = document.createElement('div');
+      penaltyBadge.className = 'gpu-flying-badge font-baloo px-3.5 py-1.5 bg-gradient-to-r from-rose-500 to-red-600 border-2 border-white rounded-full font-black text-white text-sm sm:text-base shadow-xl flex items-center gap-1.5 select-none';
+      penaltyBadge.innerHTML = `<span>⏭️</span><span>-½ SAO</span>`;
+      penaltyBadge.style.left = `${originX}px`;
+      penaltyBadge.style.top = `${originY}px`;
+      penaltyBadge.style.filter = 'drop-shadow(0 6px 14px rgba(225, 29, 72, 0.45))';
+
+      document.body.appendChild(penaltyBadge);
+
+      const anim = penaltyBadge.animate([
+        { transform: 'translate3d(-50%, -50%, 0) scale(0.5)', opacity: 0 },
+        { transform: 'translate3d(-50%, calc(-50% - 25px), 0) scale(1.15)', opacity: 1, offset: 0.3 },
+        { transform: 'translate3d(-50%, calc(-50% - 40px), 0) scale(1)', opacity: 0.9, offset: 0.7 },
+        { transform: 'translate3d(-50%, calc(-50% - 60px), 0) scale(0.8)', opacity: 0 }
+      ], {
+        duration: 1400,
+        easing: 'ease-out',
+        fill: 'forwards'
+      });
+
+      anim.onfinish = () => {
+        if (penaltyBadge.parentNode) penaltyBadge.parentNode.removeChild(penaltyBadge);
       };
     }
 
@@ -2662,7 +2709,7 @@
       }
 
       const oldStars = petProgressData[activePetSpeciesId].stars;
-      const newStars = parseFloat((oldStars + addedStars).toFixed(1));
+      const newStars = Math.max(0, parseFloat((oldStars + addedStars).toFixed(1)));
       petProgressData[activePetSpeciesId].stars = newStars;
       totalAccumulatedPetStars = newStars;
 
@@ -2694,17 +2741,18 @@
 
       savePetDataToStorage();
       updatePetUI();
-      PetAnimationEngine.triggerHappy();
+      if (addedStars > 0) {
+        PetAnimationEngine.triggerHappy();
+      }
 
       if (newStageIdx > oldStageIdx) {
-        // Thú cưng tiến hóa lên cấp mới! Tự động nâng cấp câu hỏi theo level thú cưng
+        // Thú cưng tiến hóa lên cấp mới!
         const newPetLevel = newStageIdx + 1;
         currentLevel = newPetLevel;
 
         setTimeout(() => {
           triggerEvolutionCelebration(pet.stages[newStageIdx], newlyCompleted, nextPetToUnlock);
           updatePetUI();
-          startNewRandomRound();
         }, 1900);
       }
     }
@@ -2817,8 +2865,15 @@
        XỬ LÝ ĐÁNH GIÁ THẺ & TIẾN ĐỘ VÒNG HỌC
        ========================================================================= */
     function calculateTotalScore() {
-      let score = completedCardIds.size * 1.0;
-      score += halfCardIds.size * 0.5;
+      let score = 0;
+      currentSessionDeck.forEach(card => {
+        const isLv3 = (card.sourceLevel === 3);
+        if (completedCardIds.has(card.id)) {
+          score += isLv3 ? 2.0 : 1.0;
+        } else if (halfCardIds.has(card.id)) {
+          score += isLv3 ? 1.0 : 0.5;
+        }
+      });
       return score % 1 === 0 ? score : score.toFixed(1);
     }
 
@@ -2829,12 +2884,15 @@
       if (completedCardIds.has(card.id)) return;
 
       playEncouragingHarp();
+      const isLv3 = (card.sourceLevel === 3);
+      const halfGain = isLv3 ? 1.0 : 0.5;
+
       const btnHalf = document.getElementById("btn-mark-half");
-      triggerHalfStarBurstEffect(btnHalf);
+      triggerHalfStarBurstEffect(btnHalf, halfGain);
 
       if (!halfCardIds.has(card.id)) {
         halfCardIds.add(card.id);
-        checkPetEvolutionAfterStar(0.5);
+        checkPetEvolutionAfterStar(halfGain);
 
         setTimeout(() => {
           updatePetUI();
@@ -2848,13 +2906,17 @@
       if (!card) return;
 
       playSuccessRewardSound();
-      const btnSuccess = document.getElementById("btn-mark-success");
-      triggerStarBurstEffect(btnSuccess);
+      const isLv3 = (card.sourceLevel === 3);
+      const fullValue = isLv3 ? 2.0 : 1.0;
+      const halfValue = isLv3 ? 1.0 : 0.5;
 
-      let gained = 1.0;
+      const btnSuccess = document.getElementById("btn-mark-success");
+      triggerStarBurstEffect(btnSuccess, fullValue);
+
+      let gained = fullValue;
       if (halfCardIds.has(card.id)) {
         halfCardIds.delete(card.id);
-        gained = 0.5;
+        gained = fullValue - halfValue;
       }
 
       if (!completedCardIds.has(card.id)) {
@@ -2867,6 +2929,24 @@
         }, 1900);
       }
       renderCard();
+    }
+
+    function skipCurrentCard() {
+      const card = currentSessionDeck[currentIndex];
+      if (!card) return;
+
+      // Âm thanh bỏ qua & hiệu ứng trừ 0.5 sao
+      playSkipPenaltySound();
+      const btnSkip = document.getElementById("btn-skip");
+      triggerPenaltyEffect(btnSkip);
+
+      // Trừ 0.5 sao cho thú cưng (sao tối thiểu là 0)
+      checkPetEvolutionAfterStar(-0.5);
+
+      // Chuyển sang câu tiếp theo ngay
+      setTimeout(() => {
+        goNext();
+      }, 350);
     }
 
     function triggerMiniConfetti() {
@@ -2908,7 +2988,7 @@
 
     /* =========================================================================
        STREAMING_CHUNK:Rendering flashcard visuals and navigating deck...
-       HIỂN THỊ THẺ FLASHCARD & ĐIỀU HƯỚNG
+       HIỂN THỊ THẺ FLASHCARD & ĐIỀU HƯỚNG VÔ TẬN
        ========================================================================= */
     function renderCard(direction = 'in') {
       const card = currentSessionDeck[currentIndex];
@@ -2924,20 +3004,21 @@
       const btnMarkText = document.getElementById("btn-mark-text");
       const btnHalfText = document.getElementById("btn-half-text");
 
+      const lvl = card.sourceLevel || 1;
+      const isLv3 = (lvl === 3);
+      const starReward = isLv3 ? 2 : 1;
+      const halfReward = isLv3 ? 1 : '½';
+
       if (badgeNum) {
         const padIndex = String(currentIndex + 1).padStart(2, '0');
-        const padTotal = String(currentSessionDeck.length).padStart(2, '0');
-        badgeNum.textContent = `CÂU ${padIndex} / ${padTotal}`;
+        badgeNum.textContent = `CÂU #${padIndex} • +${starReward}⭐`;
       }
 
       const levelTags = {
-        1: { name: "🌱 Khởi Động 3 Tiếng", badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300" },
-        2: { name: "🏡 Ngôi Nhà Bé Yêu", badgeColor: "bg-sky-100 text-sky-800 border-sky-300" },
-        3: { name: "🎯 Vần Tròn Môi", badgeColor: "bg-purple-100 text-purple-800 border-purple-300" },
-        4: { name: "🧙‍♂️ Trị Đọc Sai", badgeColor: "bg-amber-100 text-amber-900 border-amber-300" },
-        5: { name: "👑 Diễn Cảm Hoàng Gia", badgeColor: "bg-rose-100 text-rose-900 border-rose-300" }
+        1: { name: "🌱 Cấp 1: Khởi Động 3 Tiếng (+1⭐)", badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300" },
+        2: { name: "🏡 Cấp 2: Ngôi Nhà Bé Yêu (+1⭐)", badgeColor: "bg-sky-100 text-sky-800 border-sky-300" },
+        3: { name: "🎯 Cấp 3: Vần Tròn Môi (+2⭐)", badgeColor: "bg-purple-100 text-purple-800 border-purple-300" }
       };
-      const lvl = card.sourceLevel || currentLevel || 1;
       const tag = levelTags[lvl] || levelTags[1];
       const pet = PET_SPECIES_DATA[activePetSpeciesId];
 
@@ -2951,10 +3032,10 @@
 
       if (statusPill) {
         if (isFull) {
-          statusPill.innerHTML = `<span class="text-amber-700">Đã Đọc Trơn ⭐</span>`;
+          statusPill.innerHTML = `<span class="text-amber-700">Đã Đọc Trơn +${starReward}⭐</span>`;
           statusPill.className = "px-3 py-1 rounded-xl text-xs font-black bg-amber-100 border border-amber-300 shadow-sm flex items-center gap-1";
         } else if (isHalf) {
-          statusPill.innerHTML = `<span class="text-emerald-700">Có Cố Gắng 🌱</span>`;
+          statusPill.innerHTML = `<span class="text-emerald-700">Có Cố Gắng +${halfReward}⭐</span>`;
           statusPill.className = "px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 border border-emerald-300 shadow-sm flex items-center gap-1";
         } else {
           statusPill.innerHTML = `<span>Chưa đọc ⚪</span>`;
@@ -2970,10 +3051,10 @@
       if (rhythmGuide) rhythmGuide.textContent = card.guide;
 
       if (btnMarkText) {
-        btnMarkText.textContent = isFull ? "Đã Thuộc 1⭐" : "Đọc Trơn Thành Công!";
+        btnMarkText.textContent = isFull ? `Đã Thuộc +${starReward}⭐` : `Đọc Trơn! +${starReward}⭐`;
       }
       if (btnHalfText) {
-        btnHalfText.textContent = isHalf ? "Đã Đạt +½ Sao 🌱" : "Cố Gắng Lắm! +½ Sao";
+        btnHalfText.textContent = isHalf ? `Đã Đạt +${halfReward}⭐ 🌱` : `Cố Gắng Lắm! +${halfReward}⭐`;
       }
 
       if (activeCard) {
@@ -2985,12 +3066,25 @@
       }
     }
 
+    function checkAndReplenishDeck() {
+      // Khi sắp hết thẻ (còn cách đuôi 3 câu), tự động bốc thêm 15 câu mới nối tiếp liên tục
+      if (currentIndex >= currentSessionDeck.length - 3) {
+        const extraCards = generateAdaptiveDeckBatch(15);
+        currentSessionDeck = currentSessionDeck.concat(extraCards);
+      }
+    }
+
     function goNext() {
+      checkAndReplenishDeck();
       if (currentIndex < currentSessionDeck.length - 1) {
         currentIndex++;
         renderCard('next');
       } else {
-        finishRoundAndShowBoard();
+        // Fallback: Nếu vì lý do gì hết thẻ, bốc ngay đợt mới và sang tiếp
+        const extra = generateAdaptiveDeckBatch(15);
+        currentSessionDeck = currentSessionDeck.concat(extra);
+        currentIndex++;
+        renderCard('next');
       }
     }
 
@@ -3016,9 +3110,7 @@
       return copy;
     }
 
-    const ROUND_CARD_COUNT = 15;
-
-    function buildAdaptiveSessionDeck() {
+    function generateAdaptiveDeckBatch(batchSize = 15) {
       const pet = PET_SPECIES_DATA[activePetSpeciesId];
       let stageIdx = 0;
       if (pet && pet.stages) {
@@ -3033,28 +3125,28 @@
       const petStage = stageIdx + 1;
       currentLevel = petStage;
 
-      // Phân bổ 15 câu theo cấp độ quả trứng đang ấp
-      // Tỉ lệ đảm bảo: Đa số vừa sức + xen kẽ câu dễ tạo đà + câu khó thử thách
+      // Phân bổ câu hỏi CHỈ TỪ CẤP 1, 2, 3 (đã bỏ hoàn toàn cấp 4 & 5)
+      // Cấp 1, 2: +1⭐, Cấp 3: +2⭐
       let distribution;
       if (petStage === 1) {
-        // Giai đoạn 1: Quả Trứng Nhỏ (0-4 ⭐) -> 11 câu Cấp 1 (73%) + 4 câu Cấp 2 (27%)
-        distribution = { 1: 11, 2: 4, 3: 0, 4: 0, 5: 0 };
+        // Giai đoạn 1: Quả Trứng Nhỏ (0-4 ⭐) -> 70% Cấp 1 (11 câu), 30% Cấp 2 (4 câu), 0% Cấp 3
+        distribution = { 1: 11, 2: 4, 3: 0 };
       } else if (petStage === 2) {
-        // Giai đoạn 2: Nứt Vỏ Hé Mắt (5-14 ⭐) -> 4 câu Cấp 1 (27%) + 8 câu Cấp 2 (53%) + 3 câu Cấp 3 (20%)
-        distribution = { 1: 4, 2: 8, 3: 3, 4: 0, 5: 0 };
+        // Giai đoạn 2: Nứt Vỏ Hé Mắt (5-14 ⭐) -> 30% Cấp 1 (5 câu), 50% Cấp 2 (7 câu), 20% Cấp 3 (3 câu)
+        distribution = { 1: 5, 2: 7, 3: 3 };
       } else if (petStage === 3) {
-        // Giai đoạn 3: Thú Nhí Tinh Nghịch (15-29 ⭐) -> 4 câu Cấp 2 (27%) + 8 câu Cấp 3 (53%) + 3 câu Cấp 4 (20%)
-        distribution = { 1: 0, 2: 4, 3: 8, 4: 3, 5: 0 };
+        // Giai đoạn 3: Thú Nhí Tinh Nghịch (15-29 ⭐) -> 20% Cấp 1 (3 câu), 40% Cấp 2 (6 câu), 40% Cấp 3 (6 câu)
+        distribution = { 1: 3, 2: 6, 3: 6 };
       } else if (petStage === 4) {
-        // Giai đoạn 4: Thú Siêu Cấp Chiến Binh (30-49 ⭐) -> 4 câu Cấp 3 (27%) + 8 câu Cấp 4 (53%) + 3 câu Cấp 5 (20%)
-        distribution = { 1: 0, 2: 0, 3: 4, 4: 8, 5: 3 };
+        // Giai đoạn 4: Thú Siêu Cấp Chiến Binh (30-49 ⭐) -> 10% Cấp 1 (2 câu), 40% Cấp 2 (6 câu), 50% Cấp 3 (7 câu)
+        distribution = { 1: 2, 2: 6, 3: 7 };
       } else {
-        // Giai đoạn 5: Thần Thú Hoàng Gia (50 ⭐) -> 4 câu Cấp 3 (27%) + 5 câu Cấp 4 (33%) + 6 câu Cấp 5 (40%)
-        distribution = { 1: 0, 2: 0, 3: 4, 4: 5, 5: 6 };
+        // Giai đoạn 5: Thần Thú Hoàng Gia (50 ⭐) -> 20% Cấp 2 (3 câu), 80% Cấp 3 (12 câu)
+        distribution = { 1: 0, 2: 3, 3: 12 };
       }
 
       let selected = [];
-      for (let lvl = 1; lvl <= 5; lvl++) {
+      for (let lvl = 1; lvl <= 3; lvl++) {
         const count = distribution[lvl];
         if (count > 0) {
           const pool = QUESTION_BANK[`level${lvl}`] || [];
@@ -3068,6 +3160,10 @@
       }
 
       return shuffleArray(selected);
+    }
+
+    function buildAdaptiveSessionDeck() {
+      return generateAdaptiveDeckBatch(20);
     }
 
     function startNewRandomRound() {
