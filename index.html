@@ -2884,7 +2884,10 @@
       return score % 1 === 0 ? score : score.toFixed(1);
     }
 
+    let isAdvancingCard = false;
+
     function markCardHalfSuccess() {
+      if (isAdvancingCard) return;
       const card = currentSessionDeck[currentIndex];
       if (!card) return;
 
@@ -2906,9 +2909,17 @@
         }, 1800);
       }
       renderCard();
+
+      // Đã đọc/nhận sao -> Tự động chuyển mượt mà sang câu tiếp theo sau hiệu ứng sao
+      isAdvancingCard = true;
+      setTimeout(() => {
+        isAdvancingCard = false;
+        forceGoNext();
+      }, 900);
     }
 
     function markCurrentCardSuccess() {
+      if (isAdvancingCard) return;
       const card = currentSessionDeck[currentIndex];
       if (!card) return;
 
@@ -2936,9 +2947,17 @@
         }, 1900);
       }
       renderCard();
+
+      // Đã đọc/nhận sao -> Tự động chuyển mượt mà sang câu tiếp theo sau hiệu ứng sao
+      isAdvancingCard = true;
+      setTimeout(() => {
+        isAdvancingCard = false;
+        forceGoNext();
+      }, 950);
     }
 
     function skipCurrentCard() {
+      if (isAdvancingCard) return;
       const card = currentSessionDeck[currentIndex];
       if (!card) return;
 
@@ -2950,10 +2969,12 @@
       // Trừ 0.5 sao cho thú cưng (sao tối thiểu là 0)
       checkPetEvolutionAfterStar(-0.5);
 
-      // Chuyển sang câu tiếp theo ngay
+      // Chuyển sang câu tiếp theo ngay sau khi bỏ qua
+      isAdvancingCard = true;
       setTimeout(() => {
-        goNext();
-      }, 350);
+        isAdvancingCard = false;
+        forceGoNext();
+      }, 450);
     }
 
     function triggerMiniConfetti() {
@@ -3064,6 +3085,22 @@
         btnHalfText.textContent = isHalf ? `Đã Đạt +${halfReward}⭐ 🌱` : `Cố Gắng Lắm! +${halfReward}⭐`;
       }
 
+      // Cập nhật trạng thái nút "Câu Sau":
+      // Nếu câu hiện tại chưa đọc (chưa nhận sao) thì hiển thị trạng thái nhắc bé đọc hoặc bấm bỏ qua
+      const btnNext = document.getElementById("btn-next");
+      if (btnNext) {
+        const isCurrentCardAnswered = isFull || isHalf;
+        if (isCurrentCardAnswered) {
+          btnNext.classList.remove("opacity-50", "cursor-not-allowed");
+          btnNext.classList.add("hover:bg-indigo-700", "active:scale-95");
+          btnNext.title = "Sang câu tiếp theo";
+        } else {
+          btnNext.classList.add("opacity-50", "cursor-not-allowed");
+          btnNext.classList.remove("hover:bg-indigo-700", "active:scale-95");
+          btnNext.title = "Bé hãy đọc nhận sao hoặc bấm Bỏ Qua để sang câu tiếp nhé!";
+        }
+      }
+
       if (activeCard) {
         activeCard.className = `card-transition slide-${direction} w-full min-h-[410px] sm:min-h-[470px] rounded-3xl sm:rounded-[36px] p-4 sm:p-7 flex flex-col justify-between items-center text-center shadow-2xl border-4 sm:border-8 rainbow-card relative overflow-hidden bg-gradient-to-br ${card.theme}`;
         setTimeout(() => {
@@ -3081,18 +3118,54 @@
       }
     }
 
-    function goNext() {
+    // Hàm chuyển câu nội bộ (được gọi sau khi đã chấm sao hoặc đã bấm bỏ qua)
+    function forceGoNext() {
       checkAndReplenishDeck();
       if (currentIndex < currentSessionDeck.length - 1) {
         currentIndex++;
         renderCard('next');
       } else {
-        // Fallback: Nếu vì lý do gì hết thẻ, bốc ngay đợt mới và sang tiếp
         const extra = generateAdaptiveDeckBatch(15);
         currentSessionDeck = currentSessionDeck.concat(extra);
         currentIndex++;
         renderCard('next');
       }
+    }
+
+    // Khi người dùng bấm nút "Câu Sau" hoặc vuốt / bấm phím mũi tên:
+    // BẮT BUỘC: Phải đọc (bấm nhận sao) hoặc bấm bỏ qua thì mới cho sang câu tiếp
+    function goNext() {
+      const card = currentSessionDeck[currentIndex];
+      if (!card) return;
+
+      const isCurrentCardAnswered = completedCardIds.has(card.id) || halfCardIds.has(card.id);
+      if (!isCurrentCardAnswered) {
+        // Nhắc nhở bé bằng cách rung nhẹ khung thẻ và phát lời nhắc đáng yêu
+        playEncouragingHarp();
+        const activeCard = document.getElementById("active-card");
+        if (activeCard) {
+          activeCard.animate([
+            { transform: 'translateX(0)' },
+            { transform: 'translateX(-10px)' },
+            { transform: 'translateX(10px)' },
+            { transform: 'translateX(-6px)' },
+            { transform: 'translateX(6px)' },
+            { transform: 'translateX(0)' }
+          ], { duration: 400, easing: 'ease-in-out' });
+        }
+
+        const bubble = document.getElementById("pet-speech-bubble");
+        const bubbleText = document.getElementById("pet-speech-text");
+        if (bubble && bubbleText) {
+          bubbleText.textContent = "Bé hãy bấm đọc nhận sao hoặc bấm Bỏ Qua nha! 💕";
+          bubble.classList.remove('hidden');
+          if (petSpeechTimeout) clearTimeout(petSpeechTimeout);
+          petSpeechTimeout = setTimeout(() => bubble.classList.add('hidden'), 2800);
+        }
+        return;
+      }
+
+      forceGoNext();
     }
 
     function goPrev() {
