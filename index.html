@@ -318,26 +318,27 @@
       </div>
     </div>
 
-    <!-- Thanh điều hướng câu: Trước, Bỏ qua (-½⭐), Tự chạy, Tiếp theo -->
-    <div class="w-full max-w-lg flex items-center justify-between mt-3 px-2 gap-1.5 sm:gap-2">
-      <button id="btn-prev" onclick="goPrev()" class="flex-1 py-2.5 sm:py-3 px-2.5 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-800 rounded-2xl font-black text-xs sm:text-sm shadow-md border-2 border-slate-200 flex items-center justify-center gap-1 transition active:scale-95">
+    <!-- Thanh điều hướng câu: Trước, Bỏ qua (-½⭐), Tiếp theo (ẩn nút tự chạy) -->
+    <div class="w-full max-w-lg flex items-center justify-between mt-3 px-2 gap-2">
+      <button id="btn-prev" onclick="goPrev()" class="flex-1 py-3 px-3 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-800 rounded-2xl font-black text-xs sm:text-sm shadow-md border-2 border-slate-200 flex items-center justify-center gap-1.5 transition active:scale-95">
         <span class="text-base sm:text-lg">◀</span>
-        <span>Trước</span>
+        <span>Câu Trước</span>
       </button>
 
       <!-- Nút Bỏ Qua (-½ Sao) dưới thanh điều hướng -->
-      <button id="btn-skip" onclick="skipCurrentCard()" title="Bỏ qua không đọc câu này (-0.5⭐)" class="flex-1 py-2.5 sm:py-3 px-2 bg-gradient-to-r from-rose-50 to-amber-50 hover:from-rose-100 hover:to-amber-100 text-rose-800 rounded-2xl font-black text-xs sm:text-sm shadow-md border-2 border-rose-300 flex items-center justify-center gap-1 transition active:scale-95 whitespace-nowrap">
+      <button id="btn-skip" onclick="skipCurrentCard()" title="Bỏ qua không đọc câu này (-0.5⭐)" class="flex-1 py-3 px-3 bg-gradient-to-r from-rose-50 to-amber-50 hover:from-rose-100 hover:to-amber-100 text-rose-800 rounded-2xl font-black text-xs sm:text-sm shadow-md border-2 border-rose-300 flex items-center justify-center gap-1.5 transition active:scale-95 whitespace-nowrap">
         <span>⏭️</span>
         <span>Bỏ Qua <span class="text-[10px] text-rose-600 bg-rose-100 px-1 py-0.5 rounded font-black">-½⭐</span></span>
       </button>
 
-      <button id="btn-auto-play" onclick="toggleAutoPlay()" title="Tự động chuyển thẻ sau 4.5 giây" class="py-2.5 sm:py-3 px-2.5 bg-white hover:bg-slate-50 text-slate-700 rounded-2xl border-2 border-slate-200 shadow-md font-extrabold text-xs flex flex-col items-center justify-center transition active:scale-95 whitespace-nowrap min-w-[55px] sm:min-w-[65px]">
+      <!-- Nút Tự Chạy (Đã ẩn) -->
+      <button id="btn-auto-play" onclick="toggleAutoPlay()" title="Tự động chuyển thẻ sau 4.5 giây" class="hidden py-2.5 sm:py-3 px-2.5 bg-white hover:bg-slate-50 text-slate-700 rounded-2xl border-2 border-slate-200 shadow-md font-extrabold text-xs flex-col items-center justify-center transition active:scale-95 whitespace-nowrap min-w-[55px] sm:min-w-[65px]">
         <span id="auto-icon" class="text-sm sm:text-base">▶️</span>
         <span id="auto-text" class="text-[9px] sm:text-[10px]">Tự chạy</span>
       </button>
 
-      <button id="btn-next" onclick="goNext()" class="flex-1 py-2.5 sm:py-3 px-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-2xl font-black text-xs sm:text-sm shadow-lg border-2 border-indigo-700 flex items-center justify-center gap-1 transition active:scale-95">
-        <span>Tiếp Theo</span>
+      <button id="btn-next" onclick="goNext()" class="flex-1 py-3 px-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-2xl font-black text-xs sm:text-sm shadow-lg border-2 border-indigo-700 flex items-center justify-center gap-1.5 transition active:scale-95">
+        <span>Câu Sau</span>
         <span class="text-base sm:text-lg">▶</span>
       </button>
     </div>
