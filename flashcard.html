@@ -489,6 +489,57 @@
     </div>
   </div>
 
+  <!-- MODAL: CHỌN BẠN ĐỒNG HÀNH ĐẦU TIÊN (DÀNH CHO LẦN ĐẦU CHƠI) -->
+  <div id="starter-pet-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white rounded-[32px] max-w-md w-full p-5 sm:p-6 text-center shadow-2xl border-4 sm:border-6 border-pink-400 flex flex-col items-center gap-3 relative overflow-hidden animate-in zoom-in-95 duration-200">
+      
+      <!-- Hào quang nền phía sau -->
+      <div class="absolute -top-16 -right-16 w-40 h-40 bg-pink-200/50 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute -bottom-16 -left-16 w-40 h-40 bg-purple-200/50 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="text-4xl sm:text-5xl animate-bounce">🎁</div>
+      <div>
+        <h2 class="text-xl sm:text-2xl font-black font-baloo text-purple-950 leading-tight">CHÀO BÉ YÊU! 🌟</h2>
+        <p class="text-xs sm:text-sm font-extrabold text-pink-600 mt-1">Bé hãy chọn một quả trứng thú cưng yêu thích để bắt đầu nhé!</p>
+      </div>
+
+      <!-- Lưới 4 Thú Cưng để bé tự do chọn -->
+      <div class="grid grid-cols-2 gap-3 w-full my-2">
+        
+        <!-- Rồng Lửa -->
+        <button onclick="selectFirstStarterPet('dragon')" class="p-3.5 rounded-3xl bg-gradient-to-b from-rose-50 to-orange-50 border-2 border-rose-300 hover:border-rose-500 hover:scale-105 active:scale-95 transition flex flex-col items-center gap-1 shadow-sm group cursor-pointer">
+          <div class="text-4xl group-hover:scale-125 transition-transform duration-200">🦖</div>
+          <div class="font-black text-xs sm:text-sm text-rose-950 font-baloo">Rồng Lửa</div>
+          <div class="text-[10px] font-bold text-rose-600 bg-rose-100/90 px-2 py-0.5 rounded-full">Dũng Cảm 🔥</div>
+        </button>
+
+        <!-- Mèo Bánh Bao -->
+        <button onclick="selectFirstStarterPet('cat')" class="p-3.5 rounded-3xl bg-gradient-to-b from-emerald-50 to-teal-50 border-2 border-emerald-300 hover:border-emerald-500 hover:scale-105 active:scale-95 transition flex flex-col items-center gap-1 shadow-sm group cursor-pointer">
+          <div class="text-4xl group-hover:scale-125 transition-transform duration-200">🐱</div>
+          <div class="font-black text-xs sm:text-sm text-emerald-950 font-baloo">Mèo Bánh Bao</div>
+          <div class="text-[10px] font-bold text-emerald-600 bg-emerald-100/90 px-2 py-0.5 rounded-full">Đáng Yêu 🐾</div>
+        </button>
+
+        <!-- Cánh Cụt Băng -->
+        <button onclick="selectFirstStarterPet('penguin')" class="p-3.5 rounded-3xl bg-gradient-to-b from-sky-50 to-blue-50 border-2 border-sky-300 hover:border-sky-500 hover:scale-105 active:scale-95 transition flex flex-col items-center gap-1 shadow-sm group cursor-pointer">
+          <div class="text-4xl group-hover:scale-125 transition-transform duration-200">🐧</div>
+          <div class="font-black text-xs sm:text-sm text-sky-950 font-baloo">Cánh Cụt Pingu</div>
+          <div class="text-[10px] font-bold text-sky-600 bg-sky-100/90 px-2 py-0.5 rounded-full">Nhanh Nhẹn ❄️</div>
+        </button>
+
+        <!-- Kỳ Lân Cầu Vồng -->
+        <button onclick="selectFirstStarterPet('unicorn')" class="p-3.5 rounded-3xl bg-gradient-to-b from-purple-50 via-pink-50 to-amber-50 border-2 border-purple-300 hover:border-purple-500 hover:scale-105 active:scale-95 transition flex flex-col items-center gap-1 shadow-sm group cursor-pointer">
+          <div class="text-4xl group-hover:scale-125 transition-transform duration-200">🦄</div>
+          <div class="font-black text-xs sm:text-sm text-purple-950 font-baloo">Kỳ Lân Cầu Vồng</div>
+          <div class="text-[10px] font-bold text-purple-600 bg-purple-100/90 px-2 py-0.5 rounded-full">Phép Thuật ✨</div>
+        </button>
+
+      </div>
+
+      <p class="text-[11px] text-slate-500 font-bold">Sau khi nuôi lớn (đạt 50⭐), bé sẽ tiếp tục mở khóa các bạn thú cưng tiếp theo!</p>
+    </div>
+  </div>
+
   <!-- POPUP CHÚC MỪNG TIẾN HÓA THÀNH CÔNG HOẶC TỐT NGHIỆP MỞ KHÓA BẠN MỚI -->
   <div id="pet-evolution-celebration" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="bg-gradient-to-b from-amber-200 via-yellow-100 to-rose-200 rounded-[36px] max-w-sm w-full p-5 sm:p-6 text-center shadow-2xl border-4 border-amber-400 flex flex-col items-center gap-3 relative overflow-hidden animate-in zoom-in-95 duration-200">
@@ -637,7 +688,10 @@
     function loadPetDataFromStorage() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return;
+        if (!raw) {
+          // Người dùng mới hoàn toàn: chưa gán cứng, chờ chọn thú cưng đầu tiên
+          return false;
+        }
         const parsed = JSON.parse(raw);
 
         if (parsed.petProgressData && typeof parsed.petProgressData === 'object') {
@@ -653,13 +707,16 @@
 
         if (Array.isArray(parsed.unlockedPetSpeciesIds) && parsed.unlockedPetSpeciesIds.length > 0) {
           unlockedPetSpeciesIds = parsed.unlockedPetSpeciesIds.filter(id => PET_ORDER.includes(id));
-          if (!unlockedPetSpeciesIds.includes('dragon')) unlockedPetSpeciesIds.unshift('dragon');
         }
 
         if (parsed.activePetSpeciesId && PET_ORDER.includes(parsed.activePetSpeciesId)) {
           activePetSpeciesId = parsed.activePetSpeciesId;
-        } else {
-          activePetSpeciesId = unlockedPetSpeciesIds[0] || 'dragon';
+        } else if (unlockedPetSpeciesIds.length > 0) {
+          activePetSpeciesId = unlockedPetSpeciesIds[0];
+        }
+
+        if (!unlockedPetSpeciesIds.includes(activePetSpeciesId)) {
+          unlockedPetSpeciesIds.unshift(activePetSpeciesId);
         }
 
         totalAccumulatedPetStars = petProgressData[activePetSpeciesId] ? petProgressData[activePetSpeciesId].stars : 0;
@@ -667,8 +724,10 @@
         if (parsed.currentLevel && parsed.currentLevel >= 1 && parsed.currentLevel <= 5) {
           currentLevel = parsed.currentLevel;
         }
+        return true;
       } catch (err) {
         console.warn("Lỗi đọc localStorage:", err);
+        return false;
       }
     }
 
@@ -3107,6 +3166,43 @@
       if (popup) popup.classList.add('opacity-0', 'pointer-events-none');
     }
 
+    function selectFirstStarterPet(speciesId) {
+      if (!PET_SPECIES_DATA[speciesId]) return;
+      activePetSpeciesId = speciesId;
+      if (!unlockedPetSpeciesIds.includes(speciesId)) {
+        unlockedPetSpeciesIds.push(speciesId);
+      }
+      totalAccumulatedPetStars = petProgressData[speciesId] ? petProgressData[speciesId].stars : 0;
+      currentLevel = 1;
+
+      savePetDataToStorage();
+      updatePetUI();
+      closeStarterPetModal();
+      startNewRandomRound();
+      triggerBigConfetti();
+      playPetEvolutionFanfare();
+      PetAnimationEngine.triggerHappy();
+
+      const bubble = document.getElementById("pet-speech-bubble");
+      const bubbleText = document.getElementById("pet-speech-text");
+      if (bubble && bubbleText) {
+        bubbleText.textContent = `Tuyệt vời! ${PET_SPECIES_DATA[speciesId].name} rất vui được học cùng bé! 💕`;
+        bubble.classList.remove('hidden');
+        if (petSpeechTimeout) clearTimeout(petSpeechTimeout);
+        petSpeechTimeout = setTimeout(() => bubble.classList.add('hidden'), 3500);
+      }
+    }
+
+    function openStarterPetModal() {
+      const modal = document.getElementById("starter-pet-modal");
+      if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeStarterPetModal() {
+      const modal = document.getElementById("starter-pet-modal");
+      if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
     function choosePetSpecies(speciesId) {
       if (!PET_SPECIES_DATA[speciesId]) return;
       if (!unlockedPetSpeciesIds.includes(speciesId)) {
@@ -3699,6 +3795,9 @@
     document.getElementById("pet-modal")?.addEventListener("click", (e) => {
       if (e.target === document.getElementById("pet-modal")) closePetModal();
     });
+    document.getElementById("starter-pet-modal")?.addEventListener("click", (e) => {
+      if (e.target === document.getElementById("starter-pet-modal")) closeStarterPetModal();
+    });
 
     /* =========================================================================
        HỆ THỐNG FONT CHỮ CHUẨN GIÁO DỤC & THÂN THIỆN CHO BÉ LỚP 1
@@ -3772,11 +3871,18 @@
 
     window.onload = function() {
       initFontSetting();
-      loadPetDataFromStorage();
+      const hasSavedData = loadPetDataFromStorage();
       PetAnimationEngine.startLoop();
       currentLevel = currentPetStageIndex + 1;
       updatePetUI();
       startNewRandomRound();
+
+      if (!hasSavedData) {
+        // Lần đầu vào game: hiển thị ngay bảng chọn thú cưng yêu thích bắt đầu không gán cứng!
+        setTimeout(() => {
+          openStarterPetModal();
+        }, 350);
+      }
     };
   </script>
 </body>
