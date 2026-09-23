@@ -22,13 +22,30 @@
 | **Đồ họa Thú cưng** | HTML5 Canvas 2D API (`PetAnimationEngine`) | Vòng lặp hoạt ảnh `requestAnimationFrame` 60 FPS, vẽ thủ công hình học kết hợp hàm sóng lượng giác (`Math.sin`) tạo độ phập phồng (squash & stretch), nhịp thở, vẫy đuôi. |
 | **Hiệu ứng chuyển động** | Web Animations API (WAAPI) & Canvas Confetti (CDN) | Hiệu ứng hạt nổ 3D (`triggerStarBurstEffect`), huy hiệu sao bay theo quỹ đạo parabol mượt mà vào hộp điểm, pháo giấy bung nở toàn màn hình khi hoàn thành bài. |
 | **Âm thanh tương tác** | Web Audio API (`AudioContext`, `OscillatorNode`, `GainNode`) | Sinh các hợp âm chiptune, tiếng đàn hạc êm dịu, âm thanh kèn lệnh fanfare khi thú cưng tiến hóa. |
-| **Logic & Điều khiển** | Vanilla JavaScript | Quản lý lượt học, trộn thẻ ngẫu nhiên Fisher–Yates, xử lý sự kiện cảm ứng (Touch swipe) và bàn phím (Keyboard listeners). |
+| **Logic & Điều khiển** | Vanilla JavaScript | Quản lý lượt học (15 câu/lượt), cơ chế **Trộn tỉ lệ câu hỏi thích ứng (Adaptive Smart Mix)** theo cấp độ Trứng, xử lý sự kiện cảm ứng (Touch swipe) và bàn phím (Keyboard listeners). |
 
 ---
 
-## 📚 Ngân Hàng Câu Hỏi & Cấp Độ Học Tập (500 Thẻ - 100 Thẻ/Cấp)
+## 🥚 Vườn Ươm Trứng & Cơ Chế Trộn Câu Hỏi Thích Ứng (Adaptive Smart Mix)
 
-Ngân hàng dữ liệu (`QUESTION_BANK`) gồm **500 câu/từ độc bản phong phú** được chuẩn hóa theo chương trình Tiếng Việt lớp 1, phân bổ đều qua 5 cấp độ (mỗi cấp đúng **100 câu**, tăng tối đa độ ngẫu nhiên khi luyện tập):
+Thay vì bắt bé phải tự chọn Level thủ công, hệ thống chuyển sang **Hành Trình Thu Thập Trứng Thần Kỳ (100% tự động & trực quan)**:
+
+1. **Khớp nối trực tiếp theo Cấp độ Trứng Thú Cưng:**
+   - Mỗi thú cưng bắt đầu từ một **Quả Trứng Thần Kỳ (Cấp 1)**.
+   - Khi bé đọc đúng tích đủ Sao, trứng nứt vỏ (Cấp 2) -> thú con (Cấp 3) -> chiến binh (Cấp 4) -> Thần thú hoàng gia tốt nghiệp (Cấp 5) và **tặng ngay Quả Trứng Mới** để bé tiếp tục ấp nở.
+2. **Trộn tỉ lệ câu hỏi thông minh (15 câu / lượt học vừa sức):**
+   - **Giai đoạn Trứng (0-4⭐):** 75% câu Cấp 1 (ngắn gọn 3 tiếng) + 25% câu Cấp 2 (sinh hoạt nhẹ nhàng).
+   - **Giai đoạn Nứt Vỏ (5-14⭐):** 55% câu Cấp 2 + 25% câu Cấp 1 (tạo đà tự tin) + 20% câu Cấp 3 (vần tròn môi thử thách).
+   - **Giai đoạn Thú Nhí (15-29⭐):** 55% câu Cấp 3 + 25% câu Cấp 2 + 20% câu Cấp 4 (câu dài thử thách).
+   - **Giai đoạn Siêu Cấp (30-49⭐):** 55% câu Cấp 4 + 25% câu Cấp 3 + 20% câu Cấp 5 (diễn cảm thử thách).
+   - **Giai đoạn Hoàng Gia (50⭐):** 40% câu Cấp 5 + 35% câu Cấp 4 + 25% câu Cấp 3.
+3. **Thanh Ổ Trứng 1-Chạm:**
+   - Hiển thị trực quan 4 Quả Trứng Thần Kỳ ngay dưới thanh công cụ: `Rồng Lửa 🦖`, `Mèo Bánh Bao 🐱`, `Cánh Cụt Băng 🐧`, `Kỳ Lân Cầu Vồng 🦄`.
+   - Chạm vào bất kỳ quả trứng nào đã mở khóa để đổi thú cưng đồng hành và tự động điều phối câu hỏi tương ứng.
+
+---
+
+## 📚 Ngân Hàng Câu Hỏi 500 Thẻ (100 Thẻ / Cấp Độ Chuẩn Hóa)
 
 1. **Level 1 - Khởi Động Vui Vẻ (100 câu):**
    - *Đặc điểm:* Cụm 2–3 tiếng ngắn gọn, tập trung vào thanh điệu (hỏi, ngã, nặng) và vần cơ bản (*"Em cười tươi"*, *"Bé đánh răng"*, *"Bình hoa đẹp"*, *"Bé rửa mặt"*, *"Cá chép đỏ"*...).
