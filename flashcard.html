@@ -249,9 +249,9 @@
   <!-- Khung Flashcard Tương Tác Chính -->
   <main class="w-full max-w-2xl mx-auto my-auto flex-1 flex flex-col items-center justify-center relative z-10 px-2 py-3">
     
-    <div id="flashcard-container" class="w-full h-[380px] sm:h-[450px] relative flex items-center justify-center">
+    <div id="flashcard-container" class="w-full min-h-[410px] sm:min-h-[470px] relative flex items-center justify-center">
       
-      <div id="active-card" class="card-transition slide-in w-full h-full rounded-3xl sm:rounded-[36px] p-5 sm:p-8 flex flex-col justify-between items-center text-center shadow-2xl border-4 sm:border-8 rainbow-card relative overflow-hidden bg-gradient-to-br from-rose-200 via-amber-100 to-pink-200">
+      <div id="active-card" class="card-transition slide-in w-full min-h-[410px] sm:min-h-[470px] rounded-3xl sm:rounded-[36px] p-4 sm:p-7 flex flex-col justify-between items-center text-center shadow-2xl border-4 sm:border-8 rainbow-card relative overflow-hidden bg-gradient-to-br from-rose-200 via-amber-100 to-pink-200">
         
         <!-- Hiệu ứng phản quang nền -->
         <div class="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-white/35 blur-xl pointer-events-none"></div>
@@ -294,15 +294,21 @@
             </p>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 w-full">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 w-full">
+            <!-- Nút Bỏ Qua (-½ Sao) to rõ ngay trên thẻ -->
+            <button id="btn-card-skip" onclick="skipCurrentCard()" title="Bỏ qua không đọc câu này (-0.5 ⭐)" class="w-full py-2.5 sm:py-3 px-2 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all duration-200 bg-white/95 hover:bg-rose-50 text-rose-800 border-2 border-rose-300 active:scale-95">
+              <span class="text-base sm:text-lg">⏭️</span>
+              <span>Bỏ Qua <span class="text-[10px] text-rose-600 bg-rose-100 px-1 py-0.5 rounded font-black">-½⭐</span></span>
+            </button>
+
             <!-- Nút Cố Gắng Lắm (+½ Sao) -->
-            <button id="btn-mark-half" onclick="markCardHalfSuccess()" class="w-full py-2.5 sm:py-3 px-3 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all duration-200 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 hover:from-emerald-300 hover:to-green-300 text-emerald-950 border-2 border-emerald-200 active:scale-95">
+            <button id="btn-mark-half" onclick="markCardHalfSuccess()" class="w-full py-2.5 sm:py-3 px-2 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all duration-200 bg-gradient-to-r from-emerald-400 via-teal-400 to-green-400 hover:from-emerald-300 hover:to-green-300 text-emerald-950 border-2 border-emerald-200 active:scale-95">
               <span class="text-base sm:text-lg">🌱</span>
               <span id="btn-half-text">Cố Gắng Lắm! +½ Sao</span>
             </button>
 
             <!-- Nút Đọc Trơn Thành Công (+1 Sao) -->
-            <button id="btn-mark-success" onclick="markCurrentCardSuccess()" class="w-full py-2.5 sm:py-3 px-3 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-lg transition-all duration-200 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-yellow-950 border-2 border-yellow-200 active:scale-95">
+            <button id="btn-mark-success" onclick="markCurrentCardSuccess()" class="w-full py-2.5 sm:py-3 px-2 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-lg transition-all duration-200 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-yellow-950 border-2 border-yellow-200 active:scale-95">
               <span class="text-base sm:text-lg">⭐</span>
               <span id="btn-mark-text">Đọc Trơn Thành Công!</span>
             </button>
@@ -319,7 +325,7 @@
         <span>Trước</span>
       </button>
 
-      <!-- Nút Bỏ Qua (-½ Sao) -->
+      <!-- Nút Bỏ Qua (-½ Sao) dưới thanh điều hướng -->
       <button id="btn-skip" onclick="skipCurrentCard()" title="Bỏ qua không đọc câu này (-0.5⭐)" class="flex-1 py-2.5 sm:py-3 px-2 bg-gradient-to-r from-rose-50 to-amber-50 hover:from-rose-100 hover:to-amber-100 text-rose-800 rounded-2xl font-black text-xs sm:text-sm shadow-md border-2 border-rose-300 flex items-center justify-center gap-1 transition active:scale-95 whitespace-nowrap">
         <span>⏭️</span>
         <span>Bỏ Qua <span class="text-[10px] text-rose-600 bg-rose-100 px-1 py-0.5 rounded font-black">-½⭐</span></span>
@@ -2937,7 +2943,7 @@
 
       // Âm thanh bỏ qua & hiệu ứng trừ 0.5 sao
       playSkipPenaltySound();
-      const btnSkip = document.getElementById("btn-skip");
+      const btnSkip = document.getElementById("btn-card-skip") || document.getElementById("btn-skip");
       triggerPenaltyEffect(btnSkip);
 
       // Trừ 0.5 sao cho thú cưng (sao tối thiểu là 0)
@@ -3058,7 +3064,7 @@
       }
 
       if (activeCard) {
-        activeCard.className = `card-transition slide-${direction} w-full h-full rounded-3xl sm:rounded-[36px] p-5 sm:p-8 flex flex-col justify-between items-center text-center shadow-2xl border-4 sm:border-8 rainbow-card relative overflow-hidden bg-gradient-to-br ${card.theme}`;
+        activeCard.className = `card-transition slide-${direction} w-full min-h-[410px] sm:min-h-[470px] rounded-3xl sm:rounded-[36px] p-4 sm:p-7 flex flex-col justify-between items-center text-center shadow-2xl border-4 sm:border-8 rainbow-card relative overflow-hidden bg-gradient-to-br ${card.theme}`;
         setTimeout(() => {
           activeCard.classList.remove('slide-left-out', 'slide-right-out');
           activeCard.classList.add('slide-in');
