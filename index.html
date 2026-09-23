@@ -2042,78 +2042,386 @@
         ctx.restore();
       },
 
+      /* =========================================================================
+         KỲ LÂN CẦU VỒNG THẦN THOẠI (UNICORN PRO ANIMATION ENGINE 60FPS)
+         Thiết kế vector nhiều tầng tinh xảo: Sừng xoắn phát quang, Bờm cầu vồng lượn sóng,
+         Đôi cánh tiên bồng bềnh, Vương miện sao ngân hà và Hiệu ứng bụi sao lấp lánh
+         ========================================================================= */
       drawUnicorn(ctx, stage, isHappy) {
-        const floatY = Math.sin(this.time * 3.5) * 3.5;
-        const jumpY = isHappy ? -Math.abs(Math.sin(this.time * 8)) * 9 : 0;
-        const flap = Math.sin(this.time * 10) * 0.4;
+        const floatY = Math.sin(this.time * 3.2) * 4.5;
+        const jumpY = isHappy ? -Math.abs(Math.sin(this.time * 7.5)) * 10 : 0;
+        const breath = 1 + Math.sin(this.time * 2.8) * 0.035;
+        const wingFlap = Math.sin(this.time * 9.5) * 0.45;
+        const maneWave = Math.sin(this.time * 5.2);
+        const hornGlow = 0.75 + Math.sin(this.time * 6) * 0.25;
 
         ctx.save();
         ctx.translate(0, floatY + jumpY);
 
+        // Hiệu ứng hạt bụi tiên lấp lánh quanh Kỳ Lân (Stardust Aura)
+        if (stage >= 2) {
+          ctx.save();
+          for (let i = 0; i < 4; i++) {
+            const starT = this.time * 1.8 + i * (Math.PI / 2);
+            const sx = Math.cos(starT) * (26 + i * 4);
+            const sy = Math.sin(starT * 1.3) * (22 + i * 3) - 6;
+            const starAlpha = 0.35 + Math.sin(this.time * 5 + i) * 0.35;
+            ctx.fillStyle = `rgba(253, 224, 71, ${starAlpha})`;
+            ctx.beginPath();
+            ctx.arc(sx, sy, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+            // Đốm sáng chữ thập
+            ctx.strokeStyle = `rgba(255, 255, 255, ${starAlpha * 0.8})`;
+            ctx.lineWidth = 0.9;
+            ctx.beginPath();
+            ctx.moveTo(sx - 3, sy); ctx.lineTo(sx + 3, sy);
+            ctx.moveTo(sx, sy - 3); ctx.lineTo(sx, sy + 3);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+
+        // CẤP 1: QUẢ TRỨNG THẦN THOẠI KỲ LÂN CẦU VỒNG
         if (stage === 1) {
+          // Ánh hào quang cầu vồng phát sáng dịu dàng
+          const auraGrad = ctx.createRadialGradient(0, 4, 15, 0, 4, 38);
+          auraGrad.addColorStop(0, "rgba(244, 114, 182, 0.45)");
+          auraGrad.addColorStop(0.6, "rgba(192, 132, 252, 0.25)");
+          auraGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+          ctx.fillStyle = auraGrad;
           ctx.beginPath();
-          ctx.ellipse(0, 6, 27, 36, 0, 0, Math.PI * 2);
-          const eggGrad = ctx.createLinearGradient(-20, -30, 20, 40);
-          eggGrad.addColorStop(0, "#fbcfe8");
-          eggGrad.addColorStop(0.5, "#ddd6fe");
+          ctx.arc(0, 4, 38, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Vỏ trứng ngọc trai đổi màu Pastel (Hồng phấn -> Tím oải hương -> Xanh băng tuyết)
+          const eggGrad = ctx.createLinearGradient(-18, -32, 22, 38);
+          eggGrad.addColorStop(0, "#fdf2f8");
+          eggGrad.addColorStop(0.3, "#fce7f3");
+          eggGrad.addColorStop(0.65, "#e9d5ff");
           eggGrad.addColorStop(1, "#bae6fd");
-          ctx.fillStyle = eggGrad; ctx.strokeStyle = "#a855f7"; ctx.lineWidth = 2.4;
-          ctx.fill(); ctx.stroke();
+          ctx.fillStyle = eggGrad;
+          ctx.strokeStyle = "#c084fc";
+          ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ctx.ellipse(0, 4, 26, 35, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
 
-          ctx.fillStyle = "#ffffff";
-          ctx.beginPath(); ctx.arc(0, 4, 3.5, 0, Math.PI * 2); ctx.fill();
+          // Vệt hào quang ngọc trai phản chiếu trên vỏ trứng
+          ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+          ctx.beginPath();
+          ctx.ellipse(-8, -12, 6, 15, -0.4, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Vạch sao ma thuật hoàng kim trên vỏ trứng
+          ctx.fillStyle = "#fbbf24";
+          ctx.strokeStyle = "#d97706";
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.arc(0, 4, 4.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          // Sợi ruy băng cầu vồng quấn quanh quả trứng
+          ctx.strokeStyle = "rgba(244, 114, 182, 0.85)";
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.ellipse(0, 16, 20, 6, 0.15, 0.2 * Math.PI, 0.8 * Math.PI);
+          ctx.stroke();
+
+          // Tương tác hé mắt khi bấm vào
+          if (isHappy) {
+            this.drawAnimeEyes(ctx, -7, 7, 0, 4.2, false, true, "#86198f", "#d946ef");
+          }
         } else {
-          // Đôi cánh tiên lấp lánh
-          ctx.save(); ctx.translate(-16, 4); ctx.rotate(-0.3 + flap);
-          ctx.fillStyle = "rgba(232, 121, 249, 0.65)"; ctx.strokeStyle = "#c084fc"; ctx.lineWidth = 1.5;
-          ctx.beginPath(); ctx.ellipse(-7, -2, 9, 6, -0.3, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.restore();
+          // ==================== THÂN & CHÂN KỲ LÂN ====================
+          // Đuôi cầu vồng dài uốn lượn thướt tha
+          ctx.save();
+          const tailSway = Math.sin(this.time * 4) * 0.25;
+          ctx.translate(14, 18);
+          ctx.rotate(0.35 + tailSway);
+          const rainbowMane = ["#f472b6", "#a855f7", "#38bdf8", "#fde047", "#34d399"];
+          rainbowMane.forEach((col, idx) => {
+            ctx.fillStyle = col;
+            ctx.strokeStyle = "rgba(0,0,0,0.08)";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, idx * 2.2);
+            ctx.quadraticCurveTo(12 + idx * 2, 8 + idx * 3, 10 + idx * 3, 24 + idx * 2);
+            ctx.quadraticCurveTo(4 + idx, 16, 0, idx * 2.2);
+            ctx.fill();
+            ctx.stroke();
+          });
+          ctx.restore();
 
-          ctx.save(); ctx.translate(16, 4); ctx.rotate(0.3 - flap);
-          ctx.fillStyle = "rgba(232, 121, 249, 0.65)"; ctx.strokeStyle = "#c084fc"; ctx.lineWidth = 1.5;
-          ctx.beginPath(); ctx.ellipse(7, -2, 9, 6, 0.3, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.restore();
+          // Đôi cánh tiên vẫy mượt mà (Cấp 2 trở lên cánh nhỏ, Cấp 4-5 cánh thiên thần cực đại)
+          const wingScale = stage >= 4 ? 1.4 : (stage === 3 ? 1.15 : 0.85);
+          // Cánh trái
+          ctx.save();
+          ctx.translate(-15, 6);
+          ctx.scale(wingScale, wingScale);
+          ctx.rotate(-0.35 + wingFlap);
+          const wingGradL = ctx.createLinearGradient(-16, -18, 0, 8);
+          wingGradL.addColorStop(0, "rgba(244, 114, 182, 0.85)");
+          wingGradL.addColorStop(0.5, "rgba(192, 132, 252, 0.75)");
+          wingGradL.addColorStop(1, "rgba(56, 189, 248, 0.65)");
+          ctx.fillStyle = wingGradL;
+          ctx.strokeStyle = "#c084fc";
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.quadraticCurveTo(-14, -20, -24, -16);
+          ctx.quadraticCurveTo(-20, -4, -14, 2);
+          ctx.quadraticCurveTo(-8, 6, 0, 0);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
 
-          // Thân kỳ lân trắng ngọc trai
-          ctx.fillStyle = "#ffffff";
+          // Cánh phải
+          ctx.save();
+          ctx.translate(15, 6);
+          ctx.scale(-wingScale, wingScale);
+          ctx.rotate(-0.35 + wingFlap);
+          ctx.fillStyle = wingGradL;
+          ctx.strokeStyle = "#c084fc";
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.quadraticCurveTo(-14, -20, -24, -16);
+          ctx.quadraticCurveTo(-20, -4, -14, 2);
+          ctx.quadraticCurveTo(-8, 6, 0, 0);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+
+          // Thân kỳ lân tròn trĩnh bằng ngọc trắng sữa phớt hồng
+          ctx.save();
+          ctx.scale(breath, breath);
+          const bodyGrad = ctx.createRadialGradient(-3, 14, 3, 0, 16, 22);
+          bodyGrad.addColorStop(0, "#ffffff");
+          bodyGrad.addColorStop(0.65, "#fdf4ff");
+          bodyGrad.addColorStop(1, "#f3e8ff");
+          ctx.fillStyle = bodyGrad;
           ctx.strokeStyle = "#c084fc";
           ctx.lineWidth = 2.4;
           ctx.beginPath();
-          ctx.ellipse(0, 12, 18, 16, 0, 0, Math.PI * 2);
-          ctx.fill(); ctx.stroke();
+          ctx.ellipse(0, 14, 19, 16, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
 
-          // Bờm cầu vồng bồng bềnh
-          const maneColors = ["#f472b6", "#a78bfa", "#38bdf8", "#fde047"];
-          maneColors.forEach((col, idx) => {
-            ctx.fillStyle = col;
-            ctx.beginPath(); ctx.arc(-11 - idx * 2, -14 + idx * 5, 5, 0, Math.PI * 2); ctx.fill();
+          // Móng guốc vàng ngọc xinh xắn
+          const hoofColor = stage >= 4 ? "#f59e0b" : "#fbcfe8";
+          const hoofBorder = stage >= 4 ? "#b45309" : "#f472b6";
+          [[-9, 27], [9, 27]].forEach(([hx, hy]) => {
+            ctx.fillStyle = "#ffffff";
+            ctx.strokeStyle = "#c084fc";
+            ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            ctx.ellipse(hx, hy - 4, 5, 6, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = hoofColor;
+            ctx.strokeStyle = hoofBorder;
+            ctx.lineWidth = 1.4;
+            ctx.beginPath();
+            ctx.ellipse(hx, hy, 5.2, 3.2, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+          });
+          ctx.restore();
+
+          // ==================== BỜM CẦU VỒNG BỒNG BỀNH ====================
+          // 4 tầng lọn tóc uốn lượn phập phồng tự nhiên
+          const maneWaves = [
+            { col: "#f472b6", ox: -12, oy: -18, r: 8.5 },
+            { col: "#a855f7", ox: -15, oy: -10, r: 9.5 },
+            { col: "#38bdf8", ox: -16, oy: -1, r: 9 },
+            { col: "#facc15", ox: -14, oy: 8, r: 8 }
+          ];
+          maneWaves.forEach((mw, idx) => {
+            const waveOff = Math.sin(this.time * 5 + idx * 0.9) * 2.5;
+            ctx.fillStyle = mw.col;
+            ctx.strokeStyle = "rgba(100, 30, 140, 0.3)";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(mw.ox + waveOff, mw.oy, mw.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            // Lọn sáng trắng bóng trên từng lớp bờm
+            ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
+            ctx.beginPath();
+            ctx.arc(mw.ox + waveOff - 2.5, mw.oy - 2.5, mw.r * 0.32, 0, Math.PI * 2);
+            ctx.fill();
           });
 
-          // Đầu tròn trắng
-          ctx.fillStyle = "#ffffff";
-          ctx.beginPath(); ctx.arc(0, -7, 18, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-
-          // Sừng xoắn hoàng kim lấp lánh
-          const hornGrad = ctx.createLinearGradient(0, -10, 0, -34);
-          hornGrad.addColorStop(0, "#f59e0b"); hornGrad.addColorStop(1, "#fef08a");
-          ctx.fillStyle = hornGrad; ctx.strokeStyle = "#b45309"; ctx.lineWidth = 1.6;
+          // ==================== ĐẦU & KHUÔN MẶT ANIME ====================
+          const headGrad = ctx.createRadialGradient(-3, -8, 2, 0, -8, 20);
+          headGrad.addColorStop(0, "#ffffff");
+          headGrad.addColorStop(0.7, "#fdf4ff");
+          headGrad.addColorStop(1, "#f5d0fe");
+          ctx.fillStyle = headGrad;
+          ctx.strokeStyle = "#c084fc";
+          ctx.lineWidth = 2.4;
           ctx.beginPath();
-          ctx.moveTo(-4, -16); ctx.lineTo(0, -35); ctx.lineTo(4, -16); ctx.closePath();
-          ctx.fill(); ctx.stroke();
-          ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(0, -35, 2.5, 0, Math.PI * 2); ctx.fill();
+          ctx.arc(0, -8, 20, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
 
-          // Mắt anime tím thạch anh
-          this.drawAnimeEyes(ctx, -6, 6, -8, 5, this.isBlinking, isHappy, "#701a75", "#d946ef");
+          // Đôi tai ngựa nhỏ nhắn, viền hồng phấn
+          [[-11, -23, -0.28], [11, -23, 0.28]].forEach(([ex, ey, er]) => {
+            ctx.save();
+            ctx.translate(ex, ey);
+            ctx.rotate(er);
+            ctx.fillStyle = "#ffffff";
+            ctx.strokeStyle = "#c084fc";
+            ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 4.5, 9, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = "#fbcfe8";
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 2.5, 6, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          });
 
-          // Mõm & má hồng
-          ctx.fillStyle = "#fbcfe8";
-          ctx.beginPath(); ctx.ellipse(0, -1, 6, 4, 0, 0, Math.PI * 2); ctx.fill();
-          this.drawBlush(ctx, -11, 11, -2, 3.5);
+          // SỪNG XOẮN PHÁT QUANG HOÀNG KIM (MAGICAL HORN)
+          const hornLength = stage >= 4 ? 36 : (stage === 3 ? 30 : 25);
+          ctx.save();
+          // Quầng sáng hào quang quanh sừng
+          const hornAura = ctx.createRadialGradient(0, -22, 2, 0, -22, 20);
+          hornAura.addColorStop(0, `rgba(254, 240, 138, ${hornGlow * 0.7})`);
+          hornAura.addColorStop(0.5, `rgba(232, 121, 249, ${hornGlow * 0.4})`);
+          hornAura.addColorStop(1, "rgba(255, 255, 255, 0)");
+          ctx.fillStyle = hornAura;
+          ctx.beginPath();
+          ctx.arc(0, -22, 20, 0, Math.PI * 2);
+          ctx.fill();
 
+          // Thân sừng hình nón hoàng kim rực rỡ
+          const hornGrad = ctx.createLinearGradient(0, -14, 0, -14 - hornLength);
+          hornGrad.addColorStop(0, "#f59e0b");
+          hornGrad.addColorStop(0.3, "#fbbf24");
+          hornGrad.addColorStop(0.7, "#fef08a");
+          hornGrad.addColorStop(1, "#ffffff");
+          ctx.fillStyle = hornGrad;
+          ctx.strokeStyle = "#b45309";
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.moveTo(-4.5, -16);
+          ctx.lineTo(0, -16 - hornLength);
+          ctx.lineTo(4.5, -16);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+
+          // Đường vân xoắn ma thuật 3D trên sừng
+          ctx.strokeStyle = "#b45309";
+          ctx.lineWidth = 1.3;
+          const rungs = 4;
+          for (let r = 1; r <= rungs; r++) {
+            const ry = -16 - (hornLength / (rungs + 1)) * r;
+            const rw = 4.5 * (1 - r / (rungs + 1.2));
+            ctx.beginPath();
+            ctx.ellipse(0, ry, rw, 1.2, -0.15, 0, Math.PI);
+            ctx.stroke();
+          }
+
+          // Ngôi sao lấp lánh trên chóp sừng
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath();
+          ctx.arc(0, -16 - hornLength, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+
+          // Mắt anime tím thạch anh long lanh nhiều tầng sáng
+          this.drawAnimeEyes(ctx, -7, 7, -8, 5.6, this.isBlinking, isHappy, "#6b21a8", "#d946ef");
+
+          // Mõm tròn màu hồng baby dễ thương
+          ctx.fillStyle = "#fce7f3";
+          ctx.strokeStyle = "#f472b6";
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.ellipse(0, -1, 7.5, 4.5, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          // Miệng cười nhỏ nhắn xinh xắn
+          ctx.strokeStyle = "#db2777";
+          ctx.lineWidth = 1.6;
+          if (isHappy) {
+            ctx.fillStyle = "#f43f5e";
+            ctx.beginPath();
+            ctx.arc(0, 0.5, 3.5, 0, Math.PI);
+            ctx.fill();
+            ctx.stroke();
+          } else {
+            ctx.beginPath();
+            ctx.arc(-2, 0, 2, 0.1 * Math.PI, 0.9 * Math.PI);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(2, 0, 2, 0.1 * Math.PI, 0.9 * Math.PI);
+            ctx.stroke();
+          }
+
+          // Má hồng đào e ấp
+          this.drawBlush(ctx, -13, 13, -2, 4.2);
+
+          // CẤP 4: VÒNG HOA PHA LÊ TRÊN TRÁN
+          if (stage === 4) {
+            const flowerColors = ["#f472b6", "#60a5fa", "#facc15", "#34d399"];
+            flowerColors.forEach((fc, idx) => {
+              const fx = -9 + idx * 6;
+              const fy = -18 - Math.abs(idx - 1.5) * 2;
+              ctx.fillStyle = fc;
+              ctx.beginPath();
+              ctx.arc(fx, fy, 2.6, 0, Math.PI * 2);
+              ctx.fill();
+            });
+          }
+
+          // CẤP 5: VƯƠNG MIỆN SAO THIÊN HÀ HOÀNG GIA 👑
           if (stage === 5) {
-            // Vương miện sao thiên hà
+            ctx.save();
+            ctx.translate(0, -22);
+            // Vương miện vàng 3 đỉnh đính ngọc hồng lựu
             ctx.fillStyle = "#fbbf24";
-            ctx.beginPath(); ctx.arc(0, -18, 4.5, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = "#b45309";
+            ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            ctx.moveTo(-11, 2);
+            ctx.lineTo(-13, -9);
+            ctx.lineTo(-5, -4);
+            ctx.lineTo(0, -13);
+            ctx.lineTo(5, -4);
+            ctx.lineTo(13, -9);
+            ctx.lineTo(11, 2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Ngọc ruby đỏ đính giữa đỉnh vương miện
+            ctx.fillStyle = "#ef4444";
+            ctx.beginPath();
+            ctx.arc(0, -6, 2.8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Vòng hào quang sao lượn quanh đỉnh đầu
+            const crownSparkle = this.time * 2;
+            const csX = Math.cos(crownSparkle) * 16;
+            const csY = Math.sin(crownSparkle) * 6 - 8;
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(csX, csY, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
           }
         }
+
         ctx.restore();
       },
 
