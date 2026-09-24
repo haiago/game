@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import { watch } from 'vue';
 import { usePetStore } from '@/stores/petStore';
 import PetCanvas from './PetCanvas.vue';
+import { triggerBigCelebration } from '@/utils/particleEffects';
 
 const petStore = usePetStore();
+
+watch(() => petStore.showEvolutionModal, (val) => {
+  if (val) {
+    triggerBigCelebration();
+  }
+});
 </script>
 
 <template>

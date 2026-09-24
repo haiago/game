@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue';
 import { usePetStore } from '@/stores/petStore';
 import { QUESTION_BANK, type QuestionItem } from '@/data/readingQuestions';
+import { triggerStarBurstEffect, triggerPenaltyEffect } from '@/utils/particleEffects';
+import { soundManager } from '@/audio/soundEffects';
 
 defineEmits<{
   (e: 'back-home'): void;
@@ -31,21 +33,26 @@ const currentCard = computed<QuestionItem>(() => {
   return deck.value[currentIndex.value] || deck.value[0];
 });
 
-function markSuccess() {
+function markSuccess(event?: MouseEvent) {
   if (hasAnsweredCurrent.value) return;
   hasAnsweredCurrent.value = true;
   
   // Điểm: Level 1, 2 = 1 sao; Level 3 = 2 sao
   const added = activeLevel.value === 3 ? 2 : 1;
+  const targetEl = (event?.currentTarget as HTMLElement) || null;
+  triggerStarBurstEffect(targetEl, added);
   petStore.addStars(added);
 
   setTimeout(() => {
     nextCard();
-  }, 900);
+  }, 1200);
 }
 
-function skipCard() {
+function skipCard(event?: MouseEvent) {
   if (hasAnsweredCurrent.value) return;
+  const targetEl = (event?.currentTarget as HTMLElement) || null;
+  triggerPenaltyEffect(targetEl);
+  soundManager.playSkip();
   // Bỏ qua trừ 0.5 sao
   petStore.addStars(-0.5);
   nextCard();
@@ -148,7 +155,7 @@ function changeLevel(lvl: 1 | 2 | 3) {
     <div class="w-full flex items-center gap-3">
       <!-- Bỏ qua (-0.5 sao) -->
       <button
-        @click="skipCard"
+        @click="skipCard($event)"
         :disabled="hasAnsweredCurrent"
         class="w-1/3 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-black text-xs sm:text-sm border-2 border-slate-300 active:scale-95 transition disabled:opacity-50 cursor-pointer"
       >
@@ -157,7 +164,7 @@ function changeLevel(lvl: 1 | 2 | 3) {
 
       <!-- Đọc Tốt (+1 hoặc +2 sao) -->
       <button
-        @click="markSuccess"
+        @click="markSuccess($event)"
         :disabled="hasAnsweredCurrent"
         class="w-2/3 py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-rose-500 to-amber-500 hover:opacity-95 text-white font-black text-sm sm:text-base shadow-xl border-2 border-white active:scale-95 transition flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
       >

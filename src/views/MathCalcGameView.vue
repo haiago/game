@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue';
 import { usePetStore } from '@/stores/petStore';
 import { generateRandomMathQuestions, type MathQuestionItem } from '@/data/mathQuestions';
+import { triggerStarBurstEffect } from '@/utils/particleEffects';
+import { soundManager } from '@/audio/soundEffects';
 
 defineEmits<{
   (e: 'back-home'): void;
@@ -16,18 +18,21 @@ const isCorrect = ref<boolean | null>(null);
 
 const currentQ = computed(() => questions.value[currentIndex.value] || questions.value[0]);
 
-function chooseOption(opt: number | string) {
+function chooseOption(opt: number | string, event?: MouseEvent) {
   if (selectedAnswer.value !== null) return;
   selectedAnswer.value = opt;
 
   if (opt === currentQ.value.correctAnswer) {
     isCorrect.value = true;
+    const targetEl = (event?.currentTarget as HTMLElement) || null;
+    triggerStarBurstEffect(targetEl, 1);
     petStore.addStars(1);
     setTimeout(() => {
       nextQuestion();
-    }, 1000);
+    }, 1200);
   } else {
     isCorrect.value = false;
+    soundManager.playSkip();
     setTimeout(() => {
       selectedAnswer.value = null;
       isCorrect.value = null;
@@ -109,7 +114,7 @@ function nextQuestion() {
       <button
         v-for="opt in currentQ.options"
         :key="opt"
-        @click="chooseOption(opt)"
+        @click="chooseOption(opt, $event)"
         class="py-4 rounded-3xl font-black text-2xl sm:text-3xl font-baloo shadow-md border-3 transition-all active:scale-95 cursor-pointer flex items-center justify-center"
         :class="[
           selectedAnswer === opt

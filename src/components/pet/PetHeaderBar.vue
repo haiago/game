@@ -28,7 +28,7 @@ const petStore = usePetStore();
           </div>
 
           <!-- Thanh tiến độ sao -->
-          <div class="flex items-center gap-1.5 mt-0.5">
+          <div id="star-badge-box" class="flex items-center gap-1.5 mt-0.5 transition-transform duration-200">
             <div class="w-20 sm:w-28 h-2.5 bg-slate-200 rounded-full overflow-hidden border border-slate-300">
               <div
                 class="h-full bg-gradient-to-r from-amber-400 to-yellow-300 transition-all duration-300 rounded-full"

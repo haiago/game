@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue';
 import { usePetStore } from '@/stores/petStore';
 import { generateCompareQuestions, type CompareQuestionItem } from '@/data/mathQuestions';
+import { triggerStarBurstEffect } from '@/utils/particleEffects';
+import { soundManager } from '@/audio/soundEffects';
 
 defineEmits<{
   (e: 'back-home'): void;
@@ -16,18 +18,21 @@ const isCorrect = ref<boolean | null>(null);
 
 const currentQ = computed(() => questions.value[currentIndex.value] || questions.value[0]);
 
-function chooseSign(sign: '>' | '<' | '=') {
+function chooseSign(sign: '>' | '<' | '=', event?: MouseEvent) {
   if (selectedAnswer.value !== null) return;
   selectedAnswer.value = sign;
 
   if (sign === currentQ.value.correctAnswer) {
     isCorrect.value = true;
+    const targetEl = (event?.currentTarget as HTMLElement) || null;
+    triggerStarBurstEffect(targetEl, 1);
     petStore.addStars(1);
     setTimeout(() => {
       nextQuestion();
-    }, 1000);
+    }, 1200);
   } else {
     isCorrect.value = false;
+    soundManager.playSkip();
     setTimeout(() => {
       selectedAnswer.value = null;
       isCorrect.value = null;
@@ -110,7 +115,7 @@ function nextQuestion() {
     <div class="grid grid-cols-3 gap-3 w-full">
       
       <button
-        @click="chooseSign('>')"
+        @click="chooseSign('>', $event)"
         class="py-4 rounded-3xl font-black text-4xl sm:text-5xl font-baloo shadow-md border-3 transition-all active:scale-95 cursor-pointer flex flex-col items-center justify-center gap-1"
         :class="[
           selectedAnswer === '>'
@@ -123,7 +128,7 @@ function nextQuestion() {
       </button>
 
       <button
-        @click="chooseSign('=')"
+        @click="chooseSign('=', $event)"
         class="py-4 rounded-3xl font-black text-4xl sm:text-5xl font-baloo shadow-md border-3 transition-all active:scale-95 cursor-pointer flex flex-col items-center justify-center gap-1"
         :class="[
           selectedAnswer === '='
@@ -136,7 +141,7 @@ function nextQuestion() {
       </button>
 
       <button
-        @click="chooseSign('<')"
+        @click="chooseSign('<', $event)"
         class="py-4 rounded-3xl font-black text-4xl sm:text-5xl font-baloo shadow-md border-3 transition-all active:scale-95 cursor-pointer flex flex-col items-center justify-center gap-1"
         :class="[
           selectedAnswer === '<'
