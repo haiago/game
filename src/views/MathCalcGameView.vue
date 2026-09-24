@@ -81,7 +81,7 @@ function nextQuestion() {
       <!-- Mô hình đồ vật / quả táo đếm trực quan -->
       <div class="p-3 bg-amber-50/60 rounded-2xl border border-amber-200 flex flex-wrap items-center justify-center gap-2 max-w-sm">
         <div class="flex flex-wrap gap-1 items-center justify-center">
-          <span v-for="n in currentQ.num1" :key="'n1_'+n" class="text-2xl sm:text-3xl animate-bounce">
+          <span v-for="n in currentQ.num1" :key="'n1_'+n" class="text-2xl sm:text-3xl select-none hover:scale-110 transition-transform">
             {{ currentQ.hintEmoji }}
           </span>
         </div>
@@ -89,7 +89,7 @@ function nextQuestion() {
           {{ currentQ.operator }}
         </span>
         <div class="flex flex-wrap gap-1 items-center justify-center">
-          <span v-for="n in currentQ.num2" :key="'n2_'+n" class="text-2xl sm:text-3xl animate-bounce">
+          <span v-for="n in currentQ.num2" :key="'n2_'+n" class="text-2xl sm:text-3xl select-none hover:scale-110 transition-transform">
             {{ currentQ.hintEmoji }}
           </span>
         </div>
