@@ -54,8 +54,8 @@ export function triggerStarBurstEffect(sourceElement?: HTMLElement | null, starA
   }
 
   const starBadgeBox = document.getElementById('star-badge-box');
-  let targetX = 140;
-  let targetY = 32;
+  let targetX = window.innerWidth - 60;
+  let targetY = 30;
 
   if (starBadgeBox) {
     const targetRect = starBadgeBox.getBoundingClientRect();
@@ -66,24 +66,24 @@ export function triggerStarBurstEffect(sourceElement?: HTMLElement | null, starA
   const deltaX = targetX - originX;
   const deltaY = targetY - originY;
 
-  // 1. Chùm hạt sao lấp lánh bung tròn xung quanh vị trí click
+  // 1. Bung hạt sao lấp lánh xung quanh nút bấm
   const particles = ['⭐', '🌟', '✨', '💛', '🎉', '⭐'];
   const fragment = document.createDocumentFragment();
   const particleElements: { element: HTMLElement; tx: number; ty: number; rot: number }[] = [];
-  const count = starAmount >= 2 ? 22 : 16;
+  const count = starAmount >= 2 ? 24 : 18;
 
   for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
-    p.className = 'fixed pointer-events-none z-[9999] select-none text-xl sm:text-2xl';
+    p.className = 'gpu-particle text-xl sm:text-2xl select-none';
     p.textContent = particles[i % particles.length];
     p.style.left = `${originX}px`;
     p.style.top = `${originY}px`;
 
     const angle = (i / count) * (Math.PI * 2) + (Math.random() * 0.3 - 0.15);
-    const distance = 60 + Math.random() * 80;
+    const distance = (starAmount >= 2 ? 85 : 75) + Math.random() * 95;
     const tx = Math.cos(angle) * distance;
     const ty = Math.sin(angle) * distance;
-    const rot = (Math.random() - 0.5) * 480;
+    const rot = (Math.random() - 0.5) * 540;
 
     fragment.appendChild(p);
     particleElements.push({ element: p, tx, ty, rot });
@@ -94,12 +94,12 @@ export function triggerStarBurstEffect(sourceElement?: HTMLElement | null, starA
   particleElements.forEach(({ element, tx, ty, rot }, idx) => {
     const anim = element.animate([
       { transform: 'translate3d(-50%, -50%, 0) scale(0.2) rotate(0deg)', opacity: 0 },
-      { transform: `translate3d(calc(-50% + ${tx * 0.4}px), calc(-50% + ${ty * 0.4}px), 0) scale(1.3) rotate(${rot * 0.3}deg)`, opacity: 1, offset: 0.2 },
+      { transform: `translate3d(calc(-50% + ${tx * 0.4}px), calc(-50% + ${ty * 0.4}px), 0) scale(1.25) rotate(${rot * 0.3}deg)`, opacity: 1, offset: 0.2 },
       { transform: `translate3d(calc(-50% + ${tx * 0.85}px), calc(-50% + ${ty * 0.85}px), 0) scale(1) rotate(${rot * 0.7}deg)`, opacity: 0.9, offset: 0.6 },
-      { transform: `translate3d(calc(-50% + ${tx * 1.1}px), calc(-50% + ${ty + 25}px), 0) scale(0.2) rotate(${rot}deg)`, opacity: 0 }
+      { transform: `translate3d(calc(-50% + ${tx * 1.1}px), calc(-50% + ${ty + 30}px), 0) scale(0.2) rotate(${rot}deg)`, opacity: 0 }
     ], {
-      duration: 1600,
-      delay: idx * 8,
+      duration: 1800,
+      delay: idx * 10,
       easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
       fill: 'forwards'
     });
@@ -109,9 +109,9 @@ export function triggerStarBurstEffect(sourceElement?: HTMLElement | null, starA
     };
   });
 
-  // 2. Huy hiệu sao vàng lớn bay theo đường cung vút lên Header
+  // 2. Huy hiệu sao vàng lớn bay theo đường cung mượt mà không khựng giật
   const flyingBadge = document.createElement('div');
-  flyingBadge.className = 'fixed pointer-events-none z-[9999] select-none font-baloo px-4 py-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 border-2 border-yellow-100 rounded-full font-black text-amber-950 text-base sm:text-lg shadow-2xl flex items-center gap-2';
+  flyingBadge.className = 'gpu-flying-badge font-baloo px-4 py-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 border-2 border-yellow-100 rounded-full font-black text-amber-950 text-base sm:text-lg shadow-2xl flex items-center gap-2 select-none';
   const labelText = starAmount === 2 ? '+2 SAO!' : `+${starAmount} SAO!`;
   flyingBadge.innerHTML = `<span class="text-2xl inline-block">⭐</span><span>${labelText}</span>`;
   flyingBadge.style.left = `${originX}px`;
@@ -120,20 +120,20 @@ export function triggerStarBurstEffect(sourceElement?: HTMLElement | null, starA
 
   document.body.appendChild(flyingBadge);
 
-  const arcMidX = deltaX * 0.35 - 30;
-  const arcMidY = deltaY * 0.35 - 50;
+  const arcMidX = deltaX * 0.35 - 35;
+  const arcMidY = deltaY * 0.35 - 55;
   const arcLateX = deltaX * 0.75 - 15;
-  const arcLateY = deltaY * 0.75 - 15;
+  const arcLateY = deltaY * 0.75 - 20;
 
   const badgeAnim = flyingBadge.animate([
     { transform: 'translate3d(-50%, -50%, 0) scale(0.2) rotate(-15deg)', opacity: 0 },
     { transform: 'translate3d(-50%, -50%, 0) scale(1.35) rotate(4deg)', opacity: 1, offset: 0.16 },
-    { transform: 'translate3d(-50%, calc(-50% - 15px), 0) scale(1.15) rotate(-2deg)', opacity: 1, offset: 0.38 },
+    { transform: 'translate3d(-50%, calc(-50% - 20px), 0) scale(1.15) rotate(-2deg)', opacity: 1, offset: 0.38 },
     { transform: `translate3d(calc(-50% + ${arcMidX}px), calc(-50% + ${arcMidY}px), 0) scale(1.05) rotate(3deg)`, opacity: 1, offset: 0.62 },
     { transform: `translate3d(calc(-50% + ${arcLateX}px), calc(-50% + ${arcLateY}px), 0) scale(0.85) rotate(-3deg)`, opacity: 0.95, offset: 0.85 },
     { transform: `translate3d(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px), 0) scale(0.3) rotate(0deg)`, opacity: 0 }
   ], {
-    duration: 1700,
+    duration: 1950,
     easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
     fill: 'forwards'
   });
@@ -142,23 +142,11 @@ export function triggerStarBurstEffect(sourceElement?: HTMLElement | null, starA
     if (flyingBadge.parentNode) flyingBadge.parentNode.removeChild(flyingBadge);
 
     if (starBadgeBox) {
-      starBadgeBox.animate([
-        { transform: 'scale(1)' },
-        { transform: 'scale(1.35) rotate(5deg)' },
-        { transform: 'scale(0.95)' },
-        { transform: 'scale(1)' }
-      ], {
-        duration: 400,
-        easing: 'ease-out'
-      });
+      starBadgeBox.classList.remove('star-box-bump');
+      void starBadgeBox.offsetWidth;
+      starBadgeBox.classList.add('star-box-bump');
     }
   };
-
-  // Mini confetti phụ
-  triggerMiniConfetti({
-    x: originX / window.innerWidth,
-    y: originY / window.innerHeight
-  });
 }
 
 /**
