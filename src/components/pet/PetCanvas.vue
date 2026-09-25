@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 
 const props = withDefaults(defineProps<{
-  species?: 'dragon' | 'cat' | 'penguin' | 'unicorn';
+  species?: 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox';
   stage?: number;
   width?: number;
   height?: number;
@@ -440,6 +440,268 @@ function drawUnicorn(ctx: CanvasRenderingContext2D, st: number, isHappy: boolean
   ctx.restore();
 }
 
+// ---------------- VẼ PHƯỢNG HOÀNG LỬA ----------------
+function drawPhoenix(ctx: CanvasRenderingContext2D, st: number, isHappy: boolean) {
+  const floatY = Math.sin(time * 4) * 4;
+  const jumpY = isHappy ? -Math.abs(Math.sin(time * 8)) * 10 : 0;
+  ctx.save();
+  ctx.translate(0, floatY + jumpY);
+
+  if (st === 1) {
+    // Trứng Kim Cương Đỏ
+    const wobble = Math.sin(time * 4.5) * (isHappy ? 0.25 : 0.09);
+    ctx.rotate(wobble);
+    ctx.beginPath();
+    ctx.ellipse(0, 6, 27, 36, 0, 0, Math.PI * 2);
+    const eggGrad = ctx.createLinearGradient(-20, -30, 20, 40);
+    eggGrad.addColorStop(0, '#fde047');
+    eggGrad.addColorStop(0.3, '#f97316');
+    eggGrad.addColorStop(0.8, '#dc2626');
+    eggGrad.addColorStop(1, '#991b1b');
+    ctx.fillStyle = eggGrad;
+    ctx.fill();
+    ctx.lineWidth = 2.6;
+    ctx.strokeStyle = '#b91c1c';
+    ctx.stroke();
+
+    // Họa tiết lông vũ lửa kim cương trên vỏ trứng
+    ctx.strokeStyle = '#fef08a';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(0, -10); ctx.lineTo(-10, 8); ctx.lineTo(0, 20); ctx.lineTo(10, 8); ctx.closePath();
+    ctx.stroke();
+
+    if (isHappy) {
+      drawAnimeEyes(ctx, -6, 6, 2, 3.8, false, true, '#7f1d1d', '#f59e0b');
+    }
+  } else {
+    const wingFlap = Math.sin(time * 6) * 0.28;
+
+    // Đuôi lửa phượng hoàng dài lộng lẫy
+    if (st >= 3) {
+      ctx.save();
+      const tailWiggle = Math.sin(time * 3) * 0.15;
+      ctx.rotate(tailWiggle);
+      const tailColors = ['#f59e0b', '#ef4444', '#facc15'];
+      [-10, 0, 10].forEach((tx, idx) => {
+        ctx.fillStyle = tailColors[idx];
+        ctx.beginPath();
+        ctx.moveTo(tx * 0.5, 20);
+        ctx.quadraticCurveTo(tx * 1.6, 38, tx * 1.2, 50 + (st >= 4 ? 12 : 0));
+        ctx.quadraticCurveTo(tx * 0.8, 38, 0, 20);
+        ctx.fill();
+      });
+      ctx.restore();
+    }
+
+    // Đôi cánh lửa rộng
+    ctx.save();
+    ctx.translate(-14, 6);
+    ctx.rotate(-0.3 + wingFlap);
+    const wingGradL = ctx.createLinearGradient(-26, 0, 0, 0);
+    wingGradL.addColorStop(0, '#facc15');
+    wingGradL.addColorStop(0.5, '#ea580c');
+    wingGradL.addColorStop(1, '#dc2626');
+    ctx.fillStyle = wingGradL;
+    ctx.beginPath();
+    ctx.ellipse(-14, -6, 16, 26, -0.45, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(14, 6);
+    ctx.rotate(0.3 - wingFlap);
+    const wingGradR = ctx.createLinearGradient(0, 0, 26, 0);
+    wingGradR.addColorStop(0, '#dc2626');
+    wingGradR.addColorStop(0.5, '#ea580c');
+    wingGradR.addColorStop(1, '#facc15');
+    ctx.fillStyle = wingGradR;
+    ctx.beginPath();
+    ctx.ellipse(14, -6, 16, 26, 0.45, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    // Thân phượng hoàng
+    ctx.fillStyle = '#dc2626';
+    ctx.beginPath();
+    ctx.ellipse(0, 10, 18, 18, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Bụng vàng óng
+    ctx.fillStyle = '#fef08a';
+    ctx.beginPath();
+    ctx.ellipse(0, 12, 11, 13, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Đầu
+    ctx.fillStyle = '#ef4444';
+    ctx.beginPath();
+    ctx.arc(0, -9, 18, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Chỏm mào lửa trên đầu
+    ctx.fillStyle = '#f59e0b';
+    ctx.beginPath();
+    ctx.moveTo(0, -26); ctx.lineTo(-6, -38); ctx.lineTo(0, -32); ctx.lineTo(6, -38); ctx.closePath();
+    ctx.fill();
+
+    // Mỏ chim vàng
+    ctx.fillStyle = '#f59e0b';
+    ctx.beginPath();
+    ctx.moveTo(-4, -5); ctx.lineTo(0, 0); ctx.lineTo(4, -5); ctx.closePath();
+    ctx.fill();
+
+    drawAnimeEyes(ctx, -7, 7, -10, 5.2, isBlinking, isHappy, '#7f1d1d', '#f59e0b');
+    drawBlush(ctx, -12, 12, -4, 4);
+
+    // Vương miện hoàng kim cấp 5
+    if (st === 5) {
+      ctx.fillStyle = '#fbbf24';
+      ctx.strokeStyle = '#b45309';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(-10, -25); ctx.lineTo(-12, -37); ctx.lineTo(-4, -30); ctx.lineTo(0, -42); ctx.lineTo(4, -30); ctx.lineTo(12, -37); ctx.lineTo(10, -25); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+// ---------------- VẼ CÁO TUYẾT HỒ LY ----------------
+function drawFox(ctx: CanvasRenderingContext2D, st: number, isHappy: boolean) {
+  const floatY = Math.sin(time * 3.2) * 3;
+  const jumpY = isHappy ? -Math.abs(Math.sin(time * 8)) * 9 : 0;
+  ctx.save();
+  ctx.translate(0, floatY + jumpY);
+
+  if (st === 1) {
+    // Trứng Hoa Tuyết
+    const wobble = Math.sin(time * 4) * (isHappy ? 0.22 : 0.08);
+    ctx.rotate(wobble);
+    ctx.beginPath();
+    ctx.ellipse(0, 6, 27, 36, 0, 0, Math.PI * 2);
+    const eggGrad = ctx.createLinearGradient(-20, -30, 20, 40);
+    eggGrad.addColorStop(0, '#fbcfe8');
+    eggGrad.addColorStop(0.4, '#fb923c');
+    eggGrad.addColorStop(1, '#c084fc');
+    ctx.fillStyle = eggGrad;
+    ctx.fill();
+    ctx.lineWidth = 2.6;
+    ctx.strokeStyle = '#ea580c';
+    ctx.stroke();
+
+    // Họa tiết cánh hoa đào tuyết
+    ctx.fillStyle = '#ffffff';
+    for (let a = 0; a < 5; a++) {
+      const ang = (a * Math.PI * 2) / 5;
+      ctx.beginPath();
+      ctx.arc(Math.cos(ang) * 9, 8 + Math.sin(ang) * 9, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    if (isHappy) {
+      drawAnimeEyes(ctx, -6, 6, 2, 3.8, false, true, '#431407', '#fb923c');
+    }
+  } else {
+    // Đuôi cáo xòe bồng bềnh
+    const tailCount = st >= 4 ? (st === 5 ? 5 : 3) : 1;
+    ctx.save();
+    for (let tIdx = 0; tIdx < tailCount; tIdx++) {
+      const spreadAngle = (tIdx - (tailCount - 1) / 2) * 0.32;
+      const tailWiggle = Math.sin(time * 3.5 + tIdx) * 0.12;
+      ctx.save();
+      ctx.rotate(spreadAngle + tailWiggle);
+      ctx.fillStyle = '#f97316';
+      ctx.beginPath();
+      ctx.ellipse(0, 24, 12, 24, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Chóp đuôi trắng
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.ellipse(0, 40, 7, 9, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+    ctx.restore();
+
+    // Thân cam tròn đáng yêu
+    ctx.fillStyle = '#f97316';
+    ctx.beginPath();
+    ctx.ellipse(0, 12, 19, 17, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Yếm ngực lông trắng
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.ellipse(0, 14, 12, 13, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Chân trước
+    ctx.fillStyle = '#ea580c';
+    [-8, 8].forEach(fx => {
+      ctx.beginPath(); ctx.ellipse(fx, 26, 4.5, 3.5, 0, 0, Math.PI * 2); ctx.fill();
+    });
+
+    // Đầu cáo
+    ctx.fillStyle = '#f97316';
+    ctx.beginPath();
+    ctx.ellipse(0, -8, 22, 18, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Má trắng 2 bên mặt cáo
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.ellipse(-11, -4, 9, 11, -0.2, 0, Math.PI * 2);
+    ctx.ellipse(11, -4, 9, 11, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Hai tai nhọn cáo
+    [-14, 14].forEach((ex, idx) => {
+      const sign = idx === 0 ? -1 : 1;
+      ctx.fillStyle = '#ea580c';
+      ctx.beginPath();
+      ctx.moveTo(ex - 6 * sign, -18); ctx.lineTo(ex + 2 * sign, -36); ctx.lineTo(ex + 8 * sign, -18); ctx.closePath();
+      ctx.fill();
+      // Trong tai trắng
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.moveTo(ex - 3 * sign, -20); ctx.lineTo(ex + 1 * sign, -31); ctx.lineTo(ex + 5 * sign, -20); ctx.closePath();
+      ctx.fill();
+    });
+
+    // Mũi đen nhỏ xinh
+    ctx.fillStyle = '#1c1917';
+    ctx.beginPath();
+    ctx.ellipse(0, -3, 3, 2.2, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    drawAnimeEyes(ctx, -8, 8, -9, 5.2, isBlinking, isHappy, '#431407', '#f97316');
+    drawBlush(ctx, -14, 14, -3, 4.2);
+
+    // Kính ngố tròn cấp 3
+    if (st === 3) {
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(-8, -9, 7.5, 0, Math.PI * 2);
+      ctx.arc(8, -9, 7.5, 0, Math.PI * 2);
+      ctx.moveTo(-1, -9); ctx.lineTo(1, -9);
+      ctx.stroke();
+    }
+
+    // Vương miện ngọc cấp 5
+    if (st === 5) {
+      ctx.fillStyle = '#a855f7';
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(-9, -24); ctx.lineTo(-11, -34); ctx.lineTo(-4, -28); ctx.lineTo(0, -37); ctx.lineTo(4, -28); ctx.lineTo(11, -34); ctx.lineTo(9, -24); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
 function render() {
   time += 0.04;
   updateParticles();
@@ -469,6 +731,21 @@ function render() {
       else if (props.species === 'cat') drawCat(ctx, props.stage, isHappy);
       else if (props.species === 'penguin') drawPenguin(ctx, props.stage, isHappy);
       else if (props.species === 'unicorn') drawUnicorn(ctx, props.stage, isHappy);
+      else if (props.species === 'phoenix') drawPhoenix(ctx, props.stage, isHappy);
+      else if (props.species === 'fox') drawFox(ctx, props.stage, isHappy);
+
+      // Vẽ các hạt tim bung ra khi chạm vào
+      for (const p of activeParticles) {
+        ctx.save();
+        ctx.translate(p.x - 64, p.y - 64);
+        ctx.scale(p.scale * p.life, p.scale * p.life);
+        ctx.font = '16px "Baloo 2", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillText(p.type === 'heart' ? '💖' : '💕', 0, 0);
+        ctx.restore();
+      }
 
       ctx.restore();
     }

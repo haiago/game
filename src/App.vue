@@ -5,14 +5,18 @@ import PetHeaderBar from '@/components/pet/PetHeaderBar.vue';
 import PetGardenModal from '@/components/pet/PetGardenModal.vue';
 import StarterPetModal from '@/components/pet/StarterPetModal.vue';
 import EvolutionCelebration from '@/components/pet/EvolutionCelebration.vue';
+import PetUnlockSlotModal from '@/components/pet/PetUnlockSlotModal.vue';
 
 import HomeHubView from '@/views/HomeHubView.vue';
 import ReadingGameView from '@/views/ReadingGameView.vue';
 import MathCalcGameView from '@/views/MathCalcGameView.vue';
 import MathCompareGameView from '@/views/MathCompareGameView.vue';
+import MathSplitCombineGameView from '@/views/MathSplitCombineGameView.vue';
+import MathOrderGameView from '@/views/MathOrderGameView.vue';
+import WordBubbleGameView from '@/views/WordBubbleGameView.vue';
 
 const petStore = usePetStore();
-const currentScreen = ref<'hub' | 'reading' | 'math_calc' | 'math_compare'>('hub');
+const currentScreen = ref<'hub' | 'reading' | 'word_bubble' | 'math_calc' | 'math_compare' | 'math_split' | 'math_order'>('hub');
 
 onMounted(() => {
   petStore.initFromStorage();
@@ -37,6 +41,11 @@ onMounted(() => {
         @back-home="currentScreen = 'hub'"
       />
 
+      <WordBubbleGameView
+        v-else-if="currentScreen === 'word_bubble'"
+        @back-home="currentScreen = 'hub'"
+      />
+
       <MathCalcGameView
         v-else-if="currentScreen === 'math_calc'"
         @back-home="currentScreen = 'hub'"
@@ -46,17 +55,23 @@ onMounted(() => {
         v-else-if="currentScreen === 'math_compare'"
         @back-home="currentScreen = 'hub'"
       />
-    </main>
 
-    <!-- Footer bản quyền -->
-    <footer class="py-3 text-center text-xs font-bold text-slate-400 border-t border-slate-200/60 bg-white/40">
-      Bé Học Vui • Luyện Đọc Trơn &amp; Toán Lớp 1 Nuôi Thú Cưng 🐾
-    </footer>
+      <MathSplitCombineGameView
+        v-else-if="currentScreen === 'math_split'"
+        @back-home="currentScreen = 'hub'"
+      />
+
+      <MathOrderGameView
+        v-else-if="currentScreen === 'math_order'"
+        @back-home="currentScreen = 'hub'"
+      />
+    </main>
 
     <!-- Các Modal Toàn Cục -->
     <PetGardenModal />
     <StarterPetModal />
     <EvolutionCelebration />
+    <PetUnlockSlotModal />
 
   </div>
 </template>

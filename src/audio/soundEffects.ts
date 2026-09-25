@@ -246,6 +246,40 @@ class SoundSynthesizer {
     } catch (e) {}
   }
 
+  // Âm thanh nổ bong bóng nước bực bõm vui nhộn cho bé
+  playBubblePop() {
+    if (!this.enabled) return;
+    try {
+      const ctx = this.getContext();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      // Tần số trượt vút lên như tiếng nổ bong bóng
+      osc.frequency.setValueAtTime(400 + Math.random() * 150, now);
+      osc.frequency.exponentialRampToValueAtTime(880 + Math.random() * 200, now + 0.08);
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.28, now + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.13);
+    } catch (e) {}
+  }
+
+  // Âm thanh khi chạm nhầm bóng chữ sai
+  playBubbleWrong() {
+    if (!this.enabled) return;
+    try {
+      this.playTone(280, 'sine', 0.15, 0, 0.15);
+      this.playTone(210, 'sine', 0.18, 0.06, 0.18);
+    } catch (e) {}
+  }
+
   // Âm thanh khi hết 30s đếm ngược
   playTimeout() {
     if (!this.enabled) return;

@@ -11,19 +11,23 @@ const STORAGE_KEY = 'BE_DOC_TRON_PET_PROGRESS_V2';
 
 export const usePetStore = defineStore('pet', {
   state: () => ({
-    activePetId: 'dragon' as 'dragon' | 'cat' | 'penguin' | 'unicorn',
-    unlockedPetIds: ['dragon'] as ('dragon' | 'cat' | 'penguin' | 'unicorn')[],
+    activePetId: 'dragon' as 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox',
+    unlockedPetIds: ['dragon'] as ('dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox')[],
     petProgress: {
       dragon: { stars: 0, completed: false },
       cat: { stars: 0, completed: false },
       penguin: { stars: 0, completed: false },
-      unicorn: { stars: 0, completed: false }
+      unicorn: { stars: 0, completed: false },
+      phoenix: { stars: 0, completed: false },
+      fox: { stars: 0, completed: false }
     } as Record<string, PetProgress>,
     isFirstTime: false,
     showStarterModal: false,
     showGardenModal: false,
     showEvolutionModal: false,
-    evolutionData: null as { stageTitle: string; stageDesc: string; isGraduate: boolean; nextPetName?: string } | null,
+    availableSlots: 0,
+    showUnlockSlotModal: false,
+    evolutionData: null as { stageTitle: string; stageDesc: string; isGraduate: boolean } | null,
     speechBubbleText: 'Bé đọc to và tính toán tớ nghe nhé! 💕',
     showSpeechBubble: false,
     speechTimer: null as any
@@ -56,6 +60,12 @@ export const usePetStore = defineStore('pet', {
     nextStage(state): any {
       const idx = this.currentStageIndex;
       return this.activeSpecies.stages[idx + 1] || null;
+    },
+    lockedPetIds(state): ('dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox')[] {
+      return PET_ORDER.filter(id => !state.unlockedPetIds.includes(id));
+    },
+    completedPetCount(state): number {
+      return Object.values(state.petProgress).filter(p => p.completed).length;
     }
   },
 
@@ -91,6 +101,22 @@ export const usePetStore = defineStore('pet', {
         if (!this.unlockedPetIds.includes(this.activePetId)) {
           this.unlockedPetIds.unshift(this.activePetId);
         }
+
+        // Tự động tính toán số slot chưa dùng dựa trên số thú đã tốt nghiệp
+        const completedCount = Object.values(this.petProgress).filter(p => p.completed).length;
+        // Tổng số thú mở khóa tối đa cho phép hiện tại = 1 (ban đầu) + completedCount
+        const expectedUnlockedMax = 1 + completedCount;
+        if (typeof parsed.availableSlots === 'number') {
+          this.availableSlots = Math.max(0, parsed.availableSlots);
+        } else {
+          // Khôi phục tự động nếu dữ liệu cũ chưa có trường availableSlots
+          this.availableSlots = Math.max(0, expectedUnlockedMax - this.unlockedPetIds.length);
+        }
+
+        // Nếu còn slot mở khóa và còn thú đang khóa -> thông báo cho bé mở slot
+        if (this.availableSlots > 0 && this.lockedPetIds.length > 0) {
+          this.showUnlockSlotModal = true;
+        }
       } catch (err) {
         console.warn('Lỗi đọc localStorage:', err);
       }
@@ -102,7 +128,8 @@ export const usePetStore = defineStore('pet', {
           activePetSpeciesId: this.activePetId,
           unlockedPetSpeciesIds: this.unlockedPetIds,
           petProgressData: this.petProgress,
-          currentLevel: this.currentStageIndex + 1
+          currentLevel: this.currentStageIndex + 1,
+          availableSlots: this.availableSlots
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       } catch (err) {
@@ -110,7 +137,7 @@ export const usePetStore = defineStore('pet', {
       }
     },
 
-    selectFirstStarter(speciesId: 'dragon' | 'cat' | 'penguin' | 'unicorn') {
+    selectFirstStarter(speciesId: 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox') {
       this.activePetId = speciesId;
       if (!this.unlockedPetIds.includes(speciesId)) {
         this.unlockedPetIds = [speciesId];
@@ -122,9 +149,31 @@ export const usePetStore = defineStore('pet', {
       this.triggerPetSpeech(`Chào mừng bé! ${this.activeSpecies.name} rất vui được đồng hành cùng bé! 💕`);
     },
 
-    choosePet(speciesId: 'dragon' | 'cat' | 'penguin' | 'unicorn') {
+    unlockNewPet(speciesId: 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox') {
+      if (this.unlockedPetIds.includes(speciesId)) {
+        this.choosePet(speciesId);
+        this.showUnlockSlotModal = false;
+        return;
+      }
+
+      if (this.availableSlots > 0) {
+        this.availableSlots--;
+        this.unlockedPetIds.push(speciesId);
+        this.activePetId = speciesId;
+        this.showUnlockSlotModal = false;
+        this.saveToStorage();
+        soundManager.playFanfare();
+        this.triggerPetSpeech(`Hoan hô! Bạn ${this.activeSpecies.name} mới tinh đã đến với bé! Cùng học vui vẻ nhé! 💕`);
+      }
+    },
+
+    choosePet(speciesId: 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox') {
       if (!this.unlockedPetIds.includes(speciesId)) {
-        this.triggerPetSpeech(`Bé hãy nuôi bạn trước đạt 50⭐ để đánh thức bạn này nhé! 💕`);
+        if (this.availableSlots > 0) {
+          this.showUnlockSlotModal = true;
+          return;
+        }
+        this.triggerPetSpeech(`Bé hãy nuôi bạn hiện tại đạt 50⭐ để mở thêm slot nhận bạn này nhé! 💕`);
         return;
       }
       this.activePetId = speciesId;
@@ -150,18 +199,15 @@ export const usePetStore = defineStore('pet', {
       });
 
       let isGraduate = false;
-      let nextPetToUnlock: any = null;
 
+      // Khi đạt cấp 5 (50 sao) và chưa đánh dấu completed
       if (newStage >= 4 && !this.petProgress[this.activePetId].completed) {
         this.petProgress[this.activePetId].completed = true;
         isGraduate = true;
 
-        const currentOrderIdx = PET_ORDER.indexOf(this.activePetId);
-        if (currentOrderIdx !== -1 && currentOrderIdx < PET_ORDER.length - 1) {
-          nextPetToUnlock = PET_ORDER[currentOrderIdx + 1];
-          if (!this.unlockedPetIds.includes(nextPetToUnlock)) {
-            this.unlockedPetIds.push(nextPetToUnlock);
-          }
+        // Hoàn thành 1 thú -> mở thêm 1 slot mở khóa thú tùy ý
+        if (this.lockedPetIds.length > 0) {
+          this.availableSlots++;
         }
       }
 
@@ -177,8 +223,7 @@ export const usePetStore = defineStore('pet', {
           this.evolutionData = {
             stageTitle: pet.stages[newStage].title,
             stageDesc: pet.stages[newStage].desc,
-            isGraduate,
-            nextPetName: nextPetToUnlock ? PET_SPECIES_DATA[nextPetToUnlock]?.name : undefined
+            isGraduate
           };
           this.showEvolutionModal = true;
           soundManager.playFanfare();

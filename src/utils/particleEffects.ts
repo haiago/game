@@ -184,3 +184,56 @@ export function triggerPenaltyEffect(sourceElement?: HTMLElement | null) {
     if (penaltyBadge.parentNode) penaltyBadge.parentNode.removeChild(penaltyBadge);
   };
 }
+
+/**
+ * Hiệu ứng bung tim bay lơ lửng khi bé chạm vào thú cưng
+ */
+export function triggerHeartBurstEffect(sourceElement?: HTMLElement | null) {
+  let originX = window.innerWidth / 2;
+  let originY = window.innerHeight / 2;
+
+  if (sourceElement) {
+    const sourceRect = sourceElement.getBoundingClientRect();
+    originX = sourceRect.left + sourceRect.width / 2;
+    originY = sourceRect.top + sourceRect.height / 2;
+  }
+
+  const hearts = ['💖', '💕', '❤️', '💗', '💓', '🥰', '✨'];
+  const fragment = document.createDocumentFragment();
+  const count = 10;
+
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'gpu-particle select-none pointer-events-none fixed z-[9999]';
+    p.textContent = hearts[i % hearts.length];
+    p.style.fontSize = `${18 + Math.random() * 16}px`;
+    p.style.left = `${originX}px`;
+    p.style.top = `${originY}px`;
+
+    const angle = (i / count) * (Math.PI * 2) + (Math.random() * 0.4 - 0.2);
+    const distance = 40 + Math.random() * 55;
+    const tx = Math.cos(angle) * distance;
+    const ty = Math.sin(angle) * distance - (35 + Math.random() * 45); // Luôn bay hướng lên trên
+    const rot = (Math.random() - 0.5) * 60;
+
+    fragment.appendChild(p);
+
+    const anim = p.animate([
+      { transform: 'translate3d(-50%, -50%, 0) scale(0.2) rotate(0deg)', opacity: 0 },
+      { transform: `translate3d(calc(-50% + ${tx * 0.5}px), calc(-50% + ${ty * 0.5}px), 0) scale(1.35) rotate(${rot * 0.5}deg)`, opacity: 1, offset: 0.3 },
+      { transform: `translate3d(calc(-50% + ${tx}px), calc(-50% + ${ty}px), 0) scale(1.1) rotate(${rot}deg)`, opacity: 0.85, offset: 0.7 },
+      { transform: `translate3d(calc(-50% + ${tx * 1.2}px), calc(-50% + ${ty - 25}px), 0) scale(0.4) rotate(${rot * 1.2}deg)`, opacity: 0 }
+    ], {
+      duration: 1100 + Math.random() * 300,
+      delay: i * 25,
+      easing: 'cubic-bezier(0.18, 0.89, 0.32, 1.28)',
+      fill: 'forwards'
+    });
+
+    anim.onfinish = () => {
+      if (p.parentNode) p.parentNode.removeChild(p);
+    };
+  }
+
+  document.body.appendChild(fragment);
+}

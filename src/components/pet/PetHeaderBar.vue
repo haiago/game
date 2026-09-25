@@ -1,17 +1,31 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { usePetStore } from '@/stores/petStore';
+import { soundManager } from '@/audio/soundEffects';
+import { triggerHeartBurstEffect } from '@/utils/particleEffects';
 import PetCanvas from './PetCanvas.vue';
 
 const petStore = usePetStore();
+const avatarRef = ref<HTMLElement | null>(null);
+
+function handlePetAvatarClick(e: MouseEvent) {
+  soundManager.playPetCute();
+  triggerHeartBurstEffect((e.currentTarget as HTMLElement) || avatarRef.value);
+}
 </script>
 
 <template>
   <header class="w-full bg-white/95 backdrop-blur-md border-b-2 border-purple-200 px-3 sm:px-6 py-2 shadow-sm sticky top-0 z-40">
     <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
       
-      <!-- Thú cưng mini & Lời thoại -->
+      <!-- Thú cưng mini & Bung tim khi bấm -->
       <div class="flex items-center gap-2 relative">
-        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-b from-purple-100 to-pink-50 border-2 border-purple-300 flex items-center justify-center shadow-inner overflow-hidden cursor-pointer shrink-0" @click="petStore.triggerPetSpeech()">
+        <div
+          ref="avatarRef"
+          class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-b from-purple-100 to-pink-50 border-2 border-purple-300 flex items-center justify-center shadow-inner overflow-hidden cursor-pointer shrink-0 transition-transform active:scale-90"
+          @click="handlePetAvatarClick"
+          title="Bấm vào để yêu thương thú cưng!"
+        >
           <PetCanvas
             :species="petStore.activePetId"
             :stage="petStore.currentStageIndex + 1"
@@ -40,23 +54,6 @@ const petStore = usePetStore();
             </span>
           </div>
         </div>
-
-        <!-- Bong bóng lời thoại -->
-        <transition
-          enter-active-class="transition duration-200 ease-out"
-          enter-from-class="opacity-0 -translate-y-1 scale-95"
-          enter-to-class="opacity-100 translate-y-0 scale-100"
-          leave-active-class="transition duration-150 ease-in"
-          leave-from-class="opacity-100 translate-y-0 scale-100"
-          leave-to-class="opacity-0 -translate-y-1 scale-95"
-        >
-          <div
-            v-if="petStore.showSpeechBubble"
-            class="absolute left-16 -top-8 bg-white text-slate-800 text-[11px] sm:text-xs font-black px-3 py-1.5 rounded-2xl shadow-xl border-2 border-amber-400 whitespace-nowrap z-50 pointer-events-none"
-          >
-            {{ petStore.speechBubbleText }}
-          </div>
-        </transition>
       </div>
 
       <!-- Hộp đếm sao và Nút chức năng góc phải chuẩn nguyên bản -->
@@ -65,20 +62,26 @@ const petStore = usePetStore();
         <div
           id="star-badge-box"
           class="flex items-center bg-gradient-to-b from-amber-50 to-yellow-100 border-2 border-amber-400 px-3 py-1.5 rounded-2xl font-black shadow-sm transition-transform cursor-pointer hover:scale-105 active:scale-95"
-          @click="petStore.triggerPetSpeech()"
+          @click="handlePetAvatarClick"
         >
           <span class="text-xl mr-1.5 filter drop-shadow-xs animate-bounce">⭐</span>
           <span class="text-lg font-black text-amber-950 font-baloo tracking-tight">{{ petStore.currentStars }}</span>
           <span class="text-xs text-amber-700 font-bold ml-1 font-baloo">/{{ petStore.nextStage?.reqStars || 50 }}</span>
         </div>
 
-        <!-- Nút Vườn Thú -->
+        <!-- Nút Vườn Thú kèm huy hiệu Slot nếu có -->
         <button
           @click="petStore.showGardenModal = true"
-          class="px-3 sm:px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white border-2 border-purple-300 rounded-2xl font-black text-xs sm:text-sm shadow-md flex items-center gap-1.5 active:scale-95 transition transform hover:scale-105 whitespace-nowrap shrink-0 cursor-pointer"
+          class="relative px-3 sm:px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white border-2 border-purple-300 rounded-2xl font-black text-xs sm:text-sm shadow-md flex items-center gap-1.5 active:scale-95 transition transform hover:scale-105 whitespace-nowrap shrink-0 cursor-pointer"
         >
           <span class="text-sm">🐾</span>
           <span>Vườn Thú</span>
+          <span
+            v-if="petStore.availableSlots > 0 && petStore.lockedPetIds.length > 0"
+            class="absolute -top-2 -right-1 px-1.5 py-0.5 bg-rose-500 text-white font-black text-[10px] rounded-full border-2 border-white shadow animate-bounce"
+          >
+            +{{ petStore.availableSlots }}
+          </span>
         </button>
       </div>
 

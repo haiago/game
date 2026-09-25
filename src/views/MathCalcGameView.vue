@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed } from 'vue';
 import { usePetStore } from '@/stores/petStore';
 import { generateRandomMathQuestions, type MathQuestionItem } from '@/data/mathQuestions';
 import { triggerStarBurstEffect } from '@/utils/particleEffects';
@@ -11,72 +11,13 @@ defineEmits<{
 
 const petStore = usePetStore();
 
-const questions = ref<MathQuestionItem[]>(generateRandomMathQuestions(10, 20));
+const questions = ref<MathQuestionItem[]>(generateRandomMathQuestions(10, 15));
 const currentIndex = ref(0);
 const selectedAnswer = ref<number | string | null>(null);
 const isCorrect = ref<boolean | null>(null);
 const isBroken = ref(false); // Khóa và hiển thị hiệu ứng vỡ đôi trong 2.5s
 
-// Bộ đếm ngược 30 giây gay cấn
-const timeLeft = ref(30);
-let timerInterval: any = null;
-
-function startTimer() {
-  stopTimer();
-  timeLeft.value = 30;
-  timerInterval = setInterval(() => {
-    // Không đếm khi đang bị khóa nứt vỡ hoặc đã chọn đáp án
-    if (isBroken.value || selectedAnswer.value !== null) return;
-
-    if (timeLeft.value > 1) {
-      timeLeft.value--;
-      // Tiếng gõ kim đồng hồ táp táp nhẹ, dưới 10s sẽ dồn dập gay cấn hơn
-      soundManager.playTick(timeLeft.value <= 10);
-    } else {
-      // Hết giờ!
-      timeLeft.value = 0;
-      stopTimer();
-      handleTimeOut();
-    }
-  }, 1000);
-}
-
-function stopTimer() {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-}
-
-function handleTimeOut() {
-  isCorrect.value = false;
-  isBroken.value = true;
-  soundManager.playTimeout();
-
-  setTimeout(() => {
-    selectedAnswer.value = null;
-    isCorrect.value = null;
-    isBroken.value = false;
-    startTimer();
-  }, 2500);
-}
-
-onMounted(() => {
-  startTimer();
-});
-
-onUnmounted(() => {
-  stopTimer();
-});
-
 const currentQ = computed(() => questions.value[currentIndex.value] || questions.value[0]);
-
-// Class viền card phát sáng gay cấn theo thời gian đếm ngược
-const timerGlowClass = computed(() => {
-  if (timeLeft.value <= 10) return 'timer-glow-urgent border-rose-500';
-  if (timeLeft.value <= 20) return 'timer-glow-warning border-amber-500';
-  return 'timer-glow-safe border-amber-300';
-});
 
 function chooseOption(opt: number | string, event?: MouseEvent) {
   // Nếu đang khóa hoặc đã chọn đáp án -> cấm bấm
@@ -85,7 +26,6 @@ function chooseOption(opt: number | string, event?: MouseEvent) {
 
   if (opt === currentQ.value.correctAnswer) {
     isCorrect.value = true;
-    stopTimer();
     const targetEl = (event?.currentTarget as HTMLElement) || null;
     triggerStarBurstEffect(targetEl, 1);
     petStore.addStars(1);
@@ -115,10 +55,9 @@ function nextQuestion() {
     currentIndex.value++;
   } else {
     // Tạo bộ câu hỏi mới
-    questions.value = generateRandomMathQuestions(10, 20);
+    questions.value = generateRandomMathQuestions(10, 15);
     currentIndex.value = 0;
   }
-  startTimer();
 }
 </script>
 
@@ -136,13 +75,9 @@ function nextQuestion() {
         <span>Sảnh Game</span>
       </button>
 
-      <!-- Đồng hồ đếm ngược 30 giây gay cấn -->
-      <div
-        class="px-3.5 py-1.5 rounded-2xl font-black text-sm flex items-center gap-1.5 shadow-sm transition-all"
-        :class="timeLeft <= 10 ? 'bg-rose-500 text-white animate-pulse shadow-rose-300 ring-2 ring-rose-400' : (timeLeft <= 20 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-white text-slate-700 border border-slate-200')"
-      >
-        <span class="text-base">⏱️</span>
-        <span class="font-mono text-base font-black">{{ timeLeft }}s</span>
+      <div class="text-xs font-black px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 font-baloo shadow-xs flex items-center gap-1.5">
+        <span>✏️</span>
+        <span>Bé Làm Toán (0 - 15)</span>
       </div>
 
       <span class="text-xs font-black px-3 py-1.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
@@ -158,16 +93,59 @@ function nextQuestion() {
         v-if="!isBroken"
         class="w-full bg-white rounded-[36px] p-6 sm:p-8 shadow-xl border-4 flex flex-col items-center text-center gap-4 transition-all duration-300"
         :class="[
-          isCorrect === true ? 'border-emerald-400 ring-4 ring-emerald-200' : timerGlowClass
+          isCorrect === true ? 'border-emerald-400 ring-4 ring-emerald-200 shadow-emerald-100' : 'border-amber-300 shadow-amber-50/50'
         ]"
       >
-        <span class="text-xs font-black text-amber-700 bg-amber-50 px-3 py-1 rounded-full">
-          Bé hãy chọn kết quả đúng (+1⭐)
+        <!-- Tiêu đề câu hỏi theo dạng -->
+        <span
+          class="text-xs font-black px-3.5 py-1 rounded-full font-baloo uppercase tracking-wider"
+          :class="currentQ.targetSlot === 'operator' ? 'bg-purple-100 text-purple-800' : (currentQ.targetSlot === 'result' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800')"
+        >
+          <span v-if="currentQ.targetSlot === 'operator'">🔍 ĐIỀN DẤU + HOẶC -</span>
+          <span v-else-if="currentQ.targetSlot === 'result'">🧮 TÍNH KẾT QUẢ</span>
+          <span v-else>🧩 TÌM SỐ CÒN THIẾU</span>
         </span>
 
-        <!-- Phép tính to rõ -->
-        <div class="text-4xl sm:text-6xl font-black font-baloo text-slate-800 tracking-wider my-2">
-          {{ currentQ.num1 }} {{ currentQ.operator }} {{ currentQ.num2 }} = <span class="text-amber-500 font-black">?</span>
+        <!-- Phép tính to rõ trực quan thích ứng theo từng ô trống cần tìm -->
+        <div class="text-3xl sm:text-5xl font-black font-baloo text-slate-800 tracking-wider my-2 flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+          
+          <!-- Số 1 -->
+          <span
+            v-if="currentQ.targetSlot === 'num1'"
+            class="px-3 py-1 rounded-2xl border-3 border-dashed border-amber-400 bg-amber-50 text-amber-600 animate-pulse min-w-[50px]"
+          >
+            {{ selectedAnswer !== null ? selectedAnswer : '?' }}
+          </span>
+          <span v-else class="text-slate-800">{{ currentQ.num1 }}</span>
+
+          <!-- Dấu phép tính (+ / -) -->
+          <span
+            v-if="currentQ.targetSlot === 'operator'"
+            class="px-3.5 py-1 rounded-2xl border-3 border-dashed border-purple-500 bg-purple-50 text-purple-700 animate-pulse min-w-[50px]"
+          >
+            {{ selectedAnswer !== null ? selectedAnswer : '?' }}
+          </span>
+          <span v-else class="text-amber-600 px-1">{{ currentQ.operator }}</span>
+
+          <!-- Số 2 -->
+          <span
+            v-if="currentQ.targetSlot === 'num2'"
+            class="px-3 py-1 rounded-2xl border-3 border-dashed border-amber-400 bg-amber-50 text-amber-600 animate-pulse min-w-[50px]"
+          >
+            {{ selectedAnswer !== null ? selectedAnswer : '?' }}
+          </span>
+          <span v-else class="text-slate-800">{{ currentQ.num2 }}</span>
+
+          <span class="text-slate-400">=</span>
+
+          <!-- Kết quả -->
+          <span
+            v-if="currentQ.targetSlot === 'result'"
+            class="px-3 py-1 rounded-2xl border-3 border-dashed border-amber-400 bg-amber-50 text-amber-600 animate-pulse min-w-[50px]"
+          >
+            {{ selectedAnswer !== null ? selectedAnswer : '?' }}
+          </span>
+          <span v-else class="text-emerald-700 font-black">{{ currentQ.result }}</span>
         </div>
 
         <!-- Mô hình đồ vật / quả táo đếm trực quan -->
@@ -202,24 +180,11 @@ function nextQuestion() {
             💔 ĐÃ BỊ NỨT VỠ RỒI!
           </span>
 
-          <div class="text-4xl sm:text-6xl font-black font-baloo text-rose-900 tracking-wider my-2 filter blur-[0.4px]">
-            {{ currentQ.num1 }} {{ currentQ.operator }} {{ currentQ.num2 }} = <span class="text-rose-500 font-black">?</span>
+          <div class="text-3xl sm:text-5xl font-black font-baloo text-rose-900 tracking-wider my-2 filter blur-[0.4px]">
+            {{ currentQ.title }}
           </div>
 
-          <div class="p-3 bg-rose-100/70 rounded-2xl border border-rose-300 flex flex-wrap items-center justify-center gap-2 max-w-sm">
-            <div class="flex flex-wrap gap-1 items-center justify-center opacity-70">
-              <span v-for="n in currentQ.num1" :key="'n1b_'+n" class="text-2xl sm:text-3xl">
-                {{ currentQ.hintEmoji }}
-              </span>
-            </div>
-            <span class="text-xl font-black text-rose-400 font-baloo px-1">{{ currentQ.operator }}</span>
-            <div class="flex flex-wrap gap-1 items-center justify-center opacity-70">
-              <span v-for="n in currentQ.num2" :key="'n2b_'+n" class="text-2xl sm:text-3xl">
-                {{ currentQ.hintEmoji }}
-              </span>
-            </div>
-          </div>
-          <div class="text-sm font-black text-rose-600">❌ Chưa đúng rồi!</div>
+          <div class="text-sm font-black text-rose-600">❌ Chưa đúng rồi bé ơi!</div>
         </div>
 
         <!-- Nửa Bên Phải Bị Nứt Toác (Lồng đè đối xứng qua clip-path) -->
@@ -228,24 +193,11 @@ function nextQuestion() {
             💔 ĐÃ BỊ NỨT VỠ RỒI!
           </span>
 
-          <div class="text-4xl sm:text-6xl font-black font-baloo text-rose-900 tracking-wider my-2 filter blur-[0.4px]">
-            {{ currentQ.num1 }} {{ currentQ.operator }} {{ currentQ.num2 }} = <span class="text-rose-500 font-black">?</span>
+          <div class="text-3xl sm:text-5xl font-black font-baloo text-rose-900 tracking-wider my-2 filter blur-[0.4px]">
+            {{ currentQ.title }}
           </div>
 
-          <div class="p-3 bg-rose-100/70 rounded-2xl border border-rose-300 flex flex-wrap items-center justify-center gap-2 max-w-sm">
-            <div class="flex flex-wrap gap-1 items-center justify-center opacity-70">
-              <span v-for="n in currentQ.num1" :key="'n1c_'+n" class="text-2xl sm:text-3xl">
-                {{ currentQ.hintEmoji }}
-              </span>
-            </div>
-            <span class="text-xl font-black text-rose-400 font-baloo px-1">{{ currentQ.operator }}</span>
-            <div class="flex flex-wrap gap-1 items-center justify-center opacity-70">
-              <span v-for="n in currentQ.num2" :key="'n2c_'+n" class="text-2xl sm:text-3xl">
-                {{ currentQ.hintEmoji }}
-              </span>
-            </div>
-          </div>
-          <div class="text-sm font-black text-rose-600">❌ Chưa đúng rồi!</div>
+          <div class="text-sm font-black text-rose-600">❌ Chưa đúng rồi bé ơi!</div>
         </div>
 
         <!-- Biểu tượng nứt vỡ ở giữa -->
@@ -257,18 +209,21 @@ function nextQuestion() {
 
     </div>
 
-    <!-- 4 Lựa Chọn Đáp Án (Bị vô hiệu hóa hoàn toàn khi đang vỡ card) -->
-    <div class="grid grid-cols-2 gap-3 w-full">
+    <!-- Lựa Chọn Đáp Án (2 nút nếu chọn dấu +/-, hoặc 4 nút nếu chọn số) -->
+    <div
+      class="w-full"
+      :class="currentQ.options.length === 2 ? 'grid grid-cols-2 gap-4 max-w-sm mx-auto' : 'grid grid-cols-2 gap-3'"
+    >
       <button
         v-for="opt in currentQ.options"
         :key="opt"
         @click="chooseOption(opt, $event)"
         :disabled="isBroken || selectedAnswer !== null"
-        class="py-4 rounded-3xl font-black text-2xl sm:text-3xl font-baloo shadow-md border-3 transition-all active:scale-95 flex items-center justify-center"
+        class="py-4 rounded-3xl font-black text-2xl sm:text-4xl font-baloo shadow-md border-3 transition-all active:scale-95 flex items-center justify-center cursor-pointer"
         :class="[
           selectedAnswer === opt
             ? (opt === currentQ.correctAnswer ? 'bg-emerald-500 text-white border-emerald-600 ring-4 ring-emerald-300' : 'bg-rose-500 text-white border-rose-600 ring-4 ring-rose-300')
-            : (isBroken ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed opacity-50' : 'bg-white hover:bg-amber-50 text-slate-800 border-amber-200 hover:border-amber-400 cursor-pointer')
+            : (isBroken ? 'bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed opacity-50' : (currentQ.targetSlot === 'operator' ? 'bg-white hover:bg-purple-50 text-purple-950 border-purple-300 hover:border-purple-500 hover:scale-105' : 'bg-white hover:bg-amber-50 text-slate-800 border-amber-200 hover:border-amber-400 hover:scale-105'))
         ]"
       >
         {{ opt }}

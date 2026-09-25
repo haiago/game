@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed } from 'vue';
 import { usePetStore } from '@/stores/petStore';
 import { generateCompareQuestions, type CompareQuestionItem } from '@/data/mathQuestions';
 import { triggerStarBurstEffect } from '@/utils/particleEffects';
@@ -11,69 +11,13 @@ defineEmits<{
 
 const petStore = usePetStore();
 
-const questions = ref<CompareQuestionItem[]>(generateCompareQuestions(10, 20));
+const questions = ref<CompareQuestionItem[]>(generateCompareQuestions(10, 15));
 const currentIndex = ref(0);
 const selectedAnswer = ref<'>' | '<' | '=' | null>(null);
 const isCorrect = ref<boolean | null>(null);
 const isBroken = ref(false); // Khóa và vỡ đôi trong 2.5s
 
-// Bộ đếm ngược 30 giây gay cấn
-const timeLeft = ref(30);
-let timerInterval: any = null;
-
-function startTimer() {
-  stopTimer();
-  timeLeft.value = 30;
-  timerInterval = setInterval(() => {
-    if (isBroken.value || selectedAnswer.value !== null) return;
-
-    if (timeLeft.value > 1) {
-      timeLeft.value--;
-      soundManager.playTick(timeLeft.value <= 10);
-    } else {
-      timeLeft.value = 0;
-      stopTimer();
-      handleTimeOut();
-    }
-  }, 1000);
-}
-
-function stopTimer() {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-}
-
-function handleTimeOut() {
-  isCorrect.value = false;
-  isBroken.value = true;
-  soundManager.playTimeout();
-
-  setTimeout(() => {
-    selectedAnswer.value = null;
-    isCorrect.value = null;
-    isBroken.value = false;
-    startTimer();
-  }, 2500);
-}
-
-onMounted(() => {
-  startTimer();
-});
-
-onUnmounted(() => {
-  stopTimer();
-});
-
 const currentQ = computed(() => questions.value[currentIndex.value] || questions.value[0]);
-
-// Class viền card phát sáng gay cấn theo thời gian đếm ngược
-const timerGlowClass = computed(() => {
-  if (timeLeft.value <= 10) return 'timer-glow-urgent border-rose-500';
-  if (timeLeft.value <= 20) return 'timer-glow-warning border-amber-500';
-  return 'timer-glow-safe border-emerald-300';
-});
 
 function chooseSign(sign: '>' | '<' | '=', event?: MouseEvent) {
   if (selectedAnswer.value !== null || isBroken.value) return;
@@ -81,7 +25,6 @@ function chooseSign(sign: '>' | '<' | '=', event?: MouseEvent) {
 
   if (sign === currentQ.value.correctAnswer) {
     isCorrect.value = true;
-    stopTimer();
     const targetEl = (event?.currentTarget as HTMLElement) || null;
     triggerStarBurstEffect(targetEl, 1);
     petStore.addStars(1);
@@ -109,10 +52,9 @@ function nextQuestion() {
   if (currentIndex.value < questions.value.length - 1) {
     currentIndex.value++;
   } else {
-    questions.value = generateCompareQuestions(10, 20);
+    questions.value = generateCompareQuestions(10, 15);
     currentIndex.value = 0;
   }
-  startTimer();
 }
 </script>
 
@@ -130,13 +72,9 @@ function nextQuestion() {
         <span>Sảnh Game</span>
       </button>
 
-      <!-- Đồng hồ đếm ngược 30 giây gay cấn -->
-      <div
-        class="px-3.5 py-1.5 rounded-2xl font-black text-sm flex items-center gap-1.5 shadow-sm transition-all"
-        :class="timeLeft <= 10 ? 'bg-rose-500 text-white animate-pulse shadow-rose-300 ring-2 ring-rose-400' : (timeLeft <= 20 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-white text-slate-700 border border-slate-200')"
-      >
-        <span class="text-base">⏱️</span>
-        <span class="font-mono text-base font-black">{{ timeLeft }}s</span>
+      <div class="text-xs font-black px-3.5 py-1.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 font-baloo shadow-xs flex items-center gap-1.5">
+        <span>⚖️</span>
+        <span>So Sánh (0 - 15)</span>
       </div>
 
       <span class="text-xs font-black px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">
@@ -152,7 +90,7 @@ function nextQuestion() {
         v-if="!isBroken"
         class="w-full bg-white rounded-[36px] p-6 sm:p-8 shadow-xl border-4 flex flex-col items-center text-center gap-4 transition-all duration-300"
         :class="[
-          isCorrect === true ? 'border-emerald-500 ring-4 ring-emerald-200' : timerGlowClass
+          isCorrect === true ? 'border-emerald-500 ring-4 ring-emerald-200 shadow-emerald-100' : 'border-emerald-300 shadow-emerald-50/50'
         ]"
       >
         <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">

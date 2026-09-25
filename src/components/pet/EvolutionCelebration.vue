@@ -11,6 +11,16 @@ watch(() => petStore.showEvolutionModal, (val) => {
     triggerBigCelebration();
   }
 });
+
+function onConfirmEvolution() {
+  const isGraduate = petStore.evolutionData?.isGraduate;
+  petStore.showEvolutionModal = false;
+  if (isGraduate && petStore.availableSlots > 0 && petStore.lockedPetIds.length > 0) {
+    setTimeout(() => {
+      petStore.showUnlockSlotModal = true;
+    }, 400);
+  }
+}
 </script>
 
 <template>
@@ -44,10 +54,15 @@ watch(() => petStore.showEvolutionModal, (val) => {
 
       <div class="w-full flex flex-col gap-2 mt-1">
         <button
-          @click="petStore.showEvolutionModal = false"
+          @click="onConfirmEvolution"
           class="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-500 text-white font-black text-sm shadow-lg active:scale-95 transition cursor-pointer"
         >
-          Tuyệt Vời Quá Bé Ơi! ⭐
+          <span v-if="petStore.evolutionData.isGraduate && petStore.availableSlots > 0 && petStore.lockedPetIds.length > 0">
+            Mở Khóa Thú Cưng Mới Ngay! 🎁
+          </span>
+          <span v-else>
+            Tuyệt Vời Quá Bé Ơi! ⭐
+          </span>
         </button>
       </div>
     </div>

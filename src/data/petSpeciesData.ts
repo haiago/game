@@ -6,7 +6,7 @@ export interface PetStage {
 }
 
 export interface PetSpecies {
-  id: 'dragon' | 'cat' | 'penguin' | 'unicorn';
+  id: 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox';
   name: string;
   icon: string;
   eggIcon: string;
@@ -100,7 +100,56 @@ export const PET_SPECIES_DATA: Record<string, PetSpecies> = {
       "Bé có giọng đọc phép thuật và trí tuệ tuyệt vời! 🦄",
       "Bụi sao may mắn luôn bên bé yêu! 🌈"
     ]
+  },
+  phoenix: {
+    id: 'phoenix',
+    name: 'Phượng Hoàng Lửa',
+    icon: '🦅',
+    eggIcon: '🥚⚡',
+    themeColor: 'from-amber-500 via-red-500 to-yellow-400',
+    badge: 'Bất Tử ⚡',
+    stages: [
+      { level: 1, reqStars: 0, title: 'Trứng Kim Cương Đỏ', desc: 'Tỏa ra vầng hào quang ấm áp chờ bé học chăm để ấp nở!' },
+      { level: 2, reqStars: 5, title: 'Phượng Hoàng Nhí', desc: 'Lông vũ óng ánh vàng kim, cất tiếng hót líu lo mừng bé!' },
+      { level: 3, reqStars: 15, title: 'Cánh Lửa Thần Kỳ', desc: 'Đôi cánh lửa vỗ nhịp tạo thành những luồng sáng rực rỡ!' },
+      { level: 4, reqStars: 30, title: 'Sứ Giả Ánh Dương', desc: 'Mang theo vệt sao băng may mắn đến bên trang sách của bé!' },
+      { level: 5, reqStars: 50, title: 'Thần Điểu Hoàng Kim 👑', desc: 'Vương trượng mặt trời rạng ngời, thần hộ mệnh thông thái!' }
+    ],
+    quotes: [
+      "Tiếng hót của tớ bay vút cùng giọng đọc của bé! 🦅",
+      "Bé học siêu xuất sắc, xứng danh thần đồng! 🌟",
+      "Đôi cánh ánh dương chở niềm vui đến cho bé nè! ✨",
+      "Cố lên bạn ơi, chúng ta cùng bay cao nhé! 🔥"
+    ]
+  },
+  fox: {
+    id: 'fox',
+    name: 'Cáo Tuyết Hồ Ly',
+    icon: '🦊',
+    eggIcon: '🥚🌸',
+    themeColor: 'from-orange-400 via-rose-300 to-indigo-400',
+    badge: 'Thông Thái 🌸',
+    stages: [
+      { level: 1, reqStars: 0, title: 'Trứng Hoa Tuyết', desc: 'Lấp lánh những cánh hoa đào mùa xuân đang ngủ say!' },
+      { level: 2, reqStars: 5, title: 'Cáo Con Đuôi Bông', desc: 'Chiếc đuôi bông xù xoe tròn và đôi tai nhọn vẫy chào bé!' },
+      { level: 3, reqStars: 15, title: 'Cáo Thông Thái', desc: 'Đeo kính ngố tròn xoe, đọc sách vanh vách cùng bé!' },
+      { level: 4, reqStars: 30, title: 'Hồ Ly Ánh Trăng', desc: 'Xòe 3 chiếc đuôi ngọc bích phát sáng lung linh huyền ảo!' },
+      { level: 5, reqStars: 50, title: 'Cửu Vĩ Thiên Hồ 👑', desc: 'Chín đuôi thần thoại tỏa sáng, linh thú bảo hộ trí tuệ tuyệt đỉnh!' }
+    ],
+    quotes: [
+      "Grao meo! Bé tính nhanh như chớp mắt vậy! 🦊",
+      "Cáo tuyết ngoe nguẩy đuôi khen ngợi bé nè! 💖",
+      "Bé đọc chuẩn từng từ một, quá đỗi thông minh! 🌸",
+      "Hôm nay cùng tớ học thật nhiều điều thú vị nhé! 🐾"
+    ]
   }
 };
 
-export const PET_ORDER: ('dragon' | 'cat' | 'penguin' | 'unicorn')[] = ['dragon', 'cat', 'penguin', 'unicorn'];
+export const PET_ORDER: ('dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox')[] = [
+  'dragon',
+  'cat',
+  'penguin',
+  'unicorn',
+  'phoenix',
+  'fox'
+];

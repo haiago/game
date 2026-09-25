@@ -19,8 +19,8 @@ const petStore = usePetStore();
         <p class="text-xs sm:text-sm font-extrabold text-pink-600 mt-1">Bé hãy chọn một quả trứng thú cưng yêu thích để bắt đầu nhé!</p>
       </div>
 
-      <!-- Lưới 4 Thú Cưng để chọn tự do -->
-      <div class="grid grid-cols-2 gap-3 w-full my-2">
+      <!-- Lưới 6 Thú Cưng để chọn tự do -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 w-full my-2">
         <button
           v-for="id in PET_ORDER"
           :key="id"
