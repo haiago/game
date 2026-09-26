@@ -58,37 +58,37 @@ export function speakVietnamese(text: string, onEnd?: () => void) {
     if (onEnd) onEnd();
   };
 
-  // Thử dùng Web Speech API với voice Tiếng Việt chuẩn
+  // Thử dùng Web Speech API NẾU và CHỈ NẾU thiết bị có cài đặt Voice Tiếng Việt
   if ("speechSynthesis" in window) {
     try {
-      window.speechSynthesis.cancel();
       if (!voicesLoaded) loadVoices();
 
-      const utterance = new SpeechSynthesisUtterance(cleanText);
-      utterance.lang = "vi-VN";
-      utterance.volume = 1.0; // Âm lượng tối đa
-      utterance.rate = 0.88; // Tốc độ chuẩn, chậm rãi, dễ nghe cho bé lớp 1
-      utterance.pitch = 1.05; // Độ cao hơi ấm, thân thiện với trẻ em
-
+      // NẾU thiết bị CÓ voice Tiếng Việt -> Dùng SpeechSynthesis nội bộ
       if (viVoice) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        utterance.lang = "vi-VN";
+        utterance.volume = 1.0;
+        utterance.rate = 0.88;
+        utterance.pitch = 1.05;
         utterance.voice = viVoice;
+
+        utterance.onend = restoreBgm;
+        utterance.onerror = () => {
+          fallbackOnlineTTS(cleanText, restoreBgm);
+        };
+
+        window.speechSynthesis.speak(utterance);
+        return;
       }
-
-      utterance.onend = restoreBgm;
-      utterance.onerror = (e) => {
-        // Nếu Web Speech lỗi hoặc không có giọng vi-VN, dùng audio fallback
-        console.warn("SpeechSynthesis fallback:", e);
-        fallbackOnlineTTS(cleanText, restoreBgm);
-      };
-
-      window.speechSynthesis.speak(utterance);
-      return;
+      // NẾU thiết bị KHÔNG CÓ voice Tiếng Việt (như Samsung Tab dùng Samsung TTS mặc định thiếu gói vi-VN)
+      // -> Bỏ qua speechSynthesis và chuyển thẳng sang online TTS chất lượng cao!
     } catch (e) {
       console.warn("Lỗi SpeechSynthesis:", e);
     }
   }
 
-  // Dự phòng: Google Translate TTS audio
+  // Dự phòng: Google Translate TTS audio (chắc chắn phát được tiếng Việt chuẩn 100% trên Samsung Tab / Android)
   fallbackOnlineTTS(cleanText, restoreBgm);
 }
 
