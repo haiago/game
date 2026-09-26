@@ -1,48 +1,40 @@
-// Công cụ phát âm Tiếng Việt chất lượng cao cho bé
-// 1. Tự động tìm giọng đọc Tiếng Việt tự nhiên nhất (Google Tiếng Việt, Apple Linh/Mai, Microsoft...)
-// 2. Tự động tạm giảm nhạc nền BGM (audio ducking) để giọng đọc phát to, rõ ràng, không bị chìm
-// 3. Dự phòng audio online nếu thiết bị không có voice vi-VN
-
-import { soundManager } from "@/audio/soundEffects";
+// Công cụ phát âm Tiếng Việt cho bé
+// Hỗ trợ cả Web Speech API nội bộ và fallback an toàn
 
 let viVoice: SpeechSynthesisVoice | null = null;
-let voicesLoaded = false;
 
-function loadVoices() {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+function findViVoice(): SpeechSynthesisVoice | null {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return null;
   const voices = window.speechSynthesis.getVoices();
-  if (!voices || voices.length === 0) return;
+  if (!voices || voices.length === 0) return null;
 
-  // Ưu tiên các giọng tiếng Việt chất lượng cao: Google, Apple, Microsoft, rồi đến bất kỳ voice vi
-  const priorityKeywords = ["Google", "Linh", "Mai", "An", "Nam", "Natural"];
-
+  // 1. Tìm voice khớp chính xác vi-VN
   const viList = voices.filter(
-    (v) => v.lang && (v.lang.includes("vi") || v.lang.includes("VI")),
+    (v) => v.lang && (v.lang.toLowerCase().includes("vi") || v.lang.toLowerCase().includes("vn")),
   );
+
   if (viList.length > 0) {
-    // Tìm voice theo độ ưu tiên
-    let best = viList[0];
+    const priorityKeywords = ["Google", "Linh", "Mai", "An", "Nam", "Natural", "Samsung"];
     for (const kw of priorityKeywords) {
-      const found = viList.find((v) => v.name.includes(kw));
-      if (found) {
-        best = found;
-        break;
-      }
+      const found = viList.find((v) => v.name.toLowerCase().includes(kw.toLowerCase()));
+      if (found) return found;
     }
-    viVoice = best;
-    voicesLoaded = true;
+    return viList[0];
   }
+  return null;
 }
 
 if (typeof window !== "undefined" && "speechSynthesis" in window) {
-  loadVoices();
+  viVoice = findViVoice();
   if (window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = loadVoices;
+    window.speechSynthesis.onvoiceschanged = () => {
+      viVoice = findViVoice();
+    };
   }
 }
 
 /**
- * Phát âm một từ hoặc câu Tiếng Việt to, rõ ràng, chuẩn ngữ điệu
+ * Phát âm một từ hoặc câu Tiếng Việt
  */
 export function speakVietnamese(text: string, onEnd?: () => void) {
   if (typeof window === "undefined") return;
@@ -50,64 +42,59 @@ export function speakVietnamese(text: string, onEnd?: () => void) {
   const cleanText = text.trim();
   if (!cleanText) return;
 
-  // 1. Audio Ducking: Giảm âm lượng nhạc nền BGM xuống mức rất nhỏ (0.03) khi đọc chữ
-  soundManager.setBgmVolume(0.03);
+  // Luôn thử tìm lại voice nếu chưa có
+  if (!viVoice && "speechSynthesis" in window) {
+    viVoice = findViVoice();
+  }
 
-  const restoreBgm = () => {
-    soundManager.setBgmVolume(0.14);
-    if (onEnd) onEnd();
-  };
-
-  // Thử dùng Web Speech API NẾU và CHỈ NẾU thiết bị có cài đặt Voice Tiếng Việt
+  // Phương án 1: Trình duyệt có Web Speech API
   if ("speechSynthesis" in window) {
     try {
-      if (!voicesLoaded) loadVoices();
+      window.speechSynthesis.cancel(); // Dừng câu trước
 
-      // NẾU thiết bị CÓ voice Tiếng Việt -> Dùng SpeechSynthesis nội bộ
-      if (viVoice) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(cleanText);
-        utterance.lang = "vi-VN";
-        utterance.volume = 1.0;
-        utterance.rate = 0.88;
-        utterance.pitch = 1.05;
-        utterance.voice = viVoice;
-
-        utterance.onend = restoreBgm;
-        utterance.onerror = () => {
-          fallbackOnlineTTS(cleanText, restoreBgm);
-        };
-
-        window.speechSynthesis.speak(utterance);
-        return;
+      // Khắc phục bug Chrome Android/Samsung: speechSynthesis bị treo (paused/suspended)
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
       }
-      // NẾU thiết bị KHÔNG CÓ voice Tiếng Việt (như Samsung Tab dùng Samsung TTS mặc định thiếu gói vi-VN)
-      // -> Bỏ qua speechSynthesis và chuyển thẳng sang online TTS chất lượng cao!
+
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = "vi-VN";
+      utterance.volume = 1.0;
+      utterance.rate = 0.88; // Tốc độ vừa phải cho bé
+      utterance.pitch = 1.05;
+
+      if (viVoice) {
+        utterance.voice = viVoice;
+      }
+
+      let isFinished = false;
+      const finish = () => {
+        if (!isFinished) {
+          isFinished = true;
+          if (onEnd) onEnd();
+        }
+      };
+
+      utterance.onend = finish;
+      utterance.onerror = (err) => {
+        console.warn("Speech error:", err);
+        finish();
+      };
+
+      // Timeout đề phòng trường hợp Chrome không bao giờ bắn sự kiện onend
+      setTimeout(() => {
+        if (!isFinished && window.speechSynthesis.speaking) {
+          finish();
+        }
+      }, 5000);
+
+      window.speechSynthesis.speak(utterance);
+      return;
     } catch (e) {
-      console.warn("Lỗi SpeechSynthesis:", e);
+      console.warn("SpeechSynthesis exception:", e);
     }
   }
 
-  // Dự phòng: Google Translate TTS audio (chắc chắn phát được tiếng Việt chuẩn 100% trên Samsung Tab / Android)
-  fallbackOnlineTTS(cleanText, restoreBgm);
+  if (onEnd) onEnd();
 }
 
-// Fallback phát âm chuẩn âm điệu Tiếng Việt online
-function fallbackOnlineTTS(text: string, onEnd?: () => void) {
-  try {
-    const encoded = encodeURIComponent(text);
-    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=vi&client=tw-ob`;
-    const audio = new Audio(audioUrl);
-    audio.volume = 1.0;
-    audio
-      .play()
-      .then(() => {
-        audio.onended = onEnd || null;
-      })
-      .catch(() => {
-        if (onEnd) onEnd();
-      });
-  } catch (e) {
-    if (onEnd) onEnd();
-  }
-}
