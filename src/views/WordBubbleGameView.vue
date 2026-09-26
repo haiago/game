@@ -31,6 +31,20 @@ const currentQuestionIndex = ref(0);
 const questions = ref<BubbleWordItem[]>([]);
 const currentQuestion = computed(() => questions.value[currentQuestionIndex.value] || BUBBLE_WORD_BANK[0]);
 
+// Chuẩn hóa từ: Chỉ viết hoa chữ cái đầu tiên của từ, các chữ sau viết thường (ví dụ: "Cá", "Mèo", "Mặt trời")
+const formattedWord = computed(() => {
+  const w = currentQuestion.value.word.toLowerCase();
+  if (!w) return '';
+  return w.charAt(0).toUpperCase() + w.slice(1);
+});
+
+// Các ký tự chuẩn theo quy tắc: chỉ ký tự đầu tiên viết hoa, các ký tự sau viết thường
+const targetFormattedLetters = computed(() => {
+  return currentQuestion.value.letters.map((char, idx) => {
+    return idx === 0 ? char.toUpperCase() : char.toLowerCase();
+  });
+});
+
 // Tiến trình ghép chữ hiện tại của câu
 // mảng boolean tương ứng với từng chữ cái trong currentQuestion.letters đã được tìm trúng chưa
 const matchedLetters = ref<boolean[]>([]);
@@ -101,7 +115,7 @@ function seedInitialBubbles() {
   const distractorChars = [...q.distractors];
 
   // Tạo tập hợp các chữ cái xuất hiện (bao gồm cả chữ đúng và chữ nhiễu)
-  const allNeeded = [...targetChars, ...distractorChars];
+  const allNeeded = [...targetFormattedLetters.value, ...distractorChars];
   allNeeded.sort(() => Math.random() - 0.5);
 
   allNeeded.forEach((char, idx) => {
@@ -117,22 +131,26 @@ function spawnBubble(charPreset?: string, startY = -60, isRepop = true) {
   let char = charPreset;
   if (!char) {
     const nextIdx = nextLetterNeededIndex.value;
-    const needChar = nextIdx !== -1 ? q.letters[nextIdx] : q.letters[Math.floor(Math.random() * q.letters.length)];
+    const needChar = nextIdx !== -1
+      ? targetFormattedLetters.value[nextIdx]
+      : targetFormattedLetters.value[Math.floor(Math.random() * targetFormattedLetters.value.length)];
     // 55% khả năng sinh ra chữ cái bé đang cần hoặc chữ trong từ, 45% chữ nhiễu
     if (Math.random() < 0.55) {
       char = needChar;
     } else {
-      char = q.distractors[Math.floor(Math.random() * q.distractors.length)] || 'a';
+      const randomDistractor = q.distractors[Math.floor(Math.random() * q.distractors.length)] || 'a';
+      // Nếu ô tiếp theo là ô đầu tiên -> chữ nhiễu cũng viết hoa; nếu là ô sau -> chữ nhiễu viết thường
+      char = nextIdx === 0 ? randomDistractor.toUpperCase() : randomDistractor.toLowerCase();
     }
   }
 
-  const isTarget = q.letters.includes(char);
+  const isTarget = targetFormattedLetters.value.includes(char);
   const colorClass = bubbleColors[Math.floor(Math.random() * bubbleColors.length)];
 
   bubbleCounter++;
   bubbles.value.push({
     id: bubbleCounter,
-    char: char.toUpperCase(),
+    char: char, // Giữ nguyên chữ hoa cho chữ đầu, chữ thường cho các chữ tiếp theo
     isTarget,
     x: 8 + Math.random() * 78, // % chiều rộng màn chơi
     y: startY, // px tính từ đáy
@@ -172,13 +190,12 @@ function updateLoop() {
 function handleBubbleClick(bubble: FlyingBubble, event: MouseEvent) {
   if (bubble.popped) return;
 
-  const q = currentQuestion.value;
   const nextIdx = nextLetterNeededIndex.value;
   if (nextIdx === -1) return; // Đã ghép xong
 
-  const expectedLetter = q.letters[nextIdx].toUpperCase();
+  const expectedLetter = targetFormattedLetters.value[nextIdx];
 
-  // BÉ BẤM ĐÚNG CHỮ CÁI TIẾP THEO
+  // BÉ BẤM ĐÚNG CHỮ CÁI TIẾP THEO (Khớp chữ hoa nếu là chữ đầu, khớp chữ thường nếu là các chữ sau)
   if (bubble.char === expectedLetter) {
     bubble.popped = true;
     soundManager.playBubblePop();
@@ -285,7 +302,7 @@ onUnmounted(() => {
 
         <div class="flex items-center gap-1.5">
           <span class="text-lg sm:text-xl font-black text-purple-950 font-baloo tracking-wide">
-            {{ currentQuestion.word }}
+            {{ formattedWord }}
           </span>
           <button
             @click="speakWord(currentQuestion.word)"
@@ -307,7 +324,7 @@ onUnmounted(() => {
       <!-- Cụm phải: CÁC Ô CHỮ CÁI ĐÍCH CẦN GHÉP (SLOTS) -->
       <div class="flex items-center justify-end gap-1 sm:gap-1.5 flex-wrap ml-auto">
         <div
-          v-for="(letter, idx) in currentQuestion.letters"
+          v-for="(letter, idx) in targetFormattedLetters"
           :key="idx"
           class="rounded-lg border-2 flex items-center justify-center font-black transition-all transform relative"
           :class="[
@@ -323,15 +340,15 @@ onUnmounted(() => {
         >
           <!-- Đã ghép đúng -->
           <span v-if="matchedLetters[idx]" class="animate-in zoom-in duration-200">
-            {{ letter.toUpperCase() }}
+            {{ letter }}
           </span>
           <!-- Ô tiếp theo cần bấm (chữ mờ hướng dẫn) -->
           <span v-else-if="idx === nextLetterNeededIndex" class="opacity-40 font-black text-amber-600">
-            {{ letter.toUpperCase() }}
+            {{ letter }}
           </span>
           <!-- Ô chưa tới lượt (hiện chữ mờ nhạt làm mẫu) -->
           <span v-else class="opacity-25 font-bold">
-            {{ letter.toUpperCase() }}
+            {{ letter }}
           </span>
         </div>
       </div>
