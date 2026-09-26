@@ -409,3 +409,115 @@ export function generateOrderQuestions(count = 10, maxNumber = 15): OrderQuestio
 
   return list;
 }
+
+export type PatternThemeType = 'caterpillar' | 'frog' | 'detective';
+
+export interface PatternQuestionItem {
+  id: string;
+  theme: PatternThemeType; // 'caterpillar' (Chú sâu) | 'frog' (Ếch nhảy lá sen) | 'detective' (Kính lúp thám tử)
+  ruleName: string; // Tên quy luật (Ví dụ: "Đếm thêm 2", "Đếm bớt 1", "Lặp xen kẽ")
+  ruleExplanation: string; // Lời giải thích khi bé hoàn thành
+  sequence: (number | null)[]; // Dãy 5 số, trong đó có 1 vị trí là null (chỗ [ ? ])
+  missingIndex: number; // Vị trí giấu số (0 -> 4)
+  correctAnswer: number; // Số đúng
+  options: number[]; // 4 lựa chọn cho bé bấm
+}
+
+export function generatePatternQuestions(count = 10, maxVal = 20): PatternQuestionItem[] {
+  const list: PatternQuestionItem[] = [];
+  const themes: PatternThemeType[] = ['caterpillar', 'frog', 'detective'];
+
+  for (let i = 0; i < count; i++) {
+    // Luân phiên 3 chủ đề: Chú sâu thông thái 🐛, Ếch nhảy lá sen 🐸, Thám tử tìm số bí ẩn 🔍
+    const theme = themes[i % themes.length];
+
+    // Chọn ngẫu nhiên loại quy luật:
+    // 0: Cộng cách đều (+1, +2, +3, +5)
+    // 1: Trừ cách đều (-1, -2, -3, -5)
+    // 2: Lặp chu kỳ xen kẽ (A - B - A - B - A)
+    // 3: Nhân đôi lũy tiến nhẹ (1, 2, 4, 8) hoặc cộng tăng dần (+1, +2, +3)
+    const ruleType = Math.floor(Math.random() * 3);
+    let fullSeq: number[] = [];
+    let ruleName = '';
+    let ruleExplanation = '';
+
+    if (ruleType === 0) {
+      // CỘNG ĐỀU (+1, +2, +3, +5)
+      const steps = [1, 1, 2, 2, 3, 5];
+      const step = steps[Math.floor(Math.random() * steps.length)];
+      const maxStart = Math.max(0, maxVal - step * 4);
+      const start = Math.floor(Math.random() * (maxStart + 1));
+      fullSeq = [start, start + step, start + step * 2, start + step * 3, start + step * 4];
+      ruleName = `Quy luật: Cộng thêm ${step} (+${step})`;
+      ruleExplanation = `Các số tăng đều thêm ${step} đơn vị đấy bé ơi!`;
+    } else if (ruleType === 1) {
+      // TRỪ ĐỀU (-1, -2, -3, -5)
+      const steps = [1, 1, 2, 2, 3, 5];
+      const step = steps[Math.floor(Math.random() * steps.length)];
+      const minStart = step * 4;
+      const start = Math.floor(Math.random() * (maxVal - minStart + 1)) + minStart;
+      fullSeq = [start, start - step, start - step * 2, start - step * 3, start - step * 4];
+      ruleName = `Quy luật: Bớt đi ${step} (-${step})`;
+      ruleExplanation = `Các số giảm dần bớt đi ${step} đơn vị nhé!`;
+    } else {
+      // LẶP XEN KẼ (A - B - A - B - A)
+      const a = Math.floor(Math.random() * 10) + 1;
+      let b = Math.floor(Math.random() * 10) + 1;
+      while (b === a) {
+        b = Math.floor(Math.random() * 10) + 1;
+      }
+      fullSeq = [a, b, a, b, a];
+      ruleName = `Quy luật: Lặp xen kẽ (${a} và ${b})`;
+      ruleExplanation = `Hai số ${a} và ${b} luân phiên đổi chỗ cho nhau!`;
+    }
+
+    // Chọn vị trí bị ẩn (ưu tiên vị trí 2, 3, 4, hoặc 1)
+    const possibleMissing = [1, 2, 3, 4, 3, 4]; // thường ẩn ở cuối hoặc giữa
+    const missingIndex = possibleMissing[Math.floor(Math.random() * possibleMissing.length)];
+    const correctAnswer = fullSeq[missingIndex];
+
+    const sequence: (number | null)[] = fullSeq.map((val, idx) => idx === missingIndex ? null : val);
+
+    // Tạo 3 đáp án sai hợp lý (gần với đáp án đúng)
+    const wrongPool = [
+      correctAnswer + 1,
+      correctAnswer - 1,
+      correctAnswer + 2,
+      correctAnswer - 2,
+      correctAnswer + 3,
+      correctAnswer - 3,
+      correctAnswer + 5,
+      correctAnswer - 5
+    ].filter(n => n >= 0 && n !== correctAnswer);
+
+    const shuffledWrongs = wrongPool.sort(() => Math.random() - 0.5);
+    const selectedWrongs: number[] = [];
+    for (const w of shuffledWrongs) {
+      if (!selectedWrongs.includes(w) && selectedWrongs.length < 3) {
+        selectedWrongs.push(w);
+      }
+    }
+    // Bổ sung nếu chưa đủ 3
+    while (selectedWrongs.length < 3) {
+      const dummy = Math.floor(Math.random() * 21);
+      if (dummy !== correctAnswer && !selectedWrongs.includes(dummy)) {
+        selectedWrongs.push(dummy);
+      }
+    }
+
+    const options = [correctAnswer, ...selectedWrongs].sort(() => Math.random() - 0.5);
+
+    list.push({
+      id: `pattern_${Date.now()}_${i}`,
+      theme,
+      ruleName,
+      ruleExplanation,
+      sequence,
+      missingIndex,
+      correctAnswer,
+      options
+    });
+  }
+
+  return list;
+}

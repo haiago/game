@@ -14,9 +14,10 @@ import MathCompareGameView from '@/views/MathCompareGameView.vue';
 import MathSplitCombineGameView from '@/views/MathSplitCombineGameView.vue';
 import MathOrderGameView from '@/views/MathOrderGameView.vue';
 import WordBubbleGameView from '@/views/WordBubbleGameView.vue';
+import MathPatternGameView from '@/views/MathPatternGameView.vue';
 
 const petStore = usePetStore();
-const currentScreen = ref<'hub' | 'reading' | 'word_bubble' | 'math_calc' | 'math_compare' | 'math_split' | 'math_order'>('hub');
+const currentScreen = ref<'hub' | 'reading' | 'word_bubble' | 'math_calc' | 'math_compare' | 'math_split' | 'math_order' | 'math_pattern'>('hub');
 
 onMounted(() => {
   petStore.initFromStorage();
@@ -63,6 +64,11 @@ onMounted(() => {
 
       <MathOrderGameView
         v-else-if="currentScreen === 'math_order'"
+        @back-home="currentScreen = 'hub'"
+      />
+
+      <MathPatternGameView
+        v-else-if="currentScreen === 'math_pattern'"
         @back-home="currentScreen = 'hub'"
       />
     </main>

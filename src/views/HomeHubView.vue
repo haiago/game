@@ -7,7 +7,7 @@ import PetCanvas from '@/components/pet/PetCanvas.vue';
 const petStore = usePetStore();
 
 defineEmits<{
-  (e: 'select-game', game: 'reading' | 'word_bubble' | 'math_calc' | 'math_compare' | 'math_split' | 'math_order'): void;
+  (e: 'select-game', game: 'reading' | 'word_bubble' | 'math_calc' | 'math_compare' | 'math_split' | 'math_order' | 'math_pattern'): void;
 }>();
 
 function handlePetClick(e: MouseEvent) {
@@ -197,6 +197,32 @@ function handlePetClick(e: MouseEvent) {
         </div>
         <span class="mt-4 w-full py-2 rounded-2xl bg-emerald-500 text-white font-black text-xs shadow-md group-hover:bg-emerald-600 transition">
           So Sánh Ngay 🚀
+        </span>
+      </button>
+
+      <!-- GAME 6: QUY LUẬT DÃY SỐ (3 CHỦ ĐỀ THAY ĐỔI NHAU) -->
+      <button
+        @click="$emit('select-game', 'math_pattern')"
+        class="group p-5 rounded-[32px] bg-gradient-to-b from-teal-50 via-emerald-50 to-green-100/70 border-3 border-teal-300 hover:border-teal-500 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1.5 active:scale-95 flex flex-col items-center text-center cursor-pointer relative overflow-hidden justify-between"
+      >
+        <div class="flex flex-col items-center">
+          <div class="w-18 h-18 rounded-3xl bg-white shadow-md border-2 border-teal-200 flex items-center justify-center text-4xl my-2 group-hover:scale-115 transition-transform duration-300">
+            🧩
+          </div>
+          <div class="flex items-center gap-1 mt-1">
+            <span class="text-xs">🐛</span>
+            <span class="text-xs">🐸</span>
+            <span class="text-xs">🔍</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-black font-baloo text-teal-950 mt-0.5">
+            Quy Luật Dãy Số
+          </h3>
+          <p class="text-xs font-bold text-teal-800/90 mt-1 leading-relaxed">
+            Sâu thông thái, ếch nhảy lá sen, thám tử tìm số bí ẩn!
+          </p>
+        </div>
+        <span class="mt-4 w-full py-2 rounded-2xl bg-teal-600 text-white font-black text-xs shadow-md group-hover:bg-teal-700 transition">
+          Tìm Quy Luật 🚀
         </span>
       </button>
 
