@@ -7,6 +7,11 @@ import PetCanvas from './PetCanvas.vue';
 
 const petStore = usePetStore();
 const avatarRef = ref<HTMLElement | null>(null);
+const isMusicOn = ref(soundManager.bgmEnabled);
+
+function toggleMusic() {
+  isMusicOn.value = soundManager.toggleBgm();
+}
 
 function handlePetAvatarClick(e: MouseEvent) {
   soundManager.playPetCute();
@@ -68,6 +73,18 @@ function handlePetAvatarClick(e: MouseEvent) {
           <span class="text-lg font-black text-amber-950 font-baloo tracking-tight">{{ petStore.currentStars }}</span>
           <span class="text-xs text-amber-700 font-bold ml-1 font-baloo">/{{ petStore.nextStage?.reqStars || 50 }}</span>
         </div>
+
+        <!-- Nút Bật / Tắt Nhạc Nền BGM -->
+        <button
+          @click="toggleMusic"
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl border-2 flex items-center justify-center text-base sm:text-lg shadow-sm active:scale-95 transition cursor-pointer shrink-0"
+          :class="isMusicOn
+            ? 'bg-gradient-to-b from-pink-100 to-rose-100 border-pink-300 text-rose-600 hover:border-pink-400'
+            : 'bg-slate-100 border-slate-300 text-slate-400 hover:bg-slate-200'"
+          :title="isMusicOn ? 'Tắt nhạc nền' : 'Bật nhạc nền'"
+        >
+          {{ isMusicOn ? '🎵' : '🔇' }}
+        </button>
 
         <!-- Nút Vườn Thú kèm huy hiệu Slot nếu có -->
         <button

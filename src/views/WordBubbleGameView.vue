@@ -4,6 +4,7 @@ import { usePetStore } from '@/stores/petStore';
 import { BUBBLE_WORD_BANK, type BubbleWordItem } from '@/data/bubbleWords';
 import { triggerStarBurstEffect, triggerPenaltyEffect } from '@/utils/particleEffects';
 import { soundManager } from '@/audio/soundEffects';
+import { speakVietnamese } from '@/utils/speechHelper';
 
 defineEmits<{
   (e: 'back-home'): void;
@@ -85,6 +86,11 @@ function loadCurrentQuestion() {
   
   // Tạo đàn bong bóng đầu tiên
   seedInitialBubbles();
+
+  // Tự động phát âm ngay khi ra chữ mới để bé nhận biết
+  setTimeout(() => {
+    speakWord(q.word);
+  }, 250);
 }
 
 // Tạo chùm bóng ban đầu và duy trì liên tục
@@ -240,17 +246,9 @@ function handleSkip(e: MouseEvent) {
   loadCurrentQuestion();
 }
 
-// Phát âm mẫu giọng đọc Tiếng Việt cho bé
+// Phát âm mẫu giọng đọc Tiếng Việt chuẩn & to rõ cho bé
 function speakWord(text: string) {
-  try {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'vi-VN';
-      utterance.rate = 0.85; // Tốc độ vừa phải cho bé
-      window.speechSynthesis.speak(utterance);
-    }
-  } catch (e) {}
+  speakVietnamese(text);
 }
 
 onMounted(() => {
@@ -304,34 +302,37 @@ onUnmounted(() => {
     <!-- KHUNG CHÍNH: TỪ MỤC TIÊU & HÌNH ẢNH MINH HỌA (Gọn gàng tiết kiệm diện tích) -->
     <div class="w-full bg-white rounded-3xl border-3 border-purple-300 shadow-md p-3 sm:p-4 flex items-center justify-between gap-3 relative overflow-hidden">
       
-      <!-- Cột trái: Hình minh họa + Loa phát âm + Nghĩa từ -->
+      <!-- Cột trái: Hình minh họa + TỪ CẦN GHÉP TO RÕ + Loa phát âm + Nghĩa từ -->
       <div class="flex items-center gap-2.5 sm:gap-3">
         <div class="text-4xl sm:text-5xl filter drop-shadow-sm shrink-0">
           {{ currentQuestion.emoji }}
         </div>
         <div class="flex flex-col">
-          <div class="flex items-center gap-1.5">
-            <span class="text-xs sm:text-sm font-black text-slate-800 font-baloo">{{ currentQuestion.meaning }}</span>
+          <div class="flex items-center gap-2">
+            <!-- Hiển thị từ cần ghép to nổi bật -->
+            <span class="text-xl sm:text-2xl font-black text-purple-950 font-baloo tracking-wide">
+              {{ currentQuestion.word }}
+            </span>
             <button
               @click="speakWord(currentQuestion.word)"
               class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-100 hover:bg-amber-200 active:scale-90 border border-amber-300 flex items-center justify-center text-sm text-amber-800 shadow-2xs cursor-pointer transition shrink-0"
-              title="Nghe đọc mẫu"
+              title="Bấm để nghe đọc lại"
             >
               🔊
             </button>
           </div>
-          <span class="text-[10px] text-slate-400 font-bold">
-            Câu {{ currentQuestionIndex + 1 }}/{{ questions.length }}
-          </span>
+          <p class="text-[11px] sm:text-xs font-bold text-slate-500 leading-tight">
+            {{ currentQuestion.meaning }}
+          </p>
         </div>
       </div>
 
       <!-- Cột phải: CÁC Ô CHỮ CÁI ĐÍCH CẦN GHÉP (SLOTS) -->
-      <div class="flex items-center justify-end gap-1 sm:gap-1.5 flex-wrap max-w-[60%]">
+      <div class="flex items-center justify-end gap-1 sm:gap-1.5 flex-wrap max-w-[55%]">
         <div
           v-for="(letter, idx) in currentQuestion.letters"
           :key="idx"
-          class="rounded-xl border-2 sm:border-3 flex items-center justify-center font-black transition-all transform"
+          class="rounded-xl border-2 sm:border-3 flex items-center justify-center font-black transition-all transform relative"
           :class="[
             currentQuestion.letters.length > 5
               ? 'w-7 h-9 sm:w-9 sm:h-11 text-base sm:text-lg'
@@ -340,17 +341,20 @@ onUnmounted(() => {
               ? 'bg-gradient-to-b from-emerald-100 to-teal-200 border-emerald-500 text-emerald-950 scale-105 shadow-sm'
               : idx === nextLetterNeededIndex
                 ? 'bg-amber-50 border-amber-400 border-dashed text-amber-700 animate-pulse ring-2 ring-amber-300'
-                : 'bg-slate-100 border-slate-300 text-transparent'
+                : 'bg-slate-50 border-slate-200 text-slate-300'
           ]"
         >
+          <!-- Đã ghép đúng -->
           <span v-if="matchedLetters[idx]" class="animate-in zoom-in duration-200">
             {{ letter.toUpperCase() }}
           </span>
-          <span v-else-if="idx === nextLetterNeededIndex" class="text-xs font-black text-amber-500 font-baloo">
-            ?
+          <!-- Ô tiếp theo cần bấm (chữ mờ hướng dẫn) -->
+          <span v-else-if="idx === nextLetterNeededIndex" class="opacity-40 font-black text-amber-600">
+            {{ letter.toUpperCase() }}
           </span>
-          <span v-else class="text-xs text-slate-300">
-            _
+          <!-- Ô chưa tới lượt (hiện chữ mờ nhạt làm mẫu) -->
+          <span v-else class="opacity-25 font-bold">
+            {{ letter.toUpperCase() }}
           </span>
         </div>
       </div>

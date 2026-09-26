@@ -4,6 +4,7 @@ import { usePetStore } from '@/stores/petStore';
 import { QUESTION_BANK, type QuestionItem } from '@/data/readingQuestions';
 import { triggerStarBurstEffect, triggerPenaltyEffect } from '@/utils/particleEffects';
 import { soundManager } from '@/audio/soundEffects';
+import { speakVietnamese } from '@/utils/speechHelper';
 
 defineEmits<{
   (e: 'back-home'): void;
@@ -186,13 +187,22 @@ function prevCard() {
 
         <!-- Nội dung câu đọc trơn cỡ lớn cho bé lớp 1 -->
         <div class="my-6">
-          <h2
-            class="text-3xl sm:text-5xl font-black leading-relaxed tracking-wide"
-            :class="currentCard.textColor"
-            :style="{ fontFamily: currentFont.family }"
-          >
-            {{ currentCard.text }}
-          </h2>
+          <div class="flex items-center justify-center gap-3">
+            <h2
+              class="text-3xl sm:text-5xl font-black leading-relaxed tracking-wide"
+              :class="currentCard.textColor"
+              :style="{ fontFamily: currentFont.family }"
+            >
+              {{ currentCard.text }}
+            </h2>
+            <button
+              @click="speakVietnamese(currentCard.text)"
+              class="w-10 h-10 rounded-2xl bg-white/90 hover:bg-white active:scale-90 border-2 border-purple-300 shadow-sm flex items-center justify-center text-xl text-purple-700 cursor-pointer transition shrink-0"
+              title="Bấm để nghe đọc mẫu"
+            >
+              🔊
+            </button>
+          </div>
           <p class="text-xs sm:text-sm font-bold text-slate-600/90 mt-3 bg-white/70 px-4 py-1.5 rounded-full inline-block">
             💡 {{ currentCard.guide }}
           </p>

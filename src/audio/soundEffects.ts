@@ -1,6 +1,72 @@
 class SoundSynthesizer {
   private ctx: AudioContext | null = null;
   public enabled = true;
+  private bgmAudio: HTMLAudioElement | null = null;
+  public bgmEnabled = true;
+  private bgmStarted = false;
+
+  constructor() {
+    this.initBgm();
+  }
+
+  private initBgm() {
+    if (typeof window === 'undefined') return;
+    try {
+      this.bgmAudio = new Audio('/background.mp3');
+      this.bgmAudio.loop = true;
+      this.bgmAudio.volume = 0.14; // Âm lượng nhỏ êm dịu, du dương nhẹ nhàng
+      this.bgmAudio.preload = 'auto';
+
+      // Kích hoạt tự động khi người dùng tương tác lần đầu tiên (click/touch)
+      const startBgmOnce = () => {
+        if (!this.bgmStarted && this.bgmEnabled && this.bgmAudio) {
+          this.bgmAudio.play().then(() => {
+            this.bgmStarted = true;
+          }).catch(() => {
+            // Trình duyệt chặn autoplay khi chưa có user gesture
+          });
+        }
+        window.removeEventListener('click', startBgmOnce);
+        window.removeEventListener('touchstart', startBgmOnce);
+      };
+
+      window.addEventListener('click', startBgmOnce, { once: true });
+      window.addEventListener('touchstart', startBgmOnce, { once: true });
+    } catch (e) {
+      console.warn('Lỗi khởi tạo BGM:', e);
+    }
+  }
+
+  // Bật / tắt nhạc nền
+  toggleBgm(): boolean {
+    if (!this.bgmAudio) {
+      this.initBgm();
+    }
+    this.bgmEnabled = !this.bgmEnabled;
+    if (this.bgmAudio) {
+      if (this.bgmEnabled) {
+        this.bgmAudio.play().catch(() => {});
+        this.bgmStarted = true;
+      } else {
+        this.bgmAudio.pause();
+      }
+    }
+    return this.bgmEnabled;
+  }
+
+  // Điều chỉnh âm lượng nhạc nền
+  setBgmVolume(volume: number) {
+    if (this.bgmAudio) {
+      this.bgmAudio.volume = Math.max(0, Math.min(1, volume));
+    }
+  }
+
+  // Tiếp tục phát BGM nếu đang bị pause
+  resumeBgm() {
+    if (this.bgmEnabled && this.bgmAudio && this.bgmAudio.paused) {
+      this.bgmAudio.play().catch(() => {});
+    }
+  }
 
   private getContext(): AudioContext | null {
     if (!this.enabled) return null;
