@@ -296,17 +296,17 @@ onUnmounted(() => {
           <span>🏠</span> <span class="hidden sm:inline">Sảnh</span>
         </button>
 
-        <div class="text-2xl sm:text-3xl filter drop-shadow-2xs shrink-0">
+        <div class="text-3xl sm:text-4xl filter drop-shadow-2xs shrink-0">
           {{ currentQuestion.emoji }}
         </div>
 
-        <div class="flex items-center gap-1.5">
-          <span class="text-lg sm:text-xl font-black text-purple-950 font-baloo tracking-wide">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl sm:text-3xl font-black text-purple-950 font-baloo tracking-wide">
             {{ formattedWord }}
           </span>
           <button
             @click="speakWord(currentQuestion.word)"
-            class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-amber-100 hover:bg-amber-200 active:scale-90 border border-amber-300 flex items-center justify-center text-xs text-amber-800 cursor-pointer transition shrink-0"
+            class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-100 hover:bg-amber-200 active:scale-90 border border-amber-300 flex items-center justify-center text-sm sm:text-base text-amber-800 cursor-pointer transition shrink-0 shadow-2xs"
             title="Bấm để nghe đọc lại"
           >
             🔊
@@ -315,35 +315,35 @@ onUnmounted(() => {
 
         <button
           @click="toggleFont"
-          class="hidden md:flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-[10px] cursor-pointer"
+          class="hidden md:flex items-center gap-1 px-2.5 py-1 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-xs cursor-pointer border border-amber-200"
         >
           🔤 {{ currentFont.label }}
         </button>
       </div>
 
-      <!-- Cụm phải: CÁC Ô CHỮ CÁI ĐÍCH CẦN GHÉP (SLOTS) -->
-      <div class="flex items-center justify-end gap-1 sm:gap-1.5 flex-wrap ml-auto">
+      <!-- Cụm phải: CÁC Ô CHỮ CÁI ĐÍCH CẦN GHÉP (SLOTS) TO RÕ HƠN -->
+      <div class="flex items-center justify-end gap-1.5 sm:gap-2 flex-wrap ml-auto">
         <div
           v-for="(letter, idx) in targetFormattedLetters"
           :key="idx"
-          class="rounded-lg border-2 flex items-center justify-center font-black transition-all transform relative"
+          class="rounded-xl border-2 sm:border-3 flex items-center justify-center font-black transition-all transform relative"
           :class="[
             currentQuestion.letters.length > 5
-              ? 'w-6 h-8 sm:w-7 sm:h-9 text-sm sm:text-base'
-              : 'w-7 h-9 sm:w-8 sm:h-10 text-base sm:text-lg',
+              ? 'w-8 h-10 sm:w-9 sm:h-11 text-lg sm:text-xl'
+              : 'w-9 h-11 sm:w-11 sm:h-13 text-xl sm:text-2xl',
             matchedLetters[idx]
-              ? 'bg-gradient-to-b from-emerald-100 to-teal-200 border-emerald-500 text-emerald-950 scale-105 shadow-2xs'
+              ? 'bg-gradient-to-b from-emerald-100 to-teal-200 border-emerald-500 text-emerald-950 scale-105 shadow-xs'
               : idx === nextLetterNeededIndex
-                ? 'bg-amber-50 border-amber-400 border-dashed text-amber-700 animate-pulse ring-1 ring-amber-300'
+                ? 'bg-amber-50 border-amber-400 border-dashed text-amber-700 animate-pulse ring-2 ring-amber-300'
                 : 'bg-slate-50 border-slate-200 text-slate-300'
           ]"
         >
           <!-- Đã ghép đúng -->
-          <span v-if="matchedLetters[idx]" class="animate-in zoom-in duration-200">
+          <span v-if="matchedLetters[idx]" class="animate-in zoom-in duration-200 font-black">
             {{ letter }}
           </span>
           <!-- Ô tiếp theo cần bấm (chữ mờ hướng dẫn) -->
-          <span v-else-if="idx === nextLetterNeededIndex" class="opacity-40 font-black text-amber-600">
+          <span v-else-if="idx === nextLetterNeededIndex" class="opacity-45 font-black text-amber-600">
             {{ letter }}
           </span>
           <!-- Ô chưa tới lượt (hiện chữ mờ nhạt làm mẫu) -->
@@ -379,14 +379,14 @@ onUnmounted(() => {
           bottom: `${b.y}px`,
           width: `${b.size}px`,
           height: `${b.size}px`,
-          fontSize: `${b.size * 0.45}px`,
+          fontSize: `${b.size * 0.52}px`,
           boxShadow: 'inset 0 -4px 8px rgba(0,0,0,0.1), 0 6px 14px rgba(0,0,0,0.12)'
         }"
         @click="handleBubbleClick(b, $event)"
       >
         <!-- Tia sáng bóng nước -->
         <span class="absolute top-2 left-2.5 w-2.5 h-2.5 rounded-full bg-white/70 pointer-events-none"></span>
-        <span class="relative z-10">{{ b.char }}</span>
+        <span class="relative z-10 font-black drop-shadow-xs">{{ b.char }}</span>
       </div>
 
       <!-- Overlay khi hoàn thành từ -->
