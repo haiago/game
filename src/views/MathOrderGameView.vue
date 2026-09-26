@@ -249,24 +249,33 @@ function nextQuestion() {
 
             <div class="flex items-end justify-center gap-1 sm:gap-2">
               
-              <!-- 🚂 ĐẦU TÀU HƠI NƯỚC (LOCOMOTIVE) -->
+              <!-- 🚂 ĐẦU TÀU HƠI NƯỚC (LOCOMOTIVE) HƯỚNG VỀ BÊN TRÁI -->
               <div class="flex flex-col items-center flex-shrink-0 relative">
-                <!-- Thân đầu tàu hoạt hình rực rỡ -->
-                <div class="w-14 sm:w-16 h-20 sm:h-24 rounded-2xl bg-gradient-to-b from-rose-500 via-red-500 to-amber-600 border-2 sm:border-3 border-red-700 shadow-md flex flex-col items-center justify-between p-1.5 relative">
-                  <!-- Đèn pha tàu hỏa phát sáng vàng -->
-                  <div class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-yellow-300 border-2 border-amber-500 shadow-lg shadow-yellow-300/80 animate-pulse flex items-center justify-center text-[8px]">
-                    ✨
+                <!-- Thân đầu tàu hoạt hình rực rỡ (mũi tàu quay sang trái) -->
+                <div class="w-16 sm:w-20 h-20 sm:h-24 rounded-2xl bg-gradient-to-b from-rose-500 via-red-500 to-amber-600 border-2 sm:border-3 border-red-700 shadow-md flex items-center justify-between p-1.5 relative overflow-hidden">
+                  
+                  <!-- Mũi đầu tàu & Đèn pha chiếu sáng về bên trái 💡 -->
+                  <div class="flex flex-col items-center justify-center gap-1">
+                    <div class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-yellow-300 border-2 border-amber-500 shadow-md shadow-yellow-300/80 animate-pulse flex items-center justify-center text-[8px]">
+                      ✨
+                    </div>
+                    <!-- Thanh cản va quẹt tàu hỏa (Cowcatcher bumper) -->
+                    <div class="w-2.5 h-6 bg-slate-800 rounded-sm border border-yellow-300 flex flex-col justify-around py-0.5">
+                      <div class="w-full h-0.5 bg-yellow-400"></div>
+                      <div class="w-full h-0.5 bg-yellow-400"></div>
+                    </div>
                   </div>
 
-                  <!-- Cửa sổ cabin người lái tàu -->
-                  <div class="w-9 sm:w-11 h-7 sm:h-8 rounded-xl bg-sky-200 border-2 border-sky-400 flex items-center justify-center text-base sm:text-lg shadow-inner">
-                    🐱
+                  <!-- Cabin người lái tàu (ở giữa) -->
+                  <div class="flex flex-col items-center gap-0.5">
+                    <div class="w-8 sm:w-10 h-7 sm:h-8 rounded-xl bg-sky-200 border-2 border-sky-400 flex items-center justify-center text-base sm:text-lg shadow-inner">
+                      🐱
+                    </div>
+                    <span class="text-[8px] font-black text-yellow-200 font-baloo">NO.1</span>
                   </div>
 
-                  <!-- Mác đầu tàu -->
-                  <div class="text-[9px] font-black text-yellow-200 font-baloo tracking-tight">
-                    NO.1
-                  </div>
+                  <!-- Ống khói hơi nước (ở phía trên đuôi cabin) -->
+                  <div class="w-3.5 h-7 bg-slate-800 rounded-t-md border-t-2 border-amber-400 flex flex-col items-center self-start"></div>
                 </div>
 
                 <!-- Bánh xe đầu tàu (Bánh lớn quay tròn) -->
@@ -463,31 +472,31 @@ function nextQuestion() {
   animation: trainChug 0.7s infinite ease-in-out;
 }
 
-/* Đoàn tàu lướt chạy qua màn hình khi đúng */
+/* Đoàn tàu lướt chạy tiến về phía bên trái (theo hướng đầu tàu) */
 @keyframes trainDepart {
   0% {
     transform: translateX(0);
   }
-  20% {
-    transform: translateX(-15px); /* Tàu lùi nhẹ lấy đà */
+  15% {
+    transform: translateX(15px); /* Tàu lùi nhẹ về sau lấy đà */
   }
   100% {
-    transform: translateX(130%); /* Vọt qua bên phải khỏi màn hình */
+    transform: translateX(-140%); /* Vọt tiến mạnh về phía bên trái khỏi màn hình */
   }
 }
 
 .train-depart-run {
-  animation: trainDepart 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: trainDepart 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Đoàn tàu mới trôi từ bên trái vào ga */
+/* Đoàn tàu mới trôi từ bên phải vào sân ga */
 @keyframes trainArrive {
   0% {
-    transform: translateX(-120%);
+    transform: translateX(130%);
     opacity: 0.5;
   }
   80% {
-    transform: translateX(8px);
+    transform: translateX(-8px);
   }
   100% {
     transform: translateX(0);
@@ -496,16 +505,16 @@ function nextQuestion() {
 }
 
 .train-arrive-slide {
-  animation: trainArrive 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: trainArrive 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Bánh xe quay tít khi lăn bánh */
+/* Bánh xe quay ngược chiều kim đồng hồ khi tiến về bên trái */
 @keyframes wheelSpin {
   from {
     transform: rotate(0deg);
   }
   to {
-    transform: rotate(720deg);
+    transform: rotate(-720deg);
   }
 }
 
