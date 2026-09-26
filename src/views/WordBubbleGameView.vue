@@ -264,83 +264,60 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="w-full max-w-4xl mx-auto px-3 sm:px-4 py-3 sm:py-5 flex flex-col items-center gap-3 select-none"
+    class="w-full max-w-4xl mx-auto px-2 sm:px-4 py-2 sm:py-3 flex flex-col items-center gap-2 select-none"
     :style="{ fontFamily: currentFont.family }"
   >
-    <!-- Thanh công cụ trên cùng: Nút Về Nhà, Đổi font, Chọn cấp độ -->
-    <div class="w-full flex items-center justify-between gap-2 flex-wrap bg-white/80 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border-2 border-purple-200 shadow-sm">
-      <div class="flex items-center gap-2">
+    <!-- KHUNG ĐIỀU KHIỂN & TỪ MỤC TIÊU TÍCH HỢP GỌN GÀNG (1 HÀNG DUY NHẤT) -->
+    <div class="w-full bg-white/95 rounded-2xl border-2 border-purple-200 shadow-xs px-2.5 sm:px-3 py-1.5 flex items-center justify-between gap-2 flex-wrap">
+      
+      <!-- Cụm trái: Nút Về Sảnh, Icon + TỪ MỤC TIÊU + Loa -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
         <button
           @click="$emit('back-home')"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-900 font-black text-xs sm:text-sm active:scale-95 transition cursor-pointer shadow-xs"
+          class="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-900 font-black text-xs active:scale-95 transition cursor-pointer shrink-0"
         >
-          <span>🏠</span> Về Sảnh
+          <span>🏠</span> <span class="hidden sm:inline">Sảnh</span>
         </button>
+
+        <div class="text-2xl sm:text-3xl filter drop-shadow-2xs shrink-0">
+          {{ currentQuestion.emoji }}
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <span class="text-lg sm:text-xl font-black text-purple-950 font-baloo tracking-wide">
+            {{ currentQuestion.word }}
+          </span>
+          <button
+            @click="speakWord(currentQuestion.word)"
+            class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-amber-100 hover:bg-amber-200 active:scale-90 border border-amber-300 flex items-center justify-center text-xs text-amber-800 cursor-pointer transition shrink-0"
+            title="Bấm để nghe đọc lại"
+          >
+            🔊
+          </button>
+        </div>
 
         <button
           @click="toggleFont"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-black text-xs sm:text-sm active:scale-95 transition cursor-pointer shadow-xs"
+          class="hidden md:flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-[10px] cursor-pointer"
         >
-          <span>🔤</span> {{ currentFont.label }}
+          🔤 {{ currentFont.label }}
         </button>
       </div>
 
-      <!-- Chọn độ khó -->
-      <div class="flex items-center gap-1 bg-purple-50 p-1 rounded-xl border border-purple-200">
-        <button
-          v-for="lvl in ([{ id: 'all', label: 'Tất cả' }, { id: 1, label: 'Dễ (2-3 chữ)' }, { id: 2, label: 'Vừa (vần kép)' }, { id: 3, label: 'Nâng cao' }] as const)"
-          :key="lvl.id"
-          @click="selectedLevel = lvl.id; initQuestions()"
-          class="px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-black transition cursor-pointer"
-          :class="selectedLevel === lvl.id ? 'bg-purple-600 text-white shadow-xs' : 'text-purple-800 hover:bg-purple-200/50'"
-        >
-          {{ lvl.label }}
-        </button>
-      </div>
-    </div>
-
-    <!-- KHUNG CHÍNH: TỪ MỤC TIÊU & HÌNH ẢNH MINH HỌA (Gọn gàng tiết kiệm diện tích) -->
-    <div class="w-full bg-white rounded-3xl border-3 border-purple-300 shadow-md p-3 sm:p-4 flex items-center justify-between gap-3 relative overflow-hidden">
-      
-      <!-- Cột trái: Hình minh họa + TỪ CẦN GHÉP TO RÕ + Loa phát âm + Nghĩa từ -->
-      <div class="flex items-center gap-2.5 sm:gap-3">
-        <div class="text-4xl sm:text-5xl filter drop-shadow-sm shrink-0">
-          {{ currentQuestion.emoji }}
-        </div>
-        <div class="flex flex-col">
-          <div class="flex items-center gap-2">
-            <!-- Hiển thị từ cần ghép to nổi bật -->
-            <span class="text-xl sm:text-2xl font-black text-purple-950 font-baloo tracking-wide">
-              {{ currentQuestion.word }}
-            </span>
-            <button
-              @click="speakWord(currentQuestion.word)"
-              class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-100 hover:bg-amber-200 active:scale-90 border border-amber-300 flex items-center justify-center text-sm text-amber-800 shadow-2xs cursor-pointer transition shrink-0"
-              title="Bấm để nghe đọc lại"
-            >
-              🔊
-            </button>
-          </div>
-          <p class="text-[11px] sm:text-xs font-bold text-slate-500 leading-tight">
-            {{ currentQuestion.meaning }}
-          </p>
-        </div>
-      </div>
-
-      <!-- Cột phải: CÁC Ô CHỮ CÁI ĐÍCH CẦN GHÉP (SLOTS) -->
-      <div class="flex items-center justify-end gap-1 sm:gap-1.5 flex-wrap max-w-[55%]">
+      <!-- Cụm phải: CÁC Ô CHỮ CÁI ĐÍCH CẦN GHÉP (SLOTS) -->
+      <div class="flex items-center justify-end gap-1 sm:gap-1.5 flex-wrap ml-auto">
         <div
           v-for="(letter, idx) in currentQuestion.letters"
           :key="idx"
-          class="rounded-xl border-2 sm:border-3 flex items-center justify-center font-black transition-all transform relative"
+          class="rounded-lg border-2 flex items-center justify-center font-black transition-all transform relative"
           :class="[
             currentQuestion.letters.length > 5
-              ? 'w-7 h-9 sm:w-9 sm:h-11 text-base sm:text-lg'
-              : 'w-9 h-11 sm:w-11 sm:h-13 text-lg sm:text-2xl',
+              ? 'w-6 h-8 sm:w-7 sm:h-9 text-sm sm:text-base'
+              : 'w-7 h-9 sm:w-8 sm:h-10 text-base sm:text-lg',
             matchedLetters[idx]
-              ? 'bg-gradient-to-b from-emerald-100 to-teal-200 border-emerald-500 text-emerald-950 scale-105 shadow-sm'
+              ? 'bg-gradient-to-b from-emerald-100 to-teal-200 border-emerald-500 text-emerald-950 scale-105 shadow-2xs'
               : idx === nextLetterNeededIndex
-                ? 'bg-amber-50 border-amber-400 border-dashed text-amber-700 animate-pulse ring-2 ring-amber-300'
+                ? 'bg-amber-50 border-amber-400 border-dashed text-amber-700 animate-pulse ring-1 ring-amber-300'
                 : 'bg-slate-50 border-slate-200 text-slate-300'
           ]"
         >
@@ -363,7 +340,7 @@ onUnmounted(() => {
 
     <!-- KHU VỰC BẦU TRỜI BONG BÓNG BAY LƠ LỬNG (CANVAS / BUBBLE ARENA) -->
     <div
-      class="w-full h-[400px] sm:h-[450px] rounded-3xl bg-gradient-to-b from-sky-100 via-indigo-50/60 to-purple-100/90 border-3 border-sky-300 shadow-inner relative overflow-hidden flex flex-col justify-end"
+      class="w-full h-[460px] sm:h-[530px] rounded-3xl bg-gradient-to-b from-sky-100 via-indigo-50/60 to-purple-100/90 border-3 border-sky-300 shadow-inner relative overflow-hidden flex flex-col justify-end"
     >
       <!-- Các đám mây trôi nền -->
       <div class="absolute top-4 left-6 text-3xl opacity-50 pointer-events-none select-none">☁️</div>

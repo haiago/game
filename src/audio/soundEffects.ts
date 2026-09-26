@@ -4,6 +4,11 @@ class SoundSynthesizer {
   private bgmAudio: HTMLAudioElement | null = null;
   public bgmEnabled = true;
   private bgmStarted = false;
+  public currentTrackIndex = 0;
+  public tracks = [
+    { id: 'track1', name: 'Nhạc Vui Nhộn 1 🎵', src: '/background.mp3' },
+    { id: 'track2', name: 'Nhạc Dịu Êm 2 🎶', src: '/background1.mp3' }
+  ];
 
   constructor() {
     this.initBgm();
@@ -12,7 +17,15 @@ class SoundSynthesizer {
   private initBgm() {
     if (typeof window === 'undefined') return;
     try {
-      this.bgmAudio = new Audio('/background.mp3');
+      const savedTrack = localStorage.getItem('pet_bgm_track');
+      if (savedTrack !== null) {
+        const idx = parseInt(savedTrack, 10);
+        if (!isNaN(idx) && idx >= 0 && idx < this.tracks.length) {
+          this.currentTrackIndex = idx;
+        }
+      }
+
+      this.bgmAudio = new Audio(this.tracks[this.currentTrackIndex].src);
       this.bgmAudio.loop = true;
       this.bgmAudio.volume = 0.14; // Âm lượng nhỏ êm dịu, du dương nhẹ nhàng
       this.bgmAudio.preload = 'auto';
@@ -34,6 +47,38 @@ class SoundSynthesizer {
       window.addEventListener('touchstart', startBgmOnce, { once: true });
     } catch (e) {
       console.warn('Lỗi khởi tạo BGM:', e);
+    }
+  }
+
+  // Đổi bài nhạc nền tiếp theo
+  nextBgmTrack(): number {
+    this.currentTrackIndex = (this.currentTrackIndex + 1) % this.tracks.length;
+    localStorage.setItem('pet_bgm_track', String(this.currentTrackIndex));
+
+    if (this.bgmAudio) {
+      const wasPlaying = !this.bgmAudio.paused;
+      this.bgmAudio.src = this.tracks[this.currentTrackIndex].src;
+      this.bgmAudio.load();
+      if (wasPlaying && this.bgmEnabled) {
+        this.bgmAudio.play().catch(() => {});
+      }
+    }
+    return this.currentTrackIndex;
+  }
+
+  // Chọn bài nhạc theo chỉ số (0 hoặc 1)
+  selectBgmTrack(index: number) {
+    if (index < 0 || index >= this.tracks.length) return;
+    this.currentTrackIndex = index;
+    localStorage.setItem('pet_bgm_track', String(this.currentTrackIndex));
+
+    if (this.bgmAudio) {
+      const wasPlaying = !this.bgmAudio.paused;
+      this.bgmAudio.src = this.tracks[this.currentTrackIndex].src;
+      this.bgmAudio.load();
+      if (wasPlaying && this.bgmEnabled) {
+        this.bgmAudio.play().catch(() => {});
+      }
     }
   }
 
@@ -180,6 +225,35 @@ class SoundSynthesizer {
 
         osc.start(startTime);
         osc.stop(startTime + 0.36);
+      });
+    } catch (e) {}
+  }
+
+  // Âm thanh còi tàu xe lửa: Tu tu... xình xịch!
+  playTrainWhistle() {
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+      // Hai hồi còi xe lửa "Tuuuuu... Tuuuuu!" hòa âm kép
+      const whistleNotes = [587.33, 880]; // D5 + A5 hòa âm còi hơi
+      [0, 0.28].forEach((offset) => {
+        whistleNotes.forEach(freq => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now + offset);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.02, now + offset + 0.22);
+
+          gain.gain.setValueAtTime(0.001, now + offset);
+          gain.gain.linearRampToValueAtTime(0.18, now + offset + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.24);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + offset);
+          osc.stop(now + offset + 0.25);
+        });
       });
     } catch (e) {}
   }
