@@ -95,7 +95,7 @@ function handlePetClick(e: MouseEvent) {
         </span>
       </button>
 
-      <!-- GAME MỚI: BONG BÓNG GHÉP CHỮ -->
+      <!-- GAME MỚI: BONG BÓNG CHÍNH TẢ (ĐIỀN CHỮ KHUYẾT) -->
       <button
         @click="$emit('select-game', 'word_bubble')"
         class="group p-5 rounded-[32px] bg-gradient-to-b from-sky-50 to-blue-100/70 border-3 border-sky-300 hover:border-sky-500 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1.5 active:scale-95 flex flex-col items-center text-center cursor-pointer relative overflow-hidden justify-between"
@@ -105,14 +105,14 @@ function handlePetClick(e: MouseEvent) {
             🫧
           </div>
           <h3 class="text-base sm:text-lg font-black font-baloo text-sky-950 mt-1">
-            Bong Bóng Ghép Chữ
+            Bong Bóng Chính Tả
           </h3>
           <p class="text-xs font-bold text-sky-800/90 mt-1 leading-relaxed">
-            Bấm nổ bong bóng gom thành chữ cái hoàn chỉnh có hình minh họa!
+            Săn bóng chữ cái còn thiếu để hoàn thiện từ chính tả có minh họa!
           </p>
         </div>
         <span class="mt-4 w-full py-2 rounded-2xl bg-sky-500 text-white font-black text-xs shadow-md group-hover:bg-sky-600 transition">
-          Nổ Bóng Ghép Chữ 🚀
+          Săn Bóng Chính Tả 🚀
         </span>
       </button>
 

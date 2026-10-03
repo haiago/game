@@ -4,7 +4,7 @@ import { usePetStore } from '@/stores/petStore';
 import { BUBBLE_WORD_BANK, type BubbleWordItem } from '@/data/bubbleWords';
 import { triggerStarBurstEffect, triggerPenaltyEffect } from '@/utils/particleEffects';
 import { soundManager } from '@/audio/soundEffects';
-import { speakVietnamese } from '@/utils/speechHelper';
+import { speakVietnamese, preloadVietnameseWord } from '@/utils/speechHelper';
 
 defineEmits<{
   (e: 'back-home'): void;
@@ -31,7 +31,7 @@ const currentQuestionIndex = ref(0);
 const questions = ref<BubbleWordItem[]>([]);
 const currentQuestion = computed(() => questions.value[currentQuestionIndex.value] || BUBBLE_WORD_BANK[0]);
 
-// Chuẩn hóa từ: Chỉ viết hoa chữ cái đầu tiên của từ, các chữ sau viết thường (ví dụ: "Cá", "Mèo", "Mặt trời")
+// Chuẩn hóa từ: Viết hoa chữ cái đầu tiên, các chữ sau viết thường (ví dụ: "Cá", "Mèo", "Mặt trời")
 const formattedWord = computed(() => {
   const w = currentQuestion.value.word.toLowerCase();
   if (!w) return '';
@@ -45,18 +45,96 @@ const targetFormattedLetters = computed(() => {
   });
 });
 
-// Tiến trình ghép chữ hiện tại của câu
-// mảng boolean tương ứng với từng chữ cái trong currentQuestion.letters đã được tìm trúng chưa
+// ==========================================
+// CƠ CHẾ KIỂM TRA CHÍNH TẢ (ẨN 1 - 2 CHỮ CÁI)
+// ==========================================
+
+// Danh sách các nguyên âm tiếng Việt (có dấu và không dấu)
+const VIETNAMESE_VOWELS = new Set([
+  'a', 'à', 'á', 'ả', 'ã', 'ạ', 'ă', 'ằ', 'ắ', 'ẳ', 'ẵ', 'ặ', 'â', 'ầ', 'ấ', 'ẩ', 'ẫ', 'ậ',
+  'e', 'è', 'é', 'ẻ', 'ẽ', 'ẹ', 'ê', 'ề', 'ế', 'ể', 'ễ', 'ệ',
+  'i', 'ì', 'í', 'ỉ', 'ĩ', 'ị',
+  'o', 'ò', 'ó', 'ỏ', 'õ', 'ọ', 'ô', 'ồ', 'ố', 'ổ', 'ỗ', 'ộ', 'ơ', 'ờ', 'ớ', 'ở', 'ỡ', 'ợ',
+  'u', 'ù', 'ú', 'ủ', 'ũ', 'ụ', 'ư', 'ừ', 'ứ', 'ử', 'ữ', 'ự',
+  'y', 'ỳ', 'ý', 'ỷ', 'ỹ', 'ỵ'
+]);
+
+// Nhóm các nguyên âm có quan hệ dấu thanh & âm liên quan
+const VOWEL_FAMILIES: Record<string, string[]> = {
+  a: ['a', 'à', 'á', 'ả', 'ã', 'ạ', 'ă', 'ắ', 'ằ', 'â', 'ấ', 'ầ'],
+  e: ['e', 'è', 'é', 'ẻ', 'ẽ', 'ẹ', 'ê', 'ế', 'ề', 'ể', 'ệ'],
+  i: ['i', 'ì', 'í', 'ỉ', 'ĩ', 'ị', 'y', 'ỳ', 'ý'],
+  o: ['o', 'ò', 'ó', 'ỏ', 'õ', 'ọ', 'ô', 'ố', 'ồ', 'ổ', 'ơ', 'ớ', 'ờ', 'ở'],
+  u: ['u', 'ù', 'ú', 'ủ', 'ũ', 'ụ', 'ư', 'ứ', 'ừ', 'ử', 'ự'],
+  y: ['y', 'ỳ', 'ý', 'ỷ', 'ỹ', 'ỵ', 'i', 'í', 'ì']
+};
+
+// Nhóm phụ âm dễ nhầm lẫn chính tả
+const CONSONANT_FAMILIES: Record<string, string[]> = {
+  c: ['k', 'q', 'g', 'b'],
+  k: ['c', 'q'],
+  g: ['gh', 'c', 'k', 'd'],
+  s: ['x', 'ch', 'tr'],
+  x: ['s', 'ch'],
+  t: ['th', 'tr', 'd'],
+  d: ['đ', 'gi', 'r', 'b'],
+  đ: ['d', 'b', 'p'],
+  l: ['n', 'm', 'b'],
+  n: ['l', 'm', 'h'],
+  b: ['d', 'đ', 'p'],
+  r: ['d', 'gi', 'g']
+};
+
+// Các vị trí chữ cái bị ẩn trong từ hiện tại (chỉ ẩn 1 hoặc 2 vị trí)
+const hiddenIndices = ref<number[]>([]);
+
+// Tiến trình hiển thị từng chữ cái: true = đã hiển thị, false = đang khuyết chờ bé điền
 const matchedLetters = ref<boolean[]>([]);
+
+// Vị trí chữ cái khuyết tiếp theo cần bé tìm bắn bóng
 const nextLetterNeededIndex = computed(() => {
-  return matchedLetters.value.findIndex(v => !v);
+  return hiddenIndices.value.find(idx => !matchedLetters.value[idx]) ?? -1;
 });
+
+// Chữ cái mục tiêu đang cần tìm (đã format hoa/thường)
+const expectedTargetLetter = computed(() => {
+  if (nextLetterNeededIndex.value === -1) return '';
+  return targetFormattedLetters.value[nextLetterNeededIndex.value];
+});
+
+// Tạo danh sách chữ cái gây nhiễu chính tả thông minh cho chữ cái đang thiếu
+function getSpellingDistractorsForChar(targetChar: string, isUpper: boolean, distractorsPreset: string[]): string[] {
+  const lower = targetChar.toLowerCase();
+  const candidates: string[] = [];
+
+  // Tìm trong nhóm nguyên âm
+  for (const key in VOWEL_FAMILIES) {
+    if (VOWEL_FAMILIES[key].includes(lower)) {
+      candidates.push(...VOWEL_FAMILIES[key]);
+      break;
+    }
+  }
+
+  // Tìm trong nhóm phụ âm
+  if (CONSONANT_FAMILIES[lower]) {
+    candidates.push(...CONSONANT_FAMILIES[lower]);
+  }
+
+  // Bổ sung các chữ nhiễu có sẵn trong câu hỏi
+  candidates.push(...distractorsPreset);
+
+  // Lọc bỏ chính chữ cái mục tiêu và trùng lặp
+  const unique = Array.from(new Set(candidates)).filter(c => c.toLowerCase() !== lower);
+  unique.sort(() => Math.random() - 0.5);
+
+  return unique.map(c => isUpper ? c.toUpperCase() : c.toLowerCase());
+}
 
 // Trạng thái bong bóng đang bay lơ lửng trên màn chơi
 interface FlyingBubble {
   id: number;
   char: string;
-  isTarget: boolean; // có phải là chữ cái mục tiêu
+  isTarget: boolean; // có phải là chữ cái mục tiêu đang cần
   x: number; // vị trí ngang % (5% -> 85%)
   y: number; // vị trí dọc px từ đáy hoặc translateY
   speed: number;
@@ -93,11 +171,69 @@ function initQuestions() {
   loadCurrentQuestion();
 }
 
+// Chọn ngẫu nhiên 1 hoặc 2 vị trí chữ cái để ẩn (ưu tiên nguyên âm có dấu hoặc phụ âm quan trọng)
+function pickHiddenIndices(letters: string[], level: 1 | 2 | 3): number[] {
+  const len = letters.length;
+  if (len <= 0) return [];
+
+  // Số lượng chữ cái cần ẩn:
+  // - Từ ngắn (<= 3 chữ): Ẩn 1 chữ
+  // - Từ trung bình (4-5 chữ): Level 3 ẩn 2 chữ, level 1-2 ẩn 1 chữ
+  // - Từ dài (>= 6 chữ): Level 1 ẩn 1 chữ, level 2-3 ẩn 2 chữ
+  let numToHide = 1;
+  if (len >= 6 && level >= 2) {
+    numToHide = 2;
+  } else if (len >= 4 && level === 3) {
+    numToHide = 2;
+  }
+
+  // Tìm các vị trí ưu tiên (nguyên âm có dấu hoặc âm đầu)
+  const priorityIndices: number[] = [];
+  const otherIndices: number[] = [];
+
+  letters.forEach((char, idx) => {
+    const lower = char.toLowerCase();
+    // Ưu tiên nguyên âm hoặc chữ cái đầu tiên
+    if (VIETNAMESE_VOWELS.has(lower) || idx === 0) {
+      priorityIndices.push(idx);
+    } else {
+      otherIndices.push(idx);
+    }
+  });
+
+  priorityIndices.sort(() => Math.random() - 0.5);
+  otherIndices.sort(() => Math.random() - 0.5);
+
+  const picked: number[] = [];
+  while (picked.length < numToHide && priorityIndices.length > 0) {
+    picked.push(priorityIndices.pop()!);
+  }
+  while (picked.length < numToHide && otherIndices.length > 0) {
+    picked.push(otherIndices.pop()!);
+  }
+
+  // Sắp xếp tăng dần theo thứ tự từ trái sang phải
+  return picked.sort((a, b) => a - b);
+}
+
 function loadCurrentQuestion() {
   const q = currentQuestion.value;
-  matchedLetters.value = new Array(q.letters.length).fill(false);
+  if (!q) return;
+
+  // Xác định 1 hoặc 2 chữ cái cần ẩn
+  const picked = pickHiddenIndices(q.letters, q.level);
+  hiddenIndices.value = picked;
+
+  // Các chữ cái không bị ẩn được điền sẵn (true), chữ cái bị ẩn cần bé tìm (false)
+  matchedLetters.value = q.letters.map((_, idx) => !picked.includes(idx));
+
   bubbles.value = [];
   
+  // Tải trước âm thanh phát âm Google TTS
+  preloadVietnameseWord(q.word);
+  const nextQ = questions.value[currentQuestionIndex.value + 1];
+  if (nextQ) preloadVietnameseWord(nextQ.word);
+
   // Tạo đàn bong bóng đầu tiên
   seedInitialBubbles();
 
@@ -107,54 +243,57 @@ function loadCurrentQuestion() {
   }, 250);
 }
 
-// Tạo chùm bóng ban đầu và duy trì liên tục
+// Tạo chùm bóng ban đầu
 function seedInitialBubbles() {
   bubbles.value = [];
-  const q = currentQuestion.value;
-  const targetChars = [...q.letters];
-  const distractorChars = [...q.distractors];
+  const expected = expectedTargetLetter.value;
+  if (!expected) return;
 
-  // Tạo tập hợp các chữ cái xuất hiện (bao gồm cả chữ đúng và chữ nhiễu)
-  const allNeeded = [...targetFormattedLetters.value, ...distractorChars];
-  allNeeded.sort(() => Math.random() - 0.5);
+  const isUpper = nextLetterNeededIndex.value === 0;
+  const distractors = getSpellingDistractorsForChar(expected, isUpper, currentQuestion.value.distractors);
 
-  allNeeded.forEach((char, idx) => {
-    spawnBubble(char, 20 + idx * 80 + Math.random() * 60, false);
+  // Sinh 2 bóng chứa chữ cái cần tìm và 5 bóng nhiễu chính tả
+  const pool = [expected, expected, ...distractors.slice(0, 5)];
+  pool.sort(() => Math.random() - 0.5);
+
+  pool.forEach((char, idx) => {
+    spawnBubble(char, 20 + idx * 60 + Math.random() * 40);
   });
 }
 
-function spawnBubble(charPreset?: string, startY = -60, isRepop = true) {
+function spawnBubble(charPreset?: string, startY = -60) {
   const q = currentQuestion.value;
   if (!q) return;
 
-  // Quyết định ký tự nào sẽ bay lên
+  const expected = expectedTargetLetter.value;
+  if (!expected && !charPreset) return;
+
   let char = charPreset;
   if (!char) {
-    const nextIdx = nextLetterNeededIndex.value;
-    const needChar = nextIdx !== -1
-      ? targetFormattedLetters.value[nextIdx]
-      : targetFormattedLetters.value[Math.floor(Math.random() * targetFormattedLetters.value.length)];
-    // 55% khả năng sinh ra chữ cái bé đang cần hoặc chữ trong từ, 45% chữ nhiễu
-    if (Math.random() < 0.55) {
-      char = needChar;
+    // Đếm số lượng bóng đang bay chứa đúng chữ cái mục tiêu
+    const activeTargetBubbles = bubbles.value.filter(b => b.char === expected && !b.popped).length;
+
+    // Đảm bảo luôn có ít nhất 2 quả bóng chứa chữ mục tiêu đang bay để bé không phải chờ lâu
+    if (activeTargetBubbles < 2 || Math.random() < 0.45) {
+      char = expected;
     } else {
-      const randomDistractor = q.distractors[Math.floor(Math.random() * q.distractors.length)] || 'a';
-      // Nếu ô tiếp theo là ô đầu tiên -> chữ nhiễu cũng viết hoa; nếu là ô sau -> chữ nhiễu viết thường
-      char = nextIdx === 0 ? randomDistractor.toUpperCase() : randomDistractor.toLowerCase();
+      const isUpper = nextLetterNeededIndex.value === 0;
+      const distractors = getSpellingDistractorsForChar(expected, isUpper, q.distractors);
+      char = distractors[Math.floor(Math.random() * distractors.length)] || 'a';
     }
   }
 
-  const isTarget = targetFormattedLetters.value.includes(char);
+  const isTarget = char === expected;
   const colorClass = bubbleColors[Math.floor(Math.random() * bubbleColors.length)];
 
   bubbleCounter++;
   bubbles.value.push({
     id: bubbleCounter,
-    char: char, // Giữ nguyên chữ hoa cho chữ đầu, chữ thường cho các chữ tiếp theo
+    char: char,
     isTarget,
     x: 8 + Math.random() * 78, // % chiều rộng màn chơi
     y: startY, // px tính từ đáy
-    speed: 0.8 + Math.random() * 0.9, // Tốc độ trôi vừa phải cho bé lớp 1
+    speed: 0.75 + Math.random() * 0.75, // Tốc độ trôi vừa phải cho bé tập trung ngắm
     size: 58 + Math.random() * 16,
     colorClass,
     wobbleOffset: Math.random() * Math.PI * 2,
@@ -191,30 +330,33 @@ function handleBubbleClick(bubble: FlyingBubble, event: MouseEvent) {
   if (bubble.popped) return;
 
   const nextIdx = nextLetterNeededIndex.value;
-  if (nextIdx === -1) return; // Đã ghép xong
+  if (nextIdx === -1) return; // Đã điền xong tất cả chữ khuyết
 
-  const expectedLetter = targetFormattedLetters.value[nextIdx];
+  const expectedLetter = expectedTargetLetter.value;
 
-  // BÉ BẤM ĐÚNG CHỮ CÁI TIẾP THEO (Khớp chữ hoa nếu là chữ đầu, khớp chữ thường nếu là các chữ sau)
+  // BÉ BẤM ĐÚNG CHỮ CÁI CHÍNH TẢ ĐANG THIẾU
   if (bubble.char === expectedLetter) {
     bubble.popped = true;
     soundManager.playBubblePop();
 
-    // Điền chữ cái vào ô
+    // Điền chữ cái vào ô khuyết
     matchedLetters.value[nextIdx] = true;
 
-    // Xóa quả bóng sau hiệu ứng nổ nát bọt xà phòng
+    // Xóa quả bóng sau hiệu ứng nổ
     setTimeout(() => {
       const idx = bubbles.value.findIndex(b => b.id === bubble.id);
       if (idx !== -1) bubbles.value.splice(idx, 1);
     }, 280);
 
-    // KIỂM TRA ĐÃ HOÀN THÀNH TỪ CHƯA
+    // KIỂM TRA ĐÃ HOÀN THÀNH TẤT CẢ CHỮ KHUYẾT CHƯA
     if (matchedLetters.value.every(v => v)) {
       handleWordCompleted(event.currentTarget as HTMLElement);
+    } else {
+      // Nếu còn chữ khuyết thứ 2: phát âm thanh vui tai khích lệ bé tìm tiếp
+      soundManager.playTap();
     }
   } else {
-    // BÉ BẤM SAI CHỮ HOẶC SAI THỨ TỰ ĐÁNH VẦN
+    // BÉ BẤM SAI CHỮ CHÍNH TẢ
     soundManager.playBubbleWrong();
     bubble.isWrongShake = true;
     setTimeout(() => {
@@ -287,7 +429,7 @@ onUnmounted(() => {
     <!-- KHUNG ĐIỀU KHIỂN & TỪ MỤC TIÊU TÍCH HỢP GỌN GÀNG (1 HÀNG DUY NHẤT) -->
     <div class="w-full bg-white/95 rounded-2xl border-2 border-purple-200 shadow-xs px-2.5 sm:px-3 py-1.5 flex items-center justify-between gap-2 flex-wrap">
       
-      <!-- Cụm trái: Nút Về Sảnh, Icon + TỪ MỤC TIÊU + Loa -->
+      <!-- Cụm trái: Nút Về Sảnh, Icon + TỪ MỤC TIÊU VỚI Ô KHUYẾT + Loa -->
       <div class="flex items-center gap-1.5 sm:gap-2">
         <button
           @click="$emit('back-home')"
@@ -300,14 +442,42 @@ onUnmounted(() => {
           {{ currentQuestion.emoji }}
         </div>
 
-        <div class="flex items-center gap-2">
-          <span class="text-2xl sm:text-3xl font-black text-purple-950 font-baloo tracking-wide">
-            {{ formattedWord }}
-          </span>
+        <!-- TỪ MỤC TIÊU VỚI Ô CHÍNH TẢ KHUYẾT [ ? ] -->
+        <div class="flex items-center gap-1.5 bg-purple-50/80 px-2.5 sm:px-3 py-1 rounded-2xl border border-purple-200">
+          <div class="flex items-center gap-1 font-baloo tracking-wide">
+            <template v-for="(letter, idx) in targetFormattedLetters" :key="idx">
+              <!-- Chữ cái đã điền đúng hoặc có sẵn -->
+              <span
+                v-if="matchedLetters[idx]"
+                class="text-2xl sm:text-3xl font-black transition-all"
+                :class="hiddenIndices.includes(idx) ? 'text-emerald-600 animate-in zoom-in font-black' : 'text-purple-950'"
+              >
+                {{ letter }}
+              </span>
+
+              <!-- Ô khuyết đang cần bé tìm bắn bóng -->
+              <span
+                v-else-if="idx === nextLetterNeededIndex"
+                class="inline-flex items-center justify-center min-w-[32px] sm:min-w-[38px] h-8 sm:h-9 px-1.5 rounded-xl border-2 border-dashed border-amber-500 bg-amber-100 text-amber-800 text-xl sm:text-2xl font-black animate-bounce shadow-xs ring-2 ring-amber-300"
+                title="Bé tìm chữ cái này nhé!"
+              >
+                ?
+              </span>
+
+              <!-- Ô khuyết thứ 2 đang đợi lượt -->
+              <span
+                v-else
+                class="inline-flex items-center justify-center min-w-[32px] sm:min-w-[38px] h-8 sm:h-9 px-1.5 rounded-xl border-2 border-dashed border-slate-300 bg-slate-100 text-slate-400 text-xl sm:text-2xl font-black"
+              >
+                ?
+              </span>
+            </template>
+          </div>
+
           <button
             @click="speakWord(currentQuestion.word)"
-            class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-100 hover:bg-amber-200 active:scale-90 border border-amber-300 flex items-center justify-center text-sm sm:text-base text-amber-800 cursor-pointer transition shrink-0 shadow-2xs"
-            title="Bấm để nghe đọc lại"
+            class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-amber-100 hover:bg-amber-200 active:scale-90 border border-amber-300 flex items-center justify-center text-xs sm:text-sm text-amber-800 cursor-pointer transition shrink-0 shadow-2xs"
+            title="Bấm để nghe đọc lại từ"
           >
             🔊
           </button>
@@ -321,7 +491,7 @@ onUnmounted(() => {
         </button>
       </div>
 
-      <!-- Cụm phải: CÁC Ô CHỮ CÁI ĐÍCH CẦN GHÉP (SLOTS) TO RÕ HƠN -->
+      <!-- Cụm phải: TIẾN TRÌNH CÁC Ô CHỮ CÁI (SLOTS) -->
       <div class="flex items-center justify-end gap-1.5 sm:gap-2 flex-wrap ml-auto">
         <div
           v-for="(letter, idx) in targetFormattedLetters"
@@ -331,28 +501,47 @@ onUnmounted(() => {
             currentQuestion.letters.length > 5
               ? 'w-8 h-10 sm:w-9 sm:h-11 text-lg sm:text-xl'
               : 'w-9 h-11 sm:w-11 sm:h-13 text-xl sm:text-2xl',
-            matchedLetters[idx]
-              ? 'bg-gradient-to-b from-emerald-100 to-teal-200 border-emerald-500 text-emerald-950 scale-105 shadow-xs'
-              : idx === nextLetterNeededIndex
-                ? 'bg-amber-50 border-amber-400 border-dashed text-amber-700 animate-pulse ring-2 ring-amber-300'
-                : 'bg-slate-50 border-slate-200 text-slate-300'
+            !hiddenIndices.includes(idx)
+              ? 'bg-slate-100 border-slate-300 text-slate-700'
+              : matchedLetters[idx]
+                ? 'bg-gradient-to-b from-emerald-100 to-teal-200 border-emerald-500 text-emerald-950 scale-105 shadow-xs'
+                : idx === nextLetterNeededIndex
+                  ? 'bg-amber-100 border-amber-500 border-dashed text-amber-800 animate-pulse ring-3 ring-amber-300 shadow-md'
+                  : 'bg-slate-50 border-slate-200 text-slate-300'
           ]"
         >
-          <!-- Đã ghép đúng -->
-          <span v-if="matchedLetters[idx]" class="animate-in zoom-in duration-200 font-black">
+          <!-- Chữ cái có sẵn ban đầu -->
+          <span v-if="!hiddenIndices.includes(idx)" class="font-bold opacity-80">
             {{ letter }}
           </span>
-          <!-- Ô tiếp theo cần bấm (chữ mờ hướng dẫn) -->
-          <span v-else-if="idx === nextLetterNeededIndex" class="opacity-45 font-black text-amber-600">
+          <!-- Chữ cái khuyết đã tìm trúng -->
+          <span v-else-if="matchedLetters[idx]" class="animate-in zoom-in duration-200 font-black text-emerald-900">
             {{ letter }}
           </span>
-          <!-- Ô chưa tới lượt (hiện chữ mờ nhạt làm mẫu) -->
-          <span v-else class="opacity-25 font-bold">
-            {{ letter }}
+          <!-- Ô khuyết đang cần bắn -->
+          <span v-else-if="idx === nextLetterNeededIndex" class="font-black text-amber-700 animate-bounce">
+            ?
+          </span>
+          <!-- Ô khuyết đang chờ -->
+          <span v-else class="font-bold text-slate-300">
+            ?
           </span>
         </div>
       </div>
 
+    </div>
+
+    <!-- BANNER NHIỆM VỤ CHÍNH TẢ -->
+    <div class="w-full bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border border-amber-200/90 rounded-2xl px-3 sm:px-4 py-1.5 flex items-center justify-between text-xs font-bold text-amber-950 shadow-2xs">
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <span class="text-base sm:text-lg animate-bounce">🎯</span>
+        <span>
+          <b>Thử thách chính tả:</b> Bé hãy tìm và bắn bóng chứa chữ cái <span class="px-2 py-0.5 rounded-lg bg-amber-200 text-amber-950 font-black border border-amber-300">[ ? ]</span> để điền vào chỗ trống!
+        </span>
+      </div>
+      <span class="text-[11px] font-semibold text-slate-500 hidden md:inline bg-white/70 px-2 py-0.5 rounded-lg border border-amber-200/60">
+        💡 {{ currentQuestion.meaning }}
+      </span>
     </div>
 
     <!-- KHU VỰC BẦU TRỜI BONG BÓNG BAY LƠ LỬNG (CANVAS / BUBBLE ARENA) -->
@@ -392,15 +581,19 @@ onUnmounted(() => {
       <!-- Overlay khi hoàn thành từ -->
       <div
         v-if="isCompletedWord"
-        class="absolute inset-0 bg-white/85 backdrop-blur-xs flex flex-col items-center justify-center gap-2 z-20 animate-in fade-in zoom-in duration-200"
+        class="absolute inset-0 bg-white/90 backdrop-blur-xs flex flex-col items-center justify-center gap-2 z-20 animate-in fade-in zoom-in duration-200"
       >
-        <span class="text-5xl animate-bounce">🎉</span>
+        <span class="text-6xl animate-bounce">🎉</span>
         <h3 class="text-2xl sm:text-3xl font-black font-baloo text-emerald-600">
-          XUẤT SẮC! +1 ⭐
+          ĐÚNG CHÍNH TẢ RỒI! (+1 ⭐)
         </h3>
-        <p class="text-lg font-black text-purple-950 font-baloo">
-          {{ currentQuestion.word }} {{ currentQuestion.emoji }}
+        <p class="text-xl sm:text-2xl font-black text-purple-950 font-baloo flex items-center gap-2">
+          <span>{{ currentQuestion.emoji }}</span>
+          <span>{{ formattedWord }}</span>
         </p>
+        <span class="text-xs font-bold text-slate-500 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+          {{ currentQuestion.meaning }}
+        </span>
       </div>
     </div>
 

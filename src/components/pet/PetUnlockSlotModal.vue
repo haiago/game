@@ -10,7 +10,7 @@ const petStore = usePetStore();
     v-if="petStore.showUnlockSlotModal && petStore.availableSlots > 0 && petStore.lockedPetIds.length > 0"
     class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4"
   >
-    <div class="bg-gradient-to-b from-amber-100 via-pink-50 to-purple-100 rounded-[36px] max-w-lg w-full p-5 sm:p-6 text-center shadow-2xl border-4 sm:border-6 border-amber-400 flex flex-col items-center gap-3 relative overflow-hidden animate-in zoom-in-95 duration-200">
+    <div class="bg-gradient-to-b from-amber-100 via-pink-50 to-purple-100 rounded-[36px] max-w-lg w-full p-5 sm:p-6 text-center shadow-2xl border-4 sm:border-6 border-amber-400 flex flex-col items-center gap-3 relative overflow-hidden max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
       
       <!-- Hào quang nền -->
       <div class="absolute -top-16 -right-16 w-44 h-44 bg-yellow-300/40 rounded-full blur-3xl pointer-events-none"></div>
@@ -30,31 +30,33 @@ const petStore = usePetStore();
         </p>
       </div>
 
-      <!-- Danh sách các bạn thú còn lại đang khóa -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 w-full my-2">
+      <!-- Danh sách các bạn thú còn lại đang khóa: 2 item trên 1 hàng -->
+      <div class="grid grid-cols-2 gap-3 w-full my-2 items-stretch">
         <button
           v-for="id in petStore.lockedPetIds"
           :key="id"
           @click="petStore.unlockNewPet(id)"
-          class="p-3.5 rounded-3xl bg-white/95 border-3 border-amber-300 hover:border-amber-500 hover:shadow-xl hover:scale-105 active:scale-95 transition flex flex-col items-center gap-1.5 shadow-md group cursor-pointer relative"
+          class="p-3.5 sm:p-4 rounded-3xl bg-white/95 border-3 border-amber-300 hover:border-amber-500 hover:shadow-xl hover:scale-105 active:scale-95 transition flex flex-col items-center justify-between gap-1.5 shadow-md group cursor-pointer relative h-full"
         >
           <span class="absolute top-2 right-2 text-[10px] bg-green-100 text-green-700 border border-green-300 px-1.5 py-0.5 rounded-full font-black font-baloo">
             Sẵn sàng mở ✨
           </span>
 
-          <div class="text-5xl group-hover:scale-125 transition-transform duration-200 my-1">
+          <div class="h-14 flex items-center justify-center text-5xl group-hover:scale-125 transition-transform duration-200">
             {{ PET_SPECIES_DATA[id].icon }}
           </div>
           
-          <div class="font-black text-sm text-purple-950 font-baloo leading-tight">
+          <div class="h-10 flex items-center justify-center font-black text-sm text-purple-950 font-baloo leading-tight text-center px-1">
             {{ PET_SPECIES_DATA[id].name }}
           </div>
           
-          <div class="text-[10px] font-bold text-purple-700 bg-purple-100/90 px-2 py-0.5 rounded-full">
-            {{ PET_SPECIES_DATA[id].badge }}
+          <div class="h-6 flex items-center justify-center">
+            <span class="text-[10px] font-bold text-purple-700 bg-purple-100/90 px-2 py-0.5 rounded-full inline-flex items-center justify-center">
+              {{ PET_SPECIES_DATA[id].badge }}
+            </span>
           </div>
 
-          <div class="w-full mt-1 py-1 rounded-xl bg-gradient-to-r from-amber-400 to-pink-500 text-white font-black text-xs shadow-sm font-baloo">
+          <div class="w-full h-9 flex items-center justify-center rounded-xl bg-gradient-to-r from-amber-400 to-pink-500 text-white font-black text-xs shadow-sm font-baloo">
             Chọn bạn này 🐾
           </div>
         </button>

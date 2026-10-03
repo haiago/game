@@ -27,7 +27,7 @@ class SoundSynthesizer {
 
       this.bgmAudio = new Audio(this.tracks[this.currentTrackIndex].src);
       this.bgmAudio.loop = true;
-      this.bgmAudio.volume = 0.14; // Âm lượng nhỏ êm dịu, du dương nhẹ nhàng
+      this.bgmAudio.volume = 0.07; // Âm lượng nền êm dịu, không lấn át tiếng đọc
       this.bgmAudio.preload = 'auto';
 
       // Kích hoạt tự động khi người dùng tương tác lần đầu tiên (click/touch)
@@ -97,6 +97,20 @@ class SoundSynthesizer {
       }
     }
     return this.bgmEnabled;
+  }
+
+  // Tự động hạ nhỏ nhạc nền khi đang có giọng đọc phát âm (Audio Ducking)
+  duckBgm() {
+    if (this.bgmAudio && this.bgmEnabled) {
+      this.bgmAudio.volume = 0.02; // Hạ nhỏ chỉ còn 2% để tiếng đọc nổi bần bật
+    }
+  }
+
+  // Khôi phục lại âm lượng nhạc nền sau khi đọc xong
+  restoreBgm() {
+    if (this.bgmAudio && this.bgmEnabled) {
+      this.bgmAudio.volume = 0.07;
+    }
   }
 
   // Điều chỉnh âm lượng nhạc nền

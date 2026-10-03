@@ -81,7 +81,7 @@ function handleGardenPetClick(e: MouseEvent) {
           </span>
         </div>
 
-        <!-- Danh sách 6 Bạn Thú Cưng -->
+        <!-- Danh sách Các Bạn Thú Cưng -->
         <div>
           <div class="text-xs sm:text-sm font-black text-purple-900 uppercase tracking-wide mb-2.5 flex items-center justify-between">
             <span class="flex items-center gap-1.5"><span>🐾</span> VƯỜN THÚ CỦA BÉ:</span>
@@ -90,64 +90,68 @@ function handleGardenPetClick(e: MouseEvent) {
             </span>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+          <div class="grid grid-cols-2 gap-3 sm:gap-4 items-stretch">
             <div
               v-for="id in PET_ORDER"
               :key="id"
-              class="relative"
+              class="relative h-full flex flex-col"
             >
               <!-- Thú đã mở khóa / Kích hoạt (Có viền sáng chạy light border chuyển động) -->
               <button
                 v-if="petStore.unlockedPetIds.includes(id)"
                 @click="petStore.choosePet(id)"
-                class="w-full p-3 sm:p-4 rounded-3xl text-center transition flex flex-col items-center justify-center gap-1.5 active:scale-95 cursor-pointer relative"
+                class="w-full h-full p-3.5 sm:p-5 rounded-3xl text-center transition flex flex-col items-center justify-between gap-1.5 active:scale-95 cursor-pointer relative"
                 :class="petStore.activePetId === id
                   ? 'pet-light-border-current shadow-lg scale-102'
                   : 'pet-light-border-active hover:scale-102 shadow-md'"
               >
                 <!-- Huy hiệu sao góc -->
-                <span class="absolute top-2 right-2 text-[10px] bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded-full font-black flex items-center gap-0.5 shadow-2xs font-baloo">
+                <span class="absolute top-2.5 right-2.5 text-[11px] sm:text-xs bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full font-black flex items-center gap-0.5 shadow-2xs font-baloo">
                   ⭐ {{ petStore.petProgress[id]?.stars || 0 }}/50
                 </span>
 
-                <div class="text-4xl my-1" :class="{ 'animate-bounce': petStore.activePetId === id }">
+                <div class="h-14 sm:h-16 flex items-center justify-center text-4xl sm:text-5xl" :class="{ 'animate-bounce': petStore.activePetId === id }">
                   {{ PET_SPECIES_DATA[id].icon }}
                 </div>
 
-                <div class="font-black text-xs sm:text-sm text-slate-900 font-baloo leading-tight">
+                <div class="h-11 flex items-center justify-center font-black text-sm sm:text-base text-slate-900 font-baloo leading-tight text-center px-1">
                   {{ PET_SPECIES_DATA[id].name }}
                 </div>
 
-                <span
-                  class="text-[10px] font-black px-2.5 py-0.5 rounded-full font-baloo"
-                  :class="petStore.activePetId === id
-                    ? 'bg-purple-600 text-white shadow-xs animate-pulse'
-                    : 'bg-emerald-50 text-emerald-700 border border-emerald-300 font-bold'"
-                >
-                  {{ petStore.activePetId === id ? 'Đang chơi 🐾' : 'Đã mở ✨' }}
-                </span>
+                <div class="h-9 w-full flex items-center justify-center">
+                  <span
+                    class="text-[11px] sm:text-xs font-black px-3 py-1 rounded-full font-baloo inline-flex items-center justify-center"
+                    :class="petStore.activePetId === id
+                      ? 'bg-purple-600 text-white shadow-xs animate-pulse'
+                      : 'bg-emerald-50 text-emerald-700 border border-emerald-300 font-bold'"
+                  >
+                    {{ petStore.activePetId === id ? 'Đang chơi 🐾' : 'Đã mở ✨' }}
+                  </span>
+                </div>
               </button>
 
               <!-- Thú đang khóa nhưng CÓ SLOT MỞ KHÓA -->
               <button
                 v-else-if="petStore.availableSlots > 0"
                 @click="petStore.unlockNewPet(id)"
-                class="w-full p-3 sm:p-4 rounded-3xl border-3 border-amber-400 bg-gradient-to-b from-amber-50 to-orange-50/60 text-center transition flex flex-col items-center justify-center gap-1.5 cursor-pointer hover:border-amber-500 hover:scale-105 active:scale-95 shadow-md relative group select-none"
+                class="w-full h-full p-3.5 sm:p-5 rounded-3xl border-3 border-amber-400 bg-gradient-to-b from-amber-50 to-orange-50/60 text-center transition flex flex-col items-center justify-between gap-1.5 cursor-pointer hover:border-amber-500 hover:scale-105 active:scale-95 shadow-md relative group select-none"
               >
-                <span class="absolute top-2 right-2 text-[10px] bg-green-500 text-white px-2 py-0.5 rounded-full font-black flex items-center gap-0.5 shadow-2xs font-baloo animate-pulse">
+                <span class="absolute top-2.5 right-2.5 text-[11px] sm:text-xs bg-green-500 text-white px-2 py-0.5 rounded-full font-black flex items-center gap-0.5 shadow-2xs font-baloo animate-pulse">
                   Mở Được ✨
                 </span>
 
-                <div class="text-4xl my-1 group-hover:scale-110 transition-transform">
+                <div class="h-14 sm:h-16 flex items-center justify-center text-4xl sm:text-5xl group-hover:scale-110 transition-transform">
                   {{ PET_SPECIES_DATA[id].icon }}
                 </div>
 
-                <div class="font-black text-xs sm:text-sm text-slate-900 font-baloo leading-tight">
+                <div class="h-11 flex items-center justify-center font-black text-sm sm:text-base text-slate-900 font-baloo leading-tight text-center px-1">
                   {{ PET_SPECIES_DATA[id].name }}
                 </div>
 
-                <div class="text-[10px] text-amber-900 font-black bg-amber-200/90 px-2 py-0.5 rounded-full border border-amber-300 font-baloo">
-                  Chạm để mở khóa 🔓
+                <div class="h-9 w-full flex items-center justify-center">
+                  <span class="text-[11px] sm:text-xs text-amber-900 font-black bg-amber-200/90 px-3 py-1 rounded-full border border-amber-300 font-baloo inline-flex items-center justify-center">
+                    Chạm để mở khóa 🔓
+                  </span>
                 </div>
               </button>
 
@@ -155,22 +159,24 @@ function handleGardenPetClick(e: MouseEvent) {
               <div
                 v-else
                 @click="petStore.triggerPetSpeech(`Bé hãy nuôi bạn hiện tại đạt 50⭐ để mở slot nhận ${PET_SPECIES_DATA[id].name} nhé! 💕`)"
-                class="p-3 sm:p-4 rounded-3xl border-2 border-dashed border-purple-200 bg-purple-50/40 text-center transition flex flex-col items-center justify-center gap-1.5 cursor-pointer hover:bg-purple-100/50 hover:border-purple-300 active:scale-95 select-none relative group"
+                class="w-full h-full p-3.5 sm:p-5 rounded-3xl border-2 border-dashed border-purple-200 bg-purple-50/40 text-center transition flex flex-col items-center justify-between gap-1.5 cursor-pointer hover:bg-purple-100/50 hover:border-purple-300 active:scale-95 select-none relative group"
               >
-                <span class="absolute top-2 right-2 text-xs bg-slate-200/90 text-slate-600 px-1.5 py-0.5 rounded-full font-black flex items-center gap-0.5 shadow-2xs">
+                <span class="absolute top-2.5 right-2.5 text-xs bg-slate-200/90 text-slate-600 px-2 py-0.5 rounded-full font-black flex items-center gap-0.5 shadow-2xs">
                   🔒
                 </span>
 
-                <div class="text-4xl my-1 filter grayscale-[40%] opacity-80 group-hover:scale-110 transition-transform">
+                <div class="h-14 sm:h-16 flex items-center justify-center text-4xl sm:text-5xl filter grayscale-[40%] opacity-80 group-hover:scale-110 transition-transform">
                   {{ PET_SPECIES_DATA[id].icon }}
                 </div>
 
-                <div class="font-black text-xs sm:text-sm text-slate-700 font-baloo leading-tight">
+                <div class="h-11 flex items-center justify-center font-black text-sm sm:text-base text-slate-700 font-baloo leading-tight text-center px-1">
                   {{ PET_SPECIES_DATA[id].name }}
                 </div>
 
-                <div class="text-[10px] text-purple-700 font-bold bg-white/90 px-2 py-0.5 rounded-full border border-purple-200">
-                  Nuôi lớn để mở slot
+                <div class="h-9 w-full flex items-center justify-center">
+                  <span class="text-[11px] sm:text-xs text-purple-700 font-bold bg-white/90 px-3 py-1 rounded-full border border-purple-200 inline-flex items-center justify-center">
+                    Nuôi lớn để mở slot
+                  </span>
                 </div>
               </div>
             </div>

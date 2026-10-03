@@ -5,8 +5,10 @@ export interface PetStage {
   desc: string;
 }
 
+export type PetSpeciesId = 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox' | 'turtle' | 'rabbit';
+
 export interface PetSpecies {
-  id: 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox';
+  id: PetSpeciesId;
   name: string;
   icon: string;
   eggIcon: string;
@@ -16,7 +18,7 @@ export interface PetSpecies {
   quotes: string[];
 }
 
-export const PET_SPECIES_DATA: Record<string, PetSpecies> = {
+export const PET_SPECIES_DATA: Record<PetSpeciesId, PetSpecies> = {
   dragon: {
     id: 'dragon',
     name: 'Bé Rồng Lửa',
@@ -142,14 +144,58 @@ export const PET_SPECIES_DATA: Record<string, PetSpecies> = {
       "Bé đọc chuẩn từng từ một, quá đỗi thông minh! 🌸",
       "Hôm nay cùng tớ học thật nhiều điều thú vị nhé! 🐾"
     ]
+  },
+  turtle: {
+    id: 'turtle',
+    name: 'Bé Rùa Thần',
+    icon: '🐢',
+    eggIcon: '🥚🌱',
+    themeColor: 'from-emerald-400 via-teal-500 to-green-600',
+    badge: 'Kiên Trì 🐢',
+    stages: [
+      { level: 1, reqStars: 0, title: 'Trứng Ngọc Lục Bảo', desc: 'Mai ngọc xanh biếc lấp lánh, đang chờ bé học chăm để ấp nở!' },
+      { level: 2, reqStars: 5, title: 'Rùa Con Nứt Mai', desc: 'Thò chiếc đầu tròn xoe ngơ ngác, chớp mắt đáng yêu chào bé!' },
+      { level: 3, reqStars: 15, title: 'Rùa Bơi Bốn Biển', desc: 'Bốn chân chèo bơi lội thoăn thoắt, mai rùa sáng bóng lung linh!' },
+      { level: 4, reqStars: 30, title: 'Chiến Binh Ninja Rùa', desc: 'Đeo băng đô đỏ dũng mãnh, kiên trì vượt qua mọi bài tập khó!' },
+      { level: 5, reqStars: 50, title: 'Thần Kim Quy Hoàng Gia 👑', desc: 'Mai rùa dát viền vàng ngọc bích, đội vương miện bảo hộ bé học giỏi!' }
+    ],
+    quotes: [
+      "Chậm mà chắc! Bé học chăm chỉ là giỏi nhất! 🐢",
+      "Rùa con thả tim cho sự kiên trì tuyệt vời của bé! 💚",
+      "Bé tính toán cẩn thận và chuẩn xác quá chừng! 🌊",
+      "Cố lên bạn ơi, đích đến cấp mới đang ở rất gần! 🌟"
+    ]
+  },
+  rabbit: {
+    id: 'rabbit',
+    name: 'Thỏ Ngọc Bông Gòn',
+    icon: '🐰',
+    eggIcon: '🥚🥕',
+    themeColor: 'from-pink-400 via-rose-300 to-amber-300',
+    badge: 'Nhanh Nhẹn 🥕',
+    stages: [
+      { level: 1, reqStars: 0, title: 'Trứng Cà Rốt Hồng', desc: 'Quả trứng màu hồng phấn có vẽ củ cà rốt cam xinh xắn!' },
+      { level: 2, reqStars: 5, title: 'Thỏ Con Tai Dài', desc: 'Đôi tai dài trắng muốt vẫy vẫy, mũi hồng giật giật tìm bạn học cùng!' },
+      { level: 3, reqStars: 15, title: 'Thỏ Nhí Ôm Cà Rốt', desc: 'Hai tay ôm củ cà rốt to bự, nhảy lò cò chúc mừng bé làm đúng!' },
+      { level: 4, reqStars: 30, title: 'Thỏ Ngọc Cung Trăng', desc: 'Đeo nơ hoa rực rỡ bên tai, lướt trên vầng trăng khuyết lấp lánh sao!' },
+      { level: 5, reqStars: 50, title: 'Nữ Hoàng Thỏ Ngọc 👑', desc: 'Đội vương miện sao băng pha lê, thần hộ mệnh thông minh nhanh nhẹn!' }
+    ],
+    quotes: [
+      "Nhảy lò cò! Bé tính nhanh như thỏ chạy vậy! 🐰",
+      "Tớ tặng bé củ cà rốt may mắn siêu to khổng lồ nè! 🥕",
+      "Giọng bé đọc ngân vang làm tai tớ nhảy múa vui sướng! 💖",
+      "Bé học siêu nhanh và cực kỳ đáng yêu! 🌟"
+    ]
   }
 };
 
-export const PET_ORDER: ('dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox')[] = [
+export const PET_ORDER: PetSpeciesId[] = [
   'dragon',
   'cat',
   'penguin',
   'unicorn',
   'phoenix',
-  'fox'
+  'fox',
+  'turtle',
+  'rabbit'
 ];

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { PET_SPECIES_DATA, PET_ORDER, type PetSpecies } from '@/data/petSpeciesData';
+import { PET_SPECIES_DATA, PET_ORDER, type PetSpecies, type PetSpeciesId } from '@/data/petSpeciesData';
 import { soundManager } from '@/audio/soundEffects';
 
 export interface PetProgress {
@@ -11,16 +11,18 @@ const STORAGE_KEY = 'BE_DOC_TRON_PET_PROGRESS_V2';
 
 export const usePetStore = defineStore('pet', {
   state: () => ({
-    activePetId: 'dragon' as 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox',
-    unlockedPetIds: ['dragon'] as ('dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox')[],
+    activePetId: 'dragon' as PetSpeciesId,
+    unlockedPetIds: ['dragon'] as PetSpeciesId[],
     petProgress: {
       dragon: { stars: 0, completed: false },
       cat: { stars: 0, completed: false },
       penguin: { stars: 0, completed: false },
       unicorn: { stars: 0, completed: false },
       phoenix: { stars: 0, completed: false },
-      fox: { stars: 0, completed: false }
-    } as Record<string, PetProgress>,
+      fox: { stars: 0, completed: false },
+      turtle: { stars: 0, completed: false },
+      rabbit: { stars: 0, completed: false }
+    } as Record<PetSpeciesId, PetProgress>,
     isFirstTime: false,
     showStarterModal: false,
     showGardenModal: false,
@@ -61,7 +63,7 @@ export const usePetStore = defineStore('pet', {
       const idx = this.currentStageIndex;
       return this.activeSpecies.stages[idx + 1] || null;
     },
-    lockedPetIds(state): ('dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox')[] {
+    lockedPetIds(state): PetSpeciesId[] {
       return PET_ORDER.filter(id => !state.unlockedPetIds.includes(id));
     },
     completedPetCount(state): number {
@@ -137,7 +139,7 @@ export const usePetStore = defineStore('pet', {
       }
     },
 
-    selectFirstStarter(speciesId: 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox') {
+    selectFirstStarter(speciesId: PetSpeciesId) {
       this.activePetId = speciesId;
       if (!this.unlockedPetIds.includes(speciesId)) {
         this.unlockedPetIds = [speciesId];
@@ -149,7 +151,7 @@ export const usePetStore = defineStore('pet', {
       this.triggerPetSpeech(`Chào mừng bé! ${this.activeSpecies.name} rất vui được đồng hành cùng bé! 💕`);
     },
 
-    unlockNewPet(speciesId: 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox') {
+    unlockNewPet(speciesId: PetSpeciesId) {
       if (this.unlockedPetIds.includes(speciesId)) {
         this.choosePet(speciesId);
         this.showUnlockSlotModal = false;
@@ -167,7 +169,7 @@ export const usePetStore = defineStore('pet', {
       }
     },
 
-    choosePet(speciesId: 'dragon' | 'cat' | 'penguin' | 'unicorn' | 'phoenix' | 'fox') {
+    choosePet(speciesId: PetSpeciesId) {
       if (!this.unlockedPetIds.includes(speciesId)) {
         if (this.availableSlots > 0) {
           this.showUnlockSlotModal = true;
