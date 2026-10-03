@@ -23,8 +23,8 @@ export const TTS_CONFIG = {
   googleApiKey: ((typeof import.meta !== 'undefined' && import.meta.env?.VITE_GOOGLE_TTS_API_KEY) || '') as string,
   voiceName: 'vi-VN-Neural2-A', // Giọng Nữ Neural2 AI tiếng Việt chuẩn nhất của Google
 
-  // 3. Deepgram API Key (Dùng khi Deepgram ra mắt giọng Việt hoặc dùng cho game Tiếng Anh):
-  deepgramApiKey: ((typeof import.meta !== 'undefined' && import.meta.env?.VITE_DEEPGRAM_API_KEY) || '') as string,
+  // 3. Deepgram API Key:
+  deepgramApiKey: '',
   deepgramModel: 'aura-asteria-en',
 
   // 4. Tốc độ đọc (0.85 -> 0.95 là chuẩn vừa phải cho bé nghe rõ dấu)
@@ -42,21 +42,9 @@ if (typeof window !== 'undefined') {
     console.log('✅ Đã gắn Google Cloud TTS API Key thành công! Key:', key.slice(0, 8) + '...');
   };
 
-  (window as any).setDeepgramKey = (key: string) => {
-    TTS_CONFIG.deepgramApiKey = key.trim();
-    localStorage.setItem('VITE_DEEPGRAM_API_KEY', key.trim());
-    audioCache.clear();
-    console.log('✅ Đã gắn Deepgram API Key thành công! Key:', key.slice(0, 8) + '...');
-  };
-
   const savedGgKey = localStorage.getItem('VITE_GOOGLE_TTS_API_KEY');
   if (savedGgKey && !TTS_CONFIG.googleApiKey) {
     TTS_CONFIG.googleApiKey = savedGgKey;
-  }
-
-  const savedDgKey = localStorage.getItem('VITE_DEEPGRAM_API_KEY');
-  if (savedDgKey && !TTS_CONFIG.deepgramApiKey) {
-    TTS_CONFIG.deepgramApiKey = savedDgKey;
   }
 }
 
